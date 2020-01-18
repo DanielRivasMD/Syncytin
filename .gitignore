@@ -1,0 +1,23 @@
+# Data folders
+Data/
+Archive/Notes/
+Archive/Plots/
+Archive/Assets/
+
+# JetBrains
+.idea
+
+# Folder view configuration files
+.DS_Store
+
+# R package
+Script/Rpacks/
+
+# Deprecated scripts
+Script/Deprecated/
+
+# Go Executables
+Script/GoWorkshop/Executables/
+
+# aliases
+.aliases
