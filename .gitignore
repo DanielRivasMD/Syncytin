@@ -1,14 +1,8 @@
 # Data folders
 Data/
-Archive/Notes/
-Archive/Plots/
 Archive/Assets/
-
-# JetBrains
-.idea
-
-# Folder view configuration files
-.DS_Store
+Archive/Plots/
+Archive/Prints/
 
 # R package
 Script/Rpacks/
@@ -18,6 +12,3 @@ Script/Deprecated/
 
 # Go Executables
 Script/GoWorkshop/Executables/
-
-# aliases
-.aliases
