@@ -34,7 +34,7 @@ def page_turner(browser, ix):
 def browser_starter(data_query):
 
   # change directory
-  os.chdir("/Users/Daniel/Factorem/eSIV/")
+  os.chdir("/Users/Daniel/Factorem/Syncitin/")
 
   # ncbi address
   ncbi_adress = "https://www.ncbi.nlm.nih.gov/assembly/"
