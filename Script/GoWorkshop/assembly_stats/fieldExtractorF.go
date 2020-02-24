@@ -26,7 +26,8 @@ func fieldExtractor(scanFile *os.File, toPrintRecord map[string]string) map[stri
 
 		// Organism name
 		case strings.Contains(records[0], "Organism name"):
-			toPrintRecord["Organism"] = spaceTrimmer(splitColon(records[0]))
+			toReplace := spaceTrimmer(splitColon(records[0]))
+			toPrintRecord["Organism"] = strings.Replace(toReplace, ",", "", -1)
 
 		// total-length
 		case len(records) >= 5 && records[0] == "all" && records[4] == "total-length":
