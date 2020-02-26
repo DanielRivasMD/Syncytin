@@ -10,12 +10,11 @@ using StatsPlots
 ################################################################################
 
 # set variables
-proj_dir = "/Users/drivas/Factorem/eSIV"
+proj_dir = "/Users/drivas/Factorem/Syncytin"
 script_dir = "Script/"
 data_dir = "Data/"
-primate_stats = "ncbi-genome_stats_primates.csv"
+primate_stats = "ncbi-genome_stats_animals.csv"
 
-thres = 100000
 thres = 1000000
 
 ################################################################################
@@ -27,18 +26,13 @@ cd(proj_dir)
 fstats = CSV.read("$(data_dir)$(primate_stats)", copycols = true)
 
 # expected cols with missing values
-colsMiss = ["ScaffoldN50", "ScaffoldCount"]
+colsMiss = names(fstats)
 
 # replace with zeros
 for it in colsMiss
 
-	replace!(fstats[!, Symbol(it)], missing => 0)
-	# NOTE: several syntactic methods
-	# fstats[:, Symbol(it)][ismissing.(fstats[:, Symbol(it)])] .= 0
-	# fstats[:, Symbol(it)] = replace(fstats[:, Symbol(it)], missing => 0)
-	# fstats[:, Symbol(it)] = coalesce.(fstats[:, Symbol(it)], 0)
-
 	# fix col type
+	replace!(fstats[!, Symbol(it)], missing => 0)
 	disallowmissing!(fstats, Symbol(it))
 end
 
