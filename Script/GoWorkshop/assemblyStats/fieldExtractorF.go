@@ -24,6 +24,10 @@ func fieldExtractor(scanFile *os.File, toPrintRecord map[string]string) map[stri
 		case strings.Contains(records[0], "Assembly level"):
 			toPrintRecord["Level"] = spaceTrimmer(splitColon(records[0]))
 
+		// Taxonomic ID
+		case strings.Contains(records[0], "Taxid"):
+			toPrintRecord["TaxonomicID"] = spaceTrimmer(splitColon(records[0]))
+
 		// Organism name
 		case strings.Contains(records[0], "Organism name"):
 			toReplace := spaceTrimmer(splitColon(records[0]))

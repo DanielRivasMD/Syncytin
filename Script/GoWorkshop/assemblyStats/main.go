@@ -21,6 +21,7 @@ func main() {
 	fields := []string{
 		"Assembly",
 		"Level",
+		"TaxonomicID",
 		"Organism",
 		"ScaffoldCount",
 		"ScaffoldN50",
