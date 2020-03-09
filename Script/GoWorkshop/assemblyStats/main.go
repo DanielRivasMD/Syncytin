@@ -20,9 +20,12 @@ func main() {
 	//modify according to extraction patterns
 	fields := []string{
 		"Assembly",
-		"Level",
-		"TaxonomicID",
 		"Organism",
+		"TaxonomicID",
+		"BioProject",
+		"Date",
+		"Level",
+		"AccessionNumber",
 		"ScaffoldCount",
 		"ScaffoldN50",
 		"ContigCount",
