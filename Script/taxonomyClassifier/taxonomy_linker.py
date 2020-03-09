@@ -1,34 +1,47 @@
 # import entrez module
-from Bio import Entrez
-
+import csv
 import taxonomy_functions
 
+from Bio import Entrez
+
 # set variables
+ncbi_csv = "ncbi-genome_stats_animals.csv"
 taxids = [7227, 9606, 9598, 9601, 10090]
 
+#     Fields extracted by Go assemblyStats
+#     "Assembly",
+# 		"Organism",
+# 		"TaxonomicID",
+#     "BioProject",
+#     "Date",
+# 		"Level",
+#     "AccessionNumber",
+# 		"ScaffoldCount",
+# 		"ScaffoldN50",
+# 		"ContigCount",
+# 		"ContigN50",
+# 		"TotalLength",
+
 # set email
-Entrez.email = "youremail@gmail.com"
+Entrez.email = "danielrivasmd@gmail.com"
 
-# # read taxonomy ids file
-# with open('FILENAME', 'r') as csv_file:
-#   # load into 'taxids'
-#   print()
+# read file
+with open("Data/csv/" + ncbi_csv, "r") as in_file:
 
-# traverse ids
-for taxid in taxids:
-  handle = Entrez.efetch(db="taxonomy", id=taxid, mode="text", rettype="xml")
-  records = Entrez.read(handle)
-  for taxon in records:
-    # taxid = taxon["TaxId"]
-    name = taxon["ScientificName"]
-    tids = []
-    # print()
-    for t in taxon["LineageEx"]:
-      if t["Rank"] != "no rank":
-        # print(t["Rank"] + ": " + t["ScientificName"])
-        tids.insert(0, t["Rank"] + ": " + t["ScientificName"])
-    tids.insert(0, name)
-    print("%s" % (", ".join(tids)))
-    # print("%s\t|\t%s\t|\t%s" % (taxid, name, ", ".join(tids)))
+  # use field names as dict keys
+  reader = csv.DictReader(in_file)
 
-# TODO: write a taxonomy link
+  # collect taxonomy
+  for row in reader:
+
+    assembly = row["Assembly"]
+    taxid = row["TaxonomicID"]
+    accession = row["AccessionNumber"]
+
+    # retrieve spp for file naming
+    outval = taxonomy_functions.tax_extractor(taxid)
+
+    # write as csv
+    with open("Data/taxonomy/" + accession + ".csv", "w") as out_file:
+      out_file.write("%s" % ("\n".join(outval)))
+      out_file.write("Assembly" + ", " + assembly)
