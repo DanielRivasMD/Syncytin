@@ -5,8 +5,7 @@ import taxonomy_functions
 from Bio import Entrez
 
 # set variables
-ncbi_csv = "ncbi-genome_stats_animals.csv"
-taxids = [7227, 9606, 9598, 9601, 10090]
+ncbi_csv = "ncbi-genome_stats.csv"
 
 #     Fields extracted by Go assemblyStats
 #     "Assembly",
@@ -38,10 +37,15 @@ with open("Data/csv/" + ncbi_csv, "r") as in_file:
     taxid = row["TaxonomicID"]
     accession = row["AccessionNumber"]
 
-    # retrieve spp for file naming
-    outval = taxonomy_functions.tax_extractor(taxid)
+    try:
+      # retrieve spp for file naming
+      outval = taxonomy_functions.tax_extractor(taxid)
 
-    # write as csv
-    with open("Data/taxonomy/" + accession + ".csv", "w") as out_file:
-      out_file.write("%s" % ("\n".join(outval)))
-      out_file.write("\nAssembly" + ", " + assembly)
+    except:
+      print("An error ocurred with Assembly: " + assembly + "\tSpecies: " + taxid)
+
+    else:
+      # write as csv
+      with open("Data/taxonomy/" + accession + ".csv", "w") as out_file:
+        out_file.write("%s" % ("\n".join(outval)))
+        out_file.write("\nAssembly" + ", " + assembly)
