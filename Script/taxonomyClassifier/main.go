@@ -19,24 +19,20 @@ func main() {
 	//
 	//modify according to extraction patterns
 	fields := []string{
+		"kingdom",
+		"phylum",
+		"class",
+		"order",
+		"family",
+		"genus",
+		"species",
 		"Assembly",
-		"Organism",
-		"TaxonomicID",
-		"BioProject",
-		"Date",
-		"Level",
-		"AccessionNumber",
-		"ScaffoldCount",
-		"ScaffoldN50",
-		"ContigCount",
-		"ContigN50",
-		"TotalLength",
 	}
 	//
 	// loop through array to keep values ordered
 	initRecord := make(map[string]string)
 	////////////////////////////////////////////////////
-	
+
 	// print head
 	currentRecord := csvPrinter(true, fields, initRecord)
 
@@ -50,7 +46,7 @@ func main() {
 		}
 
 		// extract data
-		updatedRecord := fieldExtractor(inputFile, currentRecord)
+		updatedRecord := fieldExtractor(inputFile, fields, currentRecord)
 
 		// print lines
 		csvPrinter(false, fields, updatedRecord)
