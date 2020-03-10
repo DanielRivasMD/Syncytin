@@ -1,11 +1,13 @@
 ################################################################################
 
 # load packages
+using Dates
 using CSV
 using DataFrames
 using Plots
 using StatsPlots
-# using RCall
+using RCall
+using FreqTables
 
 ################################################################################
 
@@ -13,7 +15,8 @@ using StatsPlots
 proj_dir = "/Users/drivas/Factorem/Syncytin"
 script_dir = "Script/"
 data_dir = "Data/"
-primate_stats = "ncbi-genome_stats_animals.csv"
+csv_dir = "csv/"
+primate_stats = "ncbi-genome_stats.csv"
 
 thres = 1000000
 
@@ -23,7 +26,7 @@ thres = 1000000
 cd(proj_dir)
 
 # read file
-fstats = CSV.read("$(data_dir)$(primate_stats)", copycols = true)
+fstats = CSV.read("$(data_dir)$(csv_dir)$(primate_stats)", copycols = true)
 
 # expected cols with missing values
 colsMiss = names(fstats)
@@ -31,10 +34,20 @@ colsMiss = names(fstats)
 # replace with zeros
 for it in colsMiss
 
-	# fix col type
-	replace!(fstats[!, Symbol(it)], missing => 0)
+	# patch col type
+	if it == :Date
+		replace!(fstats[!, Symbol(it)], missing => Dates.Date(2000, 01, 01))
+	else
+		replace!(fstats[!, Symbol(it)], missing => 0)
+	end
+
 	disallowmissing!(fstats, Symbol(it))
 end
+
+################################################################################
+
+# plot by date
+
 
 ################################################################################
 
