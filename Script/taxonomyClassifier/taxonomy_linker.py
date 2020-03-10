@@ -44,4 +44,4 @@ with open("Data/csv/" + ncbi_csv, "r") as in_file:
     # write as csv
     with open("Data/taxonomy/" + accession + ".csv", "w") as out_file:
       out_file.write("%s" % ("\n".join(outval)))
-      out_file.write("Assembly" + ", " + assembly)
+      out_file.write("\nAssembly" + ", " + assembly)
