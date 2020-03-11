@@ -25,5 +25,5 @@ def tax_extractor(taxid):
     # prepare list for output
     tids = reversed(tids)
 
-    # return taxonomic list
-    return tids
+  # return taxonomic list
+  return tids
