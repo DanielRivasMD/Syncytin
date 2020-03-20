@@ -58,7 +58,7 @@ do
   for ix in "${!error_array[@]}"
   do
     # fetch sra file
-    fetch_check=$( prefetch --max-size 35G ${error_array[$ix]} | tee -a ${OUT_FILE} 2>> ${ERR_FILE} )
+    fetch_check=$( prefetch --max-size 100G ${error_array[$ix]} | tee -a ${OUT_FILE} 2>> ${ERR_FILE} )
 
     if [[ "${fetch_check}" =~ "failed to download" ]]
     then
