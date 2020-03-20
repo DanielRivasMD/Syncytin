@@ -42,7 +42,7 @@ while read ID
 do
   (( id_count++ ))
   error_array[$id_count]=${ID}
-done < ${PROJ_DB_folder}${log_file}.txt
+done < ${DNAzoo}${log_file}.txt
 
 #------------------------------------------------------------------------------------------------------------------------------
 

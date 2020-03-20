@@ -53,7 +53,7 @@ SRA01_00_id=$( sbatch \
   --time 240:0:0 \
   --partition core \
   --ntasks 1 \
-  --export log_file="DNAzoo" \
+  --export log_file="sra_experiments" \
   ${SCRIPT_folder}ncbiCollector/SRA-A_FastqDownload.sh | egrep -o -e "\b[0-9]+" )
 
 #------------------------------------------------------------------------------------------------------------------------------
