@@ -1,0 +1,25 @@
+Title
+
+Broad-scale mobile elements genomics
+
+Abstract
+
+Mobile elements constitute a driving force in the evolution of species. Such elements integrate a heterogeneous group whose common feature is the ability to self-replicate. In this project, we perform a broad-scale identification for mobile elements to better understand their influence in the genomic landscape of the host.
+
+Resource Usage
+
+The primary type of data will be genome assemblies as well as associated files. These files will be obtained and transfer to this project from NCBI.
+
+Data Management Plan
+
+Data types: genomes, fastq files, binary files.
+Data flow: analysis output data will be stored in flat files and postgresql data base.
+This is not sensitive data.
+
+Classification
+
+10615: Evolutionary Biology
+
+Financial Support
+
+Project name: Exploring biology by computational means
