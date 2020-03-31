@@ -19,6 +19,7 @@ data_dir = "Data/"
 dnazoo_dir = "DNAzoo/"
 example = "ex1.xml"
 dnazoo_xml = "SraExperimentPackage.xml"
+biosample_xml = "biosample_result.xml"
 
 ################################################################################
 
@@ -71,6 +72,37 @@ for i in child_elements(xroot)
     [
       content(find_element(samnam, "SCIENTIFIC_NAME")),
       content(find_element(samnam, "TAXON_ID"))
+    ]
+  )
+end
+
+freqtable(tax_df, :scientific_name) |> sort
+
+################################################################################
+
+# change directory
+cd(proj_dir)
+
+# read file
+xdoc = parse_file("$(data_dir)$(dnazoo_dir)$(biosample_xml)")
+
+# get the root element
+xroot = root(xdoc)  # an instance of XMLElement
+
+ces = collect(child_elements(xroot))  # get a list of all child elements
+
+# create an empty dataframe
+tax_df = DataFrame(scientific_name = String[], taxon_id = String[])
+
+for i in 1:length(ces)
+  tmp_ces = find_element(ces[i], "Description")
+  tmp_org = find_element(tmp_ces, "Organism")
+  org_dict = attributes_dict(tmp_org)
+  push!(
+    tax_df,
+    [
+      org_dict["taxonomy_name"],
+      org_dict["taxonomy_id"],
     ]
   )
 end
