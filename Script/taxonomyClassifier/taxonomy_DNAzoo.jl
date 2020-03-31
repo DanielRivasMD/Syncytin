@@ -58,19 +58,31 @@ xdoc = parse_file("$(data_dir)$(dnazoo_dir)$(dnazoo_xml)")
 xroot = root(xdoc)  # an instance of XMLElement
 
 # create an empty dataframe
-tax_df = DataFrame(scientific_name = String[], taxon_id = String[])
+tax_df = DataFrame(
+  scientific_name = String[],
+  taxon_id = String[],
+  biosample = String[],
+  sample_lab = String[],
+  sra = String[],
+)
 
 counter = 0
 for i in child_elements(xroot)
   global counter
   counter += 1
   sam = find_element(i, "SAMPLE")
+  sam_dict = attributes_dict(sam)
+  samident = find_element(sam, "IDENTIFIERS")
+  find_element(samident, "EXTERNAL_ID") |> content
   samnam = find_element(sam, "SAMPLE_NAME")
   push!(
     tax_df,
     [
-      content(find_element(samnam, "SCIENTIFIC_NAME")),
-      content(find_element(samnam, "TAXON_ID"))
+      find_element(samnam, "SCIENTIFIC_NAME") |> content,
+      find_element(samnam, "TAXON_ID") |> content,
+      find_element(samident, "EXTERNAL_ID") |> content,
+      sam_dict["alias"],
+      sam_dict["accession"],
     ]
   )
 end
@@ -93,17 +105,35 @@ xroot = root(xdoc)  # an instance of XMLElement
 ces = collect(child_elements(xroot))  # get a list of all child elements
 
 # create an empty dataframe
-tax_df = DataFrame(scientific_name = String[], taxon_id = String[])
+tax_df = DataFrame(
+  scientific_name = String[],
+  taxon_id = String[],
+  biosample = String[],
+  sample_lab = String[],
+  sra = String[],
+)
 
 for i in 1:length(ces)
+  tmp_elm = find_element(ces[i], "Ids")
+  tmp_arr = get_elements_by_tagname(tmp_elm, "Id")
   tmp_ces = find_element(ces[i], "Description")
   tmp_org = find_element(tmp_ces, "Organism")
   org_dict = attributes_dict(tmp_org)
+
+  if length(tmp_arr) == 3
+    tmp_arg = tmp_arr[3] |> content
+  else
+    tmp_arg = ""
+    println("Missing SRA Id: $(i)")
+  end
   push!(
     tax_df,
     [
       org_dict["taxonomy_name"],
       org_dict["taxonomy_id"],
+      tmp_arr[1] |> content,
+      tmp_arr[2] |> content,
+      tmp_arg,
     ]
   )
 end
