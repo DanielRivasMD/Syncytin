@@ -4,8 +4,8 @@
 using LightXML
 using DataFrames
 using FreqTables
+using CSV
 
-# using CSV
 # using Plots
 # using StatsPlots
 # using RCall
@@ -16,6 +16,9 @@ using FreqTables
 proj_dir = "/Users/drivas/Factorem/Syncytin"
 script_dir = "Script/"
 data_dir = "Data/"
+csv_dir = "csv/"
+sraex_csv = "SraExperimentPackage.csv"
+biosample_csv = "biosample_result.csv"
 dnazoo_dir = "DNAzoo/"
 example = "ex1.xml"
 dnazoo_xml = "SraExperimentPackage.xml"
@@ -63,10 +66,6 @@ for i in child_elements(xroot)
   counter += 1
   sam = find_element(i, "SAMPLE")
   samnam = find_element(sam, "SAMPLE_NAME")
-  println()
-  @show counter
-  content(find_element(samnam, "TAXON_ID")) |> println
-  content(find_element(samnam, "SCIENTIFIC_NAME")) |> println
   push!(
     tax_df,
     [
@@ -77,6 +76,8 @@ for i in child_elements(xroot)
 end
 
 freqtable(tax_df, :scientific_name) |> sort
+
+CSV.write("$(data_dir)$(csv_dir)$(sraex_csv)",  tax_df, writeheader = true)
 
 ################################################################################
 
@@ -108,5 +109,7 @@ for i in 1:length(ces)
 end
 
 freqtable(tax_df, :scientific_name) |> sort
+
+CSV.write("$(data_dir)$(csv_dir)$(biosample_csv)",  tax_df, writeheader = true)
 
 ################################################################################
