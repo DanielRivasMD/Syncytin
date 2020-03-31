@@ -16,7 +16,7 @@ proj_dir = "/Users/drivas/Factorem/Syncytin"
 script_dir = "Script/"
 data_dir = "Data/"
 csv_dir = "csv/"
-primate_stats = "ncbi-genome_stats.csv"
+ncbi_stats = "ncbi-genome_stats.csv"
 
 thres = 1000000
 
@@ -26,7 +26,7 @@ thres = 1000000
 cd(proj_dir)
 
 # read file
-fstats = CSV.read("$(data_dir)$(csv_dir)$(primate_stats)", copycols = true)
+fstats = CSV.read("$(data_dir)$(csv_dir)$(ncbi_stats)", copycols = true)
 
 # expected cols with missing values
 colsMiss = names(fstats)
@@ -47,7 +47,7 @@ end
 ################################################################################
 
 # plot by date
-
+plot(sort(fstats.Date))
 
 ################################################################################
 
