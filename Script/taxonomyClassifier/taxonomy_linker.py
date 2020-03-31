@@ -9,17 +9,17 @@ ncbi_csv = "ncbi-genome_stats.csv"
 
 #     Fields extracted by Go assemblyStats
 #     "Assembly",
-# 		"Organism",
-# 		"TaxonomicID",
+#     "Organism",
+#     "TaxonomicID",
 #     "BioProject",
 #     "Date",
-# 		"Level",
+#     "Level",
 #     "AccessionNumber",
-# 		"ScaffoldCount",
-# 		"ScaffoldN50",
-# 		"ContigCount",
-# 		"ContigN50",
-# 		"TotalLength",
+#     "ScaffoldCount",
+#     "ScaffoldN50",
+#     "ContigCount",
+#     "ContigN50",
+#     "TotalLength",
 
 # set email
 Entrez.email = "danielrivasmd@gmail.com"
