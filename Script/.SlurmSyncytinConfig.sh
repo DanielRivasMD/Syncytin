@@ -29,7 +29,8 @@ DATA_folder="${DRIVAS}private/Syncytin/Data/"
 DNAzoo="${DATA_folder}DNAzoo/"
 REPORT_BIN_folder="${DRIVAS}Factorem/Report/"
 REPORT_folder="${DRIVAS}Factorem/Syncytin/Report/"
-SRA_ADDRESS="${DRIVAS}private/Syncytin/SRA/sra"
+SRA_folder="${DRIVAS}private/Syncytin/sra_tmp/"
+SRA_ADDRESS="${DRIVAS}private/Syncytin/SRA/sra/"
 GO_EXECUTABLES="${SCRIPT_folder}GoWorkshop/Executables/"
 
 #------------------------------------------------------------------------------------------------------------------------------
