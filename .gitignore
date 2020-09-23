@@ -1,14 +1,14 @@
-# Data folders
-Data/
-Archive/Assets/
-Archive/Plots/
-Archive/Prints/
+# data folders
+data/
+arch/assets/
+arch/plots/
+arch/prints/
 
 # R package
-Script/Rpacks/
+src/Rpacks/
 
-# Deprecated scripts
-Script/Deprecated/
+# deprecated scripts
+src/deprecated/
 
 # Go Executables
-Script/GoExecutables/
+src/GoExecutables/
