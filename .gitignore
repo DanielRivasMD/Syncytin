@@ -3,6 +3,7 @@ data/
 arch/assets/
 arch/plots/
 arch/prints/
+arch/presentations/
 
 # R package
 src/Rpacks/
