@@ -5,6 +5,9 @@ arch/plots/
 arch/prints/
 arch/presentations/
 
+# software
+software/
+
 # R package
 src/Rpacks/
 
