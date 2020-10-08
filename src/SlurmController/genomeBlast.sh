@@ -19,7 +19,7 @@ gbId=$( sbatch \
     --ntasks 1 \
     --array 1-$arNo \
     --export inputLs=$inputLs \
-  ${projDir}/src/genomeBlast.sh )
+  ${projDir}/src/blast/genomeBlast.sh )
 
 
 ################################################################################
