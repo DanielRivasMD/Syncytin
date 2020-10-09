@@ -1,0 +1,44 @@
+################################################################################
+
+# library
+library(ggplot2)
+library(dplyr)
+
+################################################################################
+
+assemblyHits <- data.frame(
+  Species = c("Crocuta crocuta", "Eubalaena glacialis", "Nasua narica", "Neofelis nebulosa", "Rhinoceros unicornis"),
+  hits = c(26, 0, 16, 19, 0)
+)
+
+################################################################################
+
+pdf("arch/plots/GenomeBlast.pdf", width = 6, height = 4)
+
+assemblyHits %>%
+  ggplot(
+    aes(
+      x = desc(Species),
+      y = hits,
+      fill = Species
+    )
+  ) +
+  geom_bar(
+    stat = "identity",
+    col = "gray",
+    width = 0.5
+  ) +
+  coord_flip(ylim = c(0, 40)) +
+  xlab("") +
+  ylab("") +
+  theme(
+    axis.ticks.y = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks = element_line(size = 2),
+    panel.grid = element_blank(),
+    panel.background = element_rect(fill = "white", colour = "grey50")
+  )
+
+dev.off()
+
+################################################################################
