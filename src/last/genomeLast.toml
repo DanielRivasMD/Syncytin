@@ -1,0 +1,5 @@
+
+genomeDir = "/scratch/pawsey0263/drivas/Factorem/Syncytin/data/DNAzoo"
+library = "syncytinLibrary.fasta"
+libraryDir = "/scratch/pawsey0263/drivas/Factorem/Syncytin/data/syncytinDB/protein"
+outDir = "/scratch/pawsey0263/drivas/Factorem/Syncytin/data/lastOutput"
