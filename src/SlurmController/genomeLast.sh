@@ -13,11 +13,10 @@ slurmJobId=$( sbatch \
     --time 10:0:0 \
     --nodes 1 \
     --ntasks 1 \
-    --array 1-${arNo} \
-    --export inputLs=${inputLs} \
-  ${sourceFolder}/src/last/genomeLast.sh )
+    --array 1-$( awk 'END{print NR}' ${inputLs} ) \
+    --export inputLs=${sourceFolder}/data/assembly.list \
+  --wrap "bender --config ${sourceFolder}/src/last/genomeLast.toml GenomeLast --genome $(sed -n "$SLURM_ARRAY_TASK_ID"p ${inputLs})" )
 
 echo ${slurmJobId}
 
 ################################################################################
-
