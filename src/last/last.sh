@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# TODO: finish this script
 ################################################################################
 
 MAGNUS=magnus.pawsey.org.au
@@ -15,15 +16,16 @@ cd software
 
 ################################################################################
 
-# download blast toolkit
-wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.10.1+-x64-linux.tar.gz
+# download last latest release
+wget https://gitlab.com/mcfrith/last/-/archive/1186/last-1186.tar.gz
 
 # untar
-tar -zxvf ncbi-blast-2.10.1+-x64-linux.tar.gz
-cd ncbi-blast-2.10.1+/bin
+tar -zxvf last-1186.tar.gz
+cd last-1186
 
-# transfer
-scp makeblastdb ${MAGNUS}:bin/
-scp tblastn ${MAGNUS}:bin/
+# build
+make
+
+# linking
 
 ################################################################################
