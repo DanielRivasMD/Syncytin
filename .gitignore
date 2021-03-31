@@ -14,3 +14,7 @@ software/
 
 # deprecated
 src/deprecated/
+
+# julia manifest
+Manifest.toml
+
