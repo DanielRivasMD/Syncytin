@@ -12,7 +12,7 @@ slurmJobId=$( sbatch \
     --job-name ${jobId} \
     --output ${reportFolder}/${jobId}.out \
     --error ${reportFolder}/${jobId}.err \
-    --time 10:0:0 \
+    --time 24:0:0 \
     --nodes 1 \
     --ntasks 1 \
     --export sourceFolder=${sourceFolder} \
