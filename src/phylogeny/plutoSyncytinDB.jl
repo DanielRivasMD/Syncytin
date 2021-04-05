@@ -136,3 +136,25 @@ begin
 
 end
 
+# recalculate without unassigned sequences
+begin
+  # purge unassigned sequences
+  sGr = lenArr[:, 2] .!= 14
+  purLevArr = levArr[sGr, sGr]
+
+  # recalculate hierarchical clustering
+  purHc = hclust(purLevArr, linkage = :average, branchorder = :optimal)
+
+  # re plot
+  lp = grid(2, 2, heights = [0.2, 0.8, 0.2, 0.8], widths = [0.8, 0.2, 0.8, 0.2])
+  pphc = plot(
+    plot(purHc, ylims = (0, 35), xticks = false),
+    plot(ticks = nothing, border = :none),
+    heatmap(purLevArr[purHc.order, purHc.order], colorbar = false, ),
+    plot(purHc, xlims = (0, 35), yticks = false, xrotation = 90, orientation = :horizontal),
+    layout = lp,
+  )
+
+  pphc
+
+end
