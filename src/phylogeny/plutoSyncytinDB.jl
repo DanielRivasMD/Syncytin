@@ -107,3 +107,32 @@ begin
 
 end
 
+# calculate levenshtein distances proteins
+for ix in 1:synLen
+  for jx in 1:synLen
+    seq1 = sequence(synArr[ix])
+    seq2 = sequence(synArr[jx])
+    levArr[ix, jx] = BioSequences.sequencelevenshtein_distance(seq1, seq2) / maximum([length(seq1), length(seq2)]) * 100
+  end
+end;
+
+# build hierarchical clustering
+begin
+  hc = hclust(levArr, linkage = :average, branchorder = :optimal)
+end;
+
+# plot distances & clustering
+begin
+  ly = grid(2, 2, heights = [0.2, 0.8, 0.2, 0.8], widths = [0.8, 0.2, 0.8, 0.2])
+  phc = plot(
+    plot(hc, ylims = (0, 30), xticks = false),
+    plot(tikcs = nothing, border = :none),
+    heatmap(levArr[hc.order, hc.order], colorbar = false, ),
+    plot(hc, xlims = (0, 30), yticks = false, xrotation = 90, orientation = :horizontal),
+    layout = ly,
+  )
+
+  phc
+
+end
+
