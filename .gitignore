@@ -4,6 +4,10 @@ arch/presentations
 arch/plots
 arch/notebooks
 
+# journal cache & output
+journal/jl_*
+journal/*html
+
 # data
 data/
 
@@ -18,4 +22,3 @@ src/deprecated/
 
 # julia manifest
 Manifest.toml
-
