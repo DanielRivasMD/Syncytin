@@ -2,6 +2,7 @@
 arch/manuscripts
 arch/presentations
 arch/plots
+arch/notebooks
 
 # data
 data/
