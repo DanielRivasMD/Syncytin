@@ -157,12 +157,24 @@ end;
 
 # plot distances & clustering
 begin
-  ly = grid(2, 2, heights = [0.2, 0.8, 0.2, 0.8], widths = [0.8, 0.2, 0.8, 0.2])
+  ly = @layout [[a; b{0.1h}] c{0.1w}; d{0.8w} e{0.05w} f]
+  # ly = grid(3, 3, heights = [0.2, 0.02, 0.78, 0.2, 0.02, 0.78, 0.2, 0.02, 0.78], widths = [0.78, 0.02, 0.2, 0.78, 0.02, 0.2, 0.78, 0.02, 0.2])
   phc = plot(
+
     plot(hc, ylims = (0, 30), xticks = false),
-    plot(tikcs = nothing, border = :none),
-    heatmap(levArr[hc.order, hc.order], colorbar = false, ),
-    plot(hc, xlims = (0, 30), yticks = false, xrotation = 90, orientation = :horizontal),
+    # plot(tikcs = nothing, border = :none),
+    # plot(tikcs = nothing, border = :none),
+
+    heatmap(reshape(lenArr[hc.order, 2], (1, size(lenArr, 1))), colorbar = false, ticks = false, fillcolor = :roma, ),
+    # plot(tikcs = nothing, border = :none),
+    # plot(tikcs = nothing, border = :none),
+
+    heatmap([""], [synGroupDf[:, 2]; "Unassigned"], reshape([synGroupDf[:, 2]; "Unassigned"], (size(synGroupDf, 1) + 1, 1)), fillcolor = :roma, colorbar = false, xticks = false, yflip = true, ),
+
+    heatmap(levArr[hc.order, hc.order], colorbar = false, fillcolor = :balance, ),
+    heatmap(reshape(lenArr[hc.order, 2], (size(lenArr, 1), 1)), colorbar = false, ticks = false, fillcolor = :roma, ),
+    plot(hc, xlims = (0, 30), yticks = false, xrotation = 90, orientation = :horizontal, ),
+
     layout = ly,
   )
 
@@ -173,19 +185,29 @@ end
 # recalculate without unassigned sequences
 begin
   # purge unassigned sequences
-  sGr = lenArr[:, 2] .!= 14
-  purLevArr = levArr[sGr, sGr]
+  ugGr = lenArr[:, 2] .!= 14
+  purLevArr = levArr[ugGr, ugGr]
 
   # recalculate hierarchical clustering
   purHc = hclust(purLevArr, linkage = :average, branchorder = :optimal)
 
   # re plot
-  lp = grid(2, 2, heights = [0.2, 0.8, 0.2, 0.8], widths = [0.8, 0.2, 0.8, 0.2])
+  lp = @layout [[a; b{0.1h}] c{0.1w}; d{0.8w} e{0.05w} f]
+  # lp = grid(3, 3, heights = [0.2, 0.02, 0.78, 0.01, 0.21, 0.78, 0.01, 0.21, 0.78], widths = [0.78, 0.21, 0.01, 0.78, 0.21, 0.01, 0.78, 0.02, 0.2])
   pphc = plot(
+
     plot(purHc, ylims = (0, 35), xticks = false),
-    plot(ticks = nothing, border = :none),
-    heatmap(purLevArr[purHc.order, purHc.order], colorbar = false, ),
-    plot(purHc, xlims = (0, 35), yticks = false, xrotation = 90, orientation = :horizontal),
+    # plot(ticks = nothing, border = :none),
+
+    heatmap(reshape(purLenArr[purHc.order, 2], (1, size(purLenArr, 1))), colorbar = false, ticks = false, fillcolor = :roma, ),
+    heatmap([""], synGroupDf[:, 2], reshape(synGroupDf[:, 2], (size(synGroupDf, 1), 1)), fillcolor = :roma, colorbar = false, xticks = false, yflip = true, ),
+    # plot(tikcs = nothing, border = :none),
+    # plot(tikcs = nothing, border = :none),
+
+    heatmap(purLevArr[purHc.order, purHc.order], colorbar = false, fillcolor = :balance, ),
+    heatmap(reshape(purLenArr[purHc.order, 2], (size(purLenArr, 1), 1)), colorbar = false, ticks = false, fillcolor = :roma, ),
+    plot(purHc, xlims = (0, 35), yticks = false, xrotation = 90, orientation = :horizontal, ),
+
     layout = lp,
   )
 
