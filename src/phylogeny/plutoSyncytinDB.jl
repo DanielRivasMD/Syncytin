@@ -214,3 +214,8 @@ begin
   pphc
 
 end
+
+# plot clustering
+begin
+  plot(purHc, ylims = (0, 35), xticks = false)
+end
