@@ -78,7 +78,7 @@ begin
   # p1 = plot(xlims = (0, 250), ylims = (0, 1800), legend = :none)
   # p2 = plot(grid = false, showaxis = false)
   plen = plot(
-    xlims = (0, size(lenArr, 1)),
+    xlims = (0, size(lenArr, 1) + 1),
     ylims = (0, maximum(lenArr[:, 1])),
     xlabel = "Syncytin sequence",
     ylabel = "Sequence length",
@@ -104,6 +104,40 @@ begin
   # plot(p0, p1, p2, layout = ly) |> display
 
   plen
+
+end
+
+# plot trimmed sequence length
+begin
+
+  # trim unassigned group
+  unGr = lenArr[:, 2] .!= 14
+  purLenArr = lenArr[unGr, :]
+
+  # prepare canvas
+  # p1 = plot(xlims = (0, 250), ylims = (0, 1800), legend = :none)
+  # p2 = plot(grid = false, showaxis = false)
+  pplen = plot(
+    xlims = (0, size(purLenArr, 1) + 1),
+    ylims = (0, maximum(purLenArr[:, 1])),
+    xlabel = "Syncytin sequence",
+    ylabel = "Sequence length",
+    xticks = false,
+    legend = :outertopright,
+  )
+
+  # plot groups
+  for ix in 1:size(synGroupDf, 1)
+    cpLenArr = copy(purLenArr)
+    cpLenArr[findall(x -> x != ix, cpLenArr[:, 2]), 1] .= 0
+    # bar!(p1, cpLenArr[:, 1])
+    # bar!(p2, cpLenArr[:, 1], label = synGroupDf[ix, 2])
+    bar!(pplen, cpLenArr[:, 1], label = synGroupDf[ix, 2]) |> display
+  end
+
+  # plot(p0, p1, p2, layout = ly) |> display
+
+  pplen
 
 end
 
