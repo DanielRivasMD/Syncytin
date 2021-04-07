@@ -4,13 +4,15 @@
 
 cd $HOME/Factorem/Syncytin/data/DNAzoo/
 
-while read assembly
+while read name assembly annotation
 do
   if [[ ! -f ${assembly} ]]
   then
-    wget https://dnazoo.s3.wasabisys.com/${assembly/.fasta/}/${assembly/.fasta/}_HiC.fasta.gz
-    gzip -d ${assembly}.gz
+    wget https://dnazoo.s3.wasabisys.com/${name}/${assembly}
+    wget https://dnazoo.s3.wasabisys.com/${name}/${annotation}
   fi
-done < $HOME/Factorem/Syncytin/data/assembly.list
+done < <(awk 'BEGIN{FS = ","; OFS = " "} $2 ~/HiC/ && $3 !~/NA/ {for (ix = 1; ix <= NF; ix++) {printf $ix} printf "\n" }' $HOME/Factorem/Syncytin/data/assembly.list) # target HiC assemblies with available annotation
+
+cd - > /dev/null
 
 ################################################################################
