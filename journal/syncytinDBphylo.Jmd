@@ -10,16 +10,29 @@ include("/Users/drivas/Factorem/Syncytin/src/phylogeny/syncytinDB.jl");
 ```
 
 ```julia; echo = false
-# load syncytin library
-begin
+
+# run analysis on nucleotide & protein databases
+import DelimitedFiles
+db = [:nucleotide, :protein]
+ad = 0
+
+for d in [:N, :P]
+  global ad += 1
+
+  # load syncytin library
 
   # read sequences from file
-  synPAr = syncytinReader(synDB = "syncytinLibrary.fasta", synDir = "/Users/drivas/Factorem/Syncytin/data/syncytinDB/protein/")
-  synNAr = syncytinReader(synDB = "syncytinLibrary.fasta", synDir = "/Users/drivas/Factorem/Syncytin/data/syncytinDB/nucleotide/")
+  synAr = Symbol("synAr", d)
+  @eval $synAr = syncytinReader( synDB = string("/Users/drivas/Factorem/Syncytin/data/syncytinDB/", db[ad], "/", "syncytinLibrary.fasta") )
 
   # group syncytin sequences
-  syngPDf = syncytinGroupReader(synG = "/Users/drivas/Factorem/Syncytin/data/syncytinDB/syncytinGroupsProt.csv")
-  syngNDf = syncytinGroupReader(synG = "/Users/drivas/Factorem/Syncytin/data/syncytinDB/syncytinGroupsNucl.csv")
+  syngDf = Symbol("syngDf", d)
+  @eval $syngDf = syncytinGroupReader( synG = string("/Users/drivas/Factorem/Syncytin/data/syncytinDB/", db[ad], "/", "syncytinGroups.csv") )
+
+  # plot sequence length
+  lenPlot = Symbol("lenPlot", d)
+  @eval $lenPlot = synLenPlot($synAr, $syngDf)
+
   # calculate distance & hierarchical clustering
   levAr = Symbol("levAr", d)
   levFile =  string("/Users/drivas/Factorem/Syncytin/data/syncytinDB/", db[ad], "/", "levenshteinDistance.tsv")
@@ -30,60 +43,65 @@ begin
     DelimitedFiles.writedlm($levFile, $levAr, '\t')
   end
 
-end;
+  # plot levenshtein distance & hierarchical clustering
+  levPlot = Symbol("levPlot", d)
+  @eval $levPlot = synLevHCPlot($levAr, $syngDf)
+
+  # plot trimmed sequence length
+  lenPlotTrim = Symbol("lenPlotTrim", d)
+  @eval $lenPlotTrim = synLenPlot($synAr, $syngDf, trim = true)
+
+  # recalculate without unassigned sequences
+  levPlotTrim = Symbol("levPlotTrim", d)
+  @eval $levPlotTrim = synLevHCPlot($levAr, $syngDf, trim = true, lenAr = buildLen($synAr, $syngDf))
+
+end
+
+
+
+
 ```
 
 # Database composition
-We have constructed two syncytin databases based on collected evidence on NCBI. A protein database consisting of `j length(synPAr)` sequences and a nucleotide database composed of `j length(synNAr)`. We have manually assigned `j size(syngPDf, 1)` group labels according to sequence origin and accession.
+We have constructed two syncytin databases based on collected evidence on NCBI. A protein database consisting of `j length(synArP)` sequences and a nucleotide database composed of `j length(synArN)`. We have manually assigned `j size(syngDfP, 1)` group labels according to sequence origin and accession.
 
 ```julia; echo = false, fig_cap = "Syncytin Protein Database"
-# plot sequence length
-synLenPlot(synPAr, syngPDf)
+lenPlotP
 ```
 
 Next, we calculated the Levenshtein distance among sequences as a percentage of the longest sequence in each comparison and clustered using the group averge and optimal branch order.
 
-```julia; echo = false
-# calculate distance & hierarchical clustering
-levPAr = levenshteinDist(synPAr);
-```
-
 ```julia; echo = false, fig_cap = "Syncytin Database hierarchical clustering on Protein space"
-synLevHCPlot(levPAr, syngPDf)
+levPlotP
 ```
 
 We proceeded to exclude sequences which were not assigned to groups since they sporious results while clustering due to their different sequence length.
 
 ```julia; echo = false, fig_cap = "Syncytin Protein Database excluding non-assigned seqeuences"
-# plot trimmed sequence length
-synLenPlot(synPAr, syngPDf, trim = true)
+lenPlotTrimP
 ```
 
 We excluded sequences not assigned to groups. The remainding sequences were reclustered as follows.
 
 ```julia; echo = false, fig_cap = "Syncytin Database hierarchical clustering on Protein space excluding non-assigned sequences"
-# recalculate without unassigned sequences
-synLevHCPlot(levPAr, syngPDf, trim = true, lenAr = buildLen(synPAr, syngPDf))
+levPlotTrimP
 ```
 
 Finally, we use a similar methodology on nucleotide database as illustrated below.
 
 ```julia; echo = false, fig_cap = "Syncytin Nucleotide Database"
-synLenPlot(synNAr, syngNDf)
-```
-
-```julia; echo = false
-levNAr = levenshteinDist(synNAr);
+lenPlotN
 ```
 
 ```julia; echo = false, fig_cap = "Syncytin Database hierarchical clustering on Nucleotide space"
-synLevHCPlot(levNAr, syngNDf)
+levPlotN
 ```
 
 ```julia; echo = false, fig_cap = "Syncytin Nucleotide Database excluding non-assigned seqeuences"
-synLenPlot(synNAr, syngNDf, trim = true)
+lenPlotTrimN
 ```
 
 ```julia; echo = false, fig_cap = "Syncytin Database hierarchical clustering on Nucleotide space excluding non-assigned sequences"
-synLevHCPlot(levNAr, syngNDf, trim = true, lenAr = buildLen(synNAr, syngPDf))
+levPlotTrimN
 ```
+
