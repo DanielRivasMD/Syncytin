@@ -20,6 +20,15 @@ begin
   # group syncytin sequences
   syngPDf = syncytinGroupReader(synG = "/Users/drivas/Factorem/Syncytin/data/syncytinDB/syncytinGroupsProt.csv")
   syngNDf = syncytinGroupReader(synG = "/Users/drivas/Factorem/Syncytin/data/syncytinDB/syncytinGroupsNucl.csv")
+  # calculate distance & hierarchical clustering
+  levAr = Symbol("levAr", d)
+  levFile =  string("/Users/drivas/Factorem/Syncytin/data/syncytinDB/", db[ad], "/", "levenshteinDistance.tsv")
+  @eval if isfile($levFile)
+    $levAr = DelimitedFiles.readdlm($levFile)
+  else
+    $levAr = levenshteinDist(synPAr);
+    DelimitedFiles.writedlm($levFile, $levAr, '\t')
+  end
 
 end;
 ```
