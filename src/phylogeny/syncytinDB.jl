@@ -20,13 +20,13 @@ end;
 ################################################################################
 
 # load syncytin library
-function syncytinReader(; synDB::String, synDir::String)
+function syncytinReader(; synDB::String)
 
   # declare empty array
   synOutArr = Array{FASTX.FASTA.Record}(undef, 1)
 
   let ct = 0
-    reader = FASTA.Reader(open( string(synDir, synDB), "r"))
+    reader = FASTA.Reader(open(synDB, "r"))
 
     # extract sequences from reader
     for record in reader
