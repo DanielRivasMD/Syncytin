@@ -57,9 +57,6 @@ for d in [:N, :P]
 
 end
 
-
-
-
 ```
 
 # Database composition

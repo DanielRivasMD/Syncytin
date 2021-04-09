@@ -3,50 +3,74 @@
 include("/Users/drivas/Factorem/Syncytin/src/phylogeny/syncytinDB.jl");
 
 
-# load syncytin library
-begin
+
+# run analysis on nucleotide & protein databases
+import DelimitedFiles
+db = [:nucleotide, :protein]
+ad = 0
+
+for d in [:N, :P]
+  global ad += 1
+
+  # load syncytin library
 
   # read sequences from file
-  synPAr = syncytinReader(synDB = "syncytinLibrary.fasta", synDir = "/Users/drivas/Factorem/Syncytin/data/syncytinDB/protein/")
-  synNAr = syncytinReader(synDB = "syncytinLibrary.fasta", synDir = "/Users/drivas/Factorem/Syncytin/data/syncytinDB/nucleotide/")
+  synAr = Symbol("synAr", d)
+  @eval $synAr = syncytinReader( synDB = string("/Users/drivas/Factorem/Syncytin/data/syncytinDB/", db[ad], "/", "syncytinLibrary.fasta") )
 
   # group syncytin sequences
-  syngPDf = syncytinGroupReader(synG = "/Users/drivas/Factorem/Syncytin/data/syncytinDB/syncytinGroupsProt.csv")
-  syngNDf = syncytinGroupReader(synG = "/Users/drivas/Factorem/Syncytin/data/syncytinDB/syncytinGroupsNucl.csv")
+  syngDf = Symbol("syngDf", d)
+  @eval $syngDf = syncytinGroupReader( synG = string("/Users/drivas/Factorem/Syncytin/data/syncytinDB/", db[ad], "/", "syncytinGroups.csv") )
 
-end;
+  # plot sequence length
+  lenPlot = Symbol("lenPlot", d)
+  @eval $lenPlot = synLenPlot($synAr, $syngDf)
 
+  # calculate distance & hierarchical clustering
+  levAr = Symbol("levAr", d)
+  levFile =  string("/Users/drivas/Factorem/Syncytin/data/syncytinDB/", db[ad], "/", "levenshteinDistance.tsv")
+  @eval if isfile($levFile)
+    $levAr = DelimitedFiles.readdlm($levFile)
+  else
+    $levAr = levenshteinDist(synPAr);
+    DelimitedFiles.writedlm($levFile, $levAr, '\t')
+  end
 
-# plot sequence length
-synLenPlot(synPAr, syngPDf)
+  # plot levenshtein distance & hierarchical clustering
+  levPlot = Symbol("levPlot", d)
+  @eval $levPlot = synLevHCPlot($levAr, $syngDf)
 
+  # plot trimmed sequence length
+  lenPlotTrim = Symbol("lenPlotTrim", d)
+  @eval $lenPlotTrim = synLenPlot($synAr, $syngDf, trim = true)
 
-# calculate distance & hierarchical clustering
-levPAr = levenshteinDist(synPAr);
+  # recalculate without unassigned sequences
+  levPlotTrim = Symbol("levPlotTrim", d)
+  @eval $levPlotTrim = synLevHCPlot($levAr, $syngDf, trim = true, lenAr = buildLen($synAr, $syngDf))
 
-
-synLevHCPlot(levPAr, syngPDf)
-
-
-# plot trimmed sequence length
-synLenPlot(synPAr, syngPDf, trim = true)
-
-
-# recalculate without unassigned sequences
-synLevHCPlot(levPAr, syngPDf, trim = true, lenAr = buildLen(synPAr, syngPDf))
-
-
-synLenPlot(synNAr, syngNDf)
-
-
-levNAr = levenshteinDist(synNAr);
-
-
-synLevHCPlot(levNAr, syngNDf)
+end
 
 
-synLenPlot(synNAr, syngNDf, trim = true)
+lenPlotP
 
 
-synLevHCPlot(levNAr, syngNDf, trim = true, lenAr = buildLen(synNAr, syngPDf))
+levPlotP
+
+
+lenPlotTrimP
+
+
+levPlotTrimP
+
+
+lenPlotN
+
+
+levPlotN
+
+
+lenPlotTrimN
+
+
+levPlotTrimN
 
