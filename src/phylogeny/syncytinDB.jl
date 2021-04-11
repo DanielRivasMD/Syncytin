@@ -113,7 +113,7 @@ function synLenPlot(synAr::Vector{FASTX.FASTA.Record}, syngDf::DataFrame; trim::
 
   # trim unassigned group
   if trim
-    lenAr = lenAr[lenAr[:, 2] .!= 14, :]
+    lenAr = lenAr[lenAr[:, 2] .!= size(syngDf, 1) + 1, :]
     syngLen = size(syngDf, 1)
   else
     syngLen = size(syngDf, 1) + 1
@@ -150,7 +150,7 @@ function synLevHCPlot(levAr::Matrix{Float64}, syngDf::DataFrame; trim::Bool = fa
 #  BUG: colorbars are the wrong color
   # purge unassigned sequences
   if trim
-    ua = lenAr[:, 2] .!= 14
+    ua = lenAr[:, 2] .!= size(syngDf, 1) + 1
     levAr = levAr[ua, ua]
 
     syngLen = size(syngDf, 1)
