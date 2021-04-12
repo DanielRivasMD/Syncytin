@@ -38,7 +38,7 @@ for d in [:N, :P]
 
   # plot levenshtein distance & hierarchical clustering
   levPlot = Symbol("levPlot", d)
-  @eval $levPlot = synLevHCPlot($levAr, $syngDf)
+  @eval $levPlot = synLevHCPlot($levAr, $syngDf, $synAr)
 
   # plot trimmed sequence length
   lenPlotTrim = Symbol("lenPlotTrim", d)
@@ -46,7 +46,7 @@ for d in [:N, :P]
 
   # recalculate without unassigned sequences
   levPlotTrim = Symbol("levPlotTrim", d)
-  @eval $levPlotTrim = synLevHCPlot($levAr, $syngDf, trim = true, lenAr = buildLen($synAr, $syngDf))
+  @eval $levPlotTrim = synLevHCPlot($levAr, $syngDf, $synAr, trim = true)
 
 end
 

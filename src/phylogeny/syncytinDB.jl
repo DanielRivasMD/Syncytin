@@ -20,7 +20,7 @@ end;
 ################################################################################
 
 # load syncytin library
-function syncytinReader(; synDB::String)
+function syncytinReader(; synDB::String, )
 
   # declare empty array
   synOutArr = Array{FASTX.FASTA.Record}(undef, 1)
@@ -44,14 +44,14 @@ function syncytinReader(; synDB::String)
 end
 
 # group syncytin sequences
-function syncytinGroupReader(; synG)
+function syncytinGroupReader(; synG, )
   return CSV.read(synG, DataFrame, header = false)
 end
 
 ################################################################################
 
 # calculate levenshtein distances
-function levenshteinDist(synAr::Vector{FASTX.FASTA.Record})
+function levenshteinDist(synAr::Vector{FASTX.FASTA.Record}, )
 
   # construct array
   synLen = length(synAr)
@@ -77,12 +77,12 @@ function levenshteinDist(synAr::Vector{FASTX.FASTA.Record})
 end
 
 # build hierarchical clustering
-function levHClust(levAr::Matrix{Float64})
+function levHClust(levAr::Matrix{Float64}, )
   return Clustering.hclust(levAr, linkage = :average, branchorder = :optimal)
 end
 
 # build array
-function buildLen(synAr::Vector{FASTX.FASTA.Record}, syngDf::DataFrame)
+function buildLen(synAr::Vector{FASTX.FASTA.Record}, syngDf::DataFrame, )
 
   # contruct array
   synLen = length(synAr)
@@ -107,7 +107,7 @@ end
 ################################################################################
 
 # plot sequence length
-function synLenPlot(synAr::Vector{FASTX.FASTA.Record}, syngDf::DataFrame; trim::Bool = false)
+function synLenPlot(synAr::Vector{FASTX.FASTA.Record}, syngDf::DataFrame; trim::Bool = false, )
 
   lenAr = buildLen(synAr, syngDf)
 
@@ -145,13 +145,16 @@ function synLenPlot(synAr::Vector{FASTX.FASTA.Record}, syngDf::DataFrame; trim::
 end
 
 # plot distances & clustering
-function synLevHCPlot(levAr::Matrix{Float64}, syngDf::DataFrame; trim::Bool = false, lenAr = Array)
+function synLevHCPlot(levAr::Matrix{Float64}, syngDf::DataFrame, synAr::Vector{FASTX.FASTA.Record}; trim::Bool = false, )
 
-#  BUG: colorbars are the wrong color
+  lenAr = buildLen(synAr, syngDf)
+
   # purge unassigned sequences
   if trim
     ua = lenAr[:, 2] .!= size(syngDf, 1) + 1
     levAr = levAr[ua, ua]
+
+    lenAr = lenAr[ua, :]
 
     syngLen = size(syngDf, 1)
     annotBar = syngDf[:, 2]
@@ -171,7 +174,7 @@ function synLevHCPlot(levAr::Matrix{Float64}, syngDf::DataFrame; trim::Bool = fa
     StatsPlots.plot(synHC, ylims = (0, 30), xticks = false),
 
     # top group bar
-    StatsPlots.heatmap(reshape(levAr[synHC.order, 2], (1, size(levAr, 1))), colorbar = false, ticks = false, fillcolor = :roma, ),
+    StatsPlots.heatmap(reshape(lenAr[synHC.order, 2], (1, size(lenAr, 1))), colorbar = false, ticks = false, fillcolor = :roma, ),
 
     # group annotations
     StatsPlots.heatmap([""], annotBar, reshape(annotBar, (syngLen, 1)), fillcolor = :roma, colorbar = false, xticks = false, yflip = true, ),
@@ -180,7 +183,7 @@ function synLevHCPlot(levAr::Matrix{Float64}, syngDf::DataFrame; trim::Bool = fa
     StatsPlots.heatmap(levAr[synHC.order, synHC.order], colorbar = false, fillcolor = :balance, ),
 
     # right group bar
-    StatsPlots.heatmap(reshape(levAr[synHC.order, 2], (size(levAr, 1), 1)), colorbar = false, ticks = false, fillcolor = :roma, ),
+    StatsPlots.heatmap(reshape(lenAr[synHC.order, 2], (size(lenAr, 1), 1)), colorbar = false, ticks = false, fillcolor = :roma, ),
 
     # right dendrogram
     StatsPlots.plot(synHC, xlims = (0, 30), yticks = false, xrotation = 90, orientation = :horizontal, ),
