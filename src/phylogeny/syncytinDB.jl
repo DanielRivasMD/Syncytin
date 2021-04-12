@@ -134,7 +134,7 @@ function synLenPlot(synAr::Vector{FASTX.FASTA.Record}, syngDf::DataFrame; trim::
   for ix in 1:syngLen
     cpLenAr = copy(lenAr)
     cpLenAr[findall(x -> x != ix, cpLenAr[:, 2]), 1] .= 0
-    if ix == 14
+    if ix == size(syngDf, 1) + 1
       StatsPlots.bar!(p, cpLenAr[:, 1], label = "Unassigned", lw = 0, )
     else
       StatsPlots.bar!(p, cpLenAr[:, 1], label = syngDf[ix, 2], lw = 0, )
