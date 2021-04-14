@@ -92,8 +92,14 @@ function levHClust(levAr::Matrix{Float64}, )
   return Clustering.hclust(levAr, linkage = :average, branchorder = :optimal)
 end
 
-function buildLen(synAr::Vector{FASTX.FASTA.Record}, syngDf::DataFrame, )
 "build sequence length array"
+function buildLen(synAr::Vector{FASTX.FASTA.Record}, )
+
+  # sequence length
+  lenAr = FASTA.seqlen.(synAr)
+
+  return lenAr
+end
 
   # contruct array
   synLen = length(synAr)
