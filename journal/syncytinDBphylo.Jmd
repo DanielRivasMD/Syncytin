@@ -101,4 +101,3 @@ lenPlotTrimN
 ```julia; echo = false, fig_cap = "Syncytin Database hierarchical clustering on Nucleotide space excluding non-assigned sequences"
 levPlotTrimN
 ```
-

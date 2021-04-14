@@ -43,8 +43,8 @@ function syncytinReader(; synDB::String, )
   return synOutArr
 end
 
-function syncytinGroupReader(; synG, )
 "read `csv` syncytin groups file to array"
+function syncytinGroupReader(; synG::String, )
   return CSV.read(synG, DataFrame, header = false)
 end
 
@@ -136,11 +136,14 @@ end
 "plot sequence length"
 function synLenPlot(synAr::Vector{FASTX.FASTA.Record}, syngDf::DataFrame; trim::Bool = false, )
 
-  lenAr = buildLen(synAr, syngDf)
+  lenAr = buildLen(synAr)
+
+  tagAr = tagGroup(synAr, syngDf)
 
   # trim unassigned group
   if trim
-    lenAr = lenAr[lenAr[:, 2] .!= size(syngDf, 1) + 1, :]
+    lenAr = trimmer!(lenAr, tagAr .!= size(syngDf, 1) + 1)
+    tagAr = trimmer!(tagAr, tagAr .!= size(syngDf, 1) + 1)
     syngLen = size(syngDf, 1)
   else
     syngLen = size(syngDf, 1) + 1
@@ -149,7 +152,7 @@ function synLenPlot(synAr::Vector{FASTX.FASTA.Record}, syngDf::DataFrame; trim::
   # prepare canvas
   p = StatsPlots.plot(
     xlims = (0, size(lenAr, 1) + 1),
-    ylims = (0, maximum(lenAr[:, 1])),
+    ylims = (0, maximum(lenAr)),
     xlabel = "Syncytin sequence",
     ylabel = "Sequence length",
     xticks = false,
@@ -160,11 +163,11 @@ function synLenPlot(synAr::Vector{FASTX.FASTA.Record}, syngDf::DataFrame; trim::
   # plot groups
   for ix in 1:syngLen
     cpLenAr = copy(lenAr)
-    cpLenAr[findall(x -> x != ix, cpLenAr[:, 2]), 1] .= 0
+    cpLenAr[findall(x -> x != ix, tagAr), 1] .= 0
     if ix == size(syngDf, 1) + 1
-      StatsPlots.bar!(p, cpLenAr[:, 1], label = "Unassigned", lw = 0, )
+      StatsPlots.bar!(p, cpLenAr, label = "Unassigned", lw = 0, )
     else
-      StatsPlots.bar!(p, cpLenAr[:, 1], label = syngDf[ix, 2], lw = 0, )
+      StatsPlots.bar!(p, cpLenAr, label = syngDf[ix, 2], lw = 0, )
     end
   end
 
@@ -174,14 +177,16 @@ end
 "plot distances & clustering"
 function synLevHCPlot(levAr::Matrix{Float64}, syngDf::DataFrame, synAr::Vector{FASTX.FASTA.Record}; trim::Bool = false, )
 
-  lenAr = buildLen(synAr, syngDf)
+  tagAr = tagGroup(synAr, syngDf)
 
   # purge unassigned sequences
   if trim
-    ua = lenAr[:, 2] .!= size(syngDf, 1) + 1
-    levAr = levAr[ua, ua]
 
-    lenAr = lenAr[ua, :]
+    ua = tagAr .!= size(syngDf, 1) + 1
+
+    levAr = trimmer!(levAr, ua)
+
+    tagAr = trimmer!(tagAr, ua)
 
     syngLen = size(syngDf, 1)
     annotBar = syngDf[:, 2]
@@ -201,7 +206,7 @@ function synLevHCPlot(levAr::Matrix{Float64}, syngDf::DataFrame, synAr::Vector{F
     StatsPlots.plot(synHC, ylims = (0, 30), xticks = false),
 
     # top group bar
-    StatsPlots.heatmap(reshape(lenAr[synHC.order, 2], (1, size(lenAr, 1))), colorbar = false, ticks = false, fillcolor = :roma, ),
+    StatsPlots.heatmap(reshape(tagAr[synHC.order], (1, length(tagAr))), colorbar = false, ticks = false, fillcolor = :roma, ),
 
     # group annotations
     StatsPlots.heatmap([""], annotBar, reshape(annotBar, (syngLen, 1)), fillcolor = :roma, colorbar = false, xticks = false, yflip = true, ),
@@ -210,7 +215,7 @@ function synLevHCPlot(levAr::Matrix{Float64}, syngDf::DataFrame, synAr::Vector{F
     StatsPlots.heatmap(levAr[synHC.order, synHC.order], colorbar = false, fillcolor = :balance, ),
 
     # right group bar
-    StatsPlots.heatmap(reshape(lenAr[synHC.order, 2], (size(lenAr, 1), 1)), colorbar = false, ticks = false, fillcolor = :roma, ),
+    StatsPlots.heatmap(reshape(tagAr[synHC.order], (length(tagAr), 1)), colorbar = false, ticks = false, fillcolor = :roma, ),
 
     # right dendrogram
     StatsPlots.plot(synHC, xlims = (0, 30), yticks = false, xrotation = 90, orientation = :horizontal, ),
