@@ -48,6 +48,17 @@ function syncytinGroupReader(; synG, )
   return CSV.read(synG, DataFrame, header = false)
 end
 
+"write `fasta` file from array"
+function syncytinWriter(; synAr::Vector{FASTX.FASTA.Record}, synFA::String, )
+
+  # loop over array
+  open(FASTA.Writer, synFA) do w
+    for rc in synAr
+      write(w, FASTA.Record(FASTX.identifier(synAr[1]), FASTX.description(synAr[1]), FASTX.sequence(synAr[1])))
+    end
+  end
+end
+
 ################################################################################
 
 "calculate levenshtein distances"
