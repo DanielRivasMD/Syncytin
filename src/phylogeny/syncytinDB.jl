@@ -121,6 +121,16 @@ function tagGroup(synAr::Vector{FASTX.FASTA.Record}, syngDf::DataFrame, )
   return tagAr
 end
 
+"trim matrix based on vector"
+function trimmer!(douAr::Matrix{Float64}, trimVc::BitVector, )
+  return douAr[trimVc, trimVc]
+end
+
+"trim array based on vector"
+function trimmer!(unAr::Vector{Int64}, trimVc::BitVector, )
+  return unAr[trimVc]
+end
+
 ################################################################################
 
 "plot sequence length"
