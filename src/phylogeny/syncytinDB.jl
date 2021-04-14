@@ -101,24 +101,24 @@ function buildLen(synAr::Vector{FASTX.FASTA.Record}, )
   return lenAr
 end
 
+"create tag group vector"
+function tagGroup(synAr::Vector{FASTX.FASTA.Record}, syngDf::DataFrame, )
+
   # contruct array
   synLen = length(synAr)
 
   # sequence length array
-  lenAr = Array{Any, 2}(nothing, synLen, 2)
-
-  # sequence length
-  lenAr[:, 1] .= FASTA.seqlen.(synAr)
+  tagAr = zeros(Int64, synLen)
 
   # tag groups
   for ix in 1:size(syngDf, 1)
-    lenAr[contains.(description.(synAr), syngDf[ix, 1]), 2] .= ix
+    tagAr[contains.(description.(synAr), syngDf[ix, 1]), 1] .= ix
   end
 
   # retag non-syncytin grouped
-  lenAr[isnothing.(lenAr[:, 2]), 2] .= size(syngDf, 1) + 1
+  tagAr[tagAr .== 0] .= size(syngDf, 1) + 1
 
-  return lenAr
+  return tagAr
 end
 
 ################################################################################
