@@ -19,7 +19,7 @@ end;
 
 ################################################################################
 
-# load syncytin library
+"read `fasta` syncytin library file to array"
 function syncytinReader(; synDB::String, )
 
   # declare empty array
@@ -43,14 +43,14 @@ function syncytinReader(; synDB::String, )
   return synOutArr
 end
 
-# group syncytin sequences
 function syncytinGroupReader(; synG, )
+"read `csv` syncytin groups file to array"
   return CSV.read(synG, DataFrame, header = false)
 end
 
 ################################################################################
 
-# calculate levenshtein distances
+"calculate levenshtein distances"
 function levenshteinDist(synAr::Vector{FASTX.FASTA.Record}, )
 
   # construct array
@@ -76,13 +76,13 @@ function levenshteinDist(synAr::Vector{FASTX.FASTA.Record}, )
   return outLevAr
 end
 
-# build hierarchical clustering
+"build hierarchical clustering"
 function levHClust(levAr::Matrix{Float64}, )
   return Clustering.hclust(levAr, linkage = :average, branchorder = :optimal)
 end
 
-# build array
 function buildLen(synAr::Vector{FASTX.FASTA.Record}, syngDf::DataFrame, )
+"build sequence length array"
 
   # contruct array
   synLen = length(synAr)
@@ -106,7 +106,7 @@ end
 
 ################################################################################
 
-# plot sequence length
+"plot sequence length"
 function synLenPlot(synAr::Vector{FASTX.FASTA.Record}, syngDf::DataFrame; trim::Bool = false, )
 
   lenAr = buildLen(synAr, syngDf)
@@ -144,7 +144,7 @@ function synLenPlot(synAr::Vector{FASTX.FASTA.Record}, syngDf::DataFrame; trim::
   p
 end
 
-# plot distances & clustering
+"plot distances & clustering"
 function synLevHCPlot(levAr::Matrix{Float64}, syngDf::DataFrame, synAr::Vector{FASTX.FASTA.Record}; trim::Bool = false, )
 
   lenAr = buildLen(synAr, syngDf)
