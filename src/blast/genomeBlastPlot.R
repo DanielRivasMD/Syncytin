@@ -6,14 +6,20 @@ library(dplyr)
 
 ################################################################################
 
+# assemblyHits <- data.frame(
+#   Species = c("Crocuta crocuta", "Eubalaena glacialis", "Nasua narica", "Neofelis nebulosa", "Rhinoceros unicornis"),
+#   hits = c(26, 0, 16, 19, 0)
+# )
+
 assemblyHits <- data.frame(
-  Species = c("Crocuta crocuta", "Eubalaena glacialis", "Nasua narica", "Neofelis nebulosa", "Rhinoceros unicornis"),
-  hits = c(26, 0, 16, 19, 0)
+  Species = unlist(assemblyHits[, 1]),
+  hits = unlist(assemblyHits[, 2])
 )
 
 ################################################################################
 
-pdf("arch/plots/GenomeBlast.pdf", width = 6, height = 4)
+pdf("/Users/drivas/Factorem/Syncytin/arch/plots/GenomeBlast.pdf", width = 6, height = 4)
+jpeg("/Users/drivas/Factorem/Syncytin/arch/plots/GenomeBlast.jpg", width = 1200, height = 1000)
 
 assemblyHits %>%
   ggplot(
@@ -28,7 +34,7 @@ assemblyHits %>%
     col = "gray",
     width = 0.5
   ) +
-  coord_flip(ylim = c(0, 40)) +
+  coord_flip(ylim = c(0, 1)) +
   xlab("") +
   ylab("") +
   theme(
