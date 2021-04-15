@@ -122,12 +122,12 @@ function tagGroup(synAr::Vector{FASTX.FASTA.Record}, syngDf::DataFrame, )
 end
 
 "trim matrix based on vector"
-function trimmer!(douAr::Matrix{Float64}, trimVc::BitVector, )
+function trimmer!(douAr::Matrix, trimVc::BitVector, )
   return douAr[trimVc, trimVc]
 end
 
 "trim array based on vector"
-function trimmer!(unAr::Vector{Int64}, trimVc::BitVector, )
+function trimmer!(unAr::Vector, trimVc::BitVector, )
   return unAr[trimVc]
 end
 
