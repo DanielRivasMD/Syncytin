@@ -90,7 +90,7 @@ plot!(elipseShape(498, 100, 8, 1), seriestype = [:shape], col = :blue, fillalpha
 
 ```
 
-This labels also correlate with chromosomal coordinates, where _Crocuta crocuta_ sequence, pressumably the same one identified by **Funk _et al_.**, is located on scaffold 7 at 86_244_852 - 86_246_345, _syncytin-Car1_ is located on scaffold 13 at 166_978_265 - 166979_686, and sequences from other members of the _Hyaenidea_ family are found on scaffold 17 at 43_817_757 - 43_815_811, as displayed below.
+These labels also correlate with chromosomal coordinates, where _Crocuta crocuta_ sequence, pressumably the same one identified by **Funk _et al_.**, is located on scaffold 7 at 86_244_852 - 86_246_345, _syncytin-Car1_ is located on scaffold 13 at 166_978_265 - 166_979_686, and sequences from other members of the _Hyaenidea_ family are found on scaffold 17 at 43_817_757 - 43_815_811, as displayed below.
 
 ```julia; echo = false
 
