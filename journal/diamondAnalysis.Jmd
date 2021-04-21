@@ -1,0 +1,99 @@
+---
+title  : Sequence alignment analysis with Diamond v2.0.9
+author : Daniel Rivas
+data   : April 2021
+---
+
+# Background
+
+_Crocuta crocuta_, one of the four extant members of the family _Hyaenidae_, was used as a model for testing.
+
+It has been previously described that _Crocuta crocuta_ harbors a more invasive type of placenta, haemochorial [**Morton 1957**] unlike other members of the Class _Carnivora_ (endotheliochorial), which ressembles that of Euarchontoglires [**Cornelis _et al_. 2014**].
+
+Moreover, _syncytin_ expression in placental tissues has been identified and characterized in _Crocuta crocuta_ where a remanent of the _syncytin_ gene from the Class _Carnivora_, _syncytin-Car1_,  can be found in the genetic sequence, but a new _syncytin_ version restricted to the Family _Hyaenidea_ is responsible for placenta formation [**Funk et al. 2019**].
+
+```julia; echo = false
+
+# load packages
+using DelimitedFiles
+using DataFrames
+using Plots
+
+# load diamond output file
+begin
+  headers = ["qseqid", "sseqid", "pident", "length", "mismatch", "gapopen", "qstart", "qend", "sstart", "send", "evalue", "bitscore"] # default diamond headers
+  crocro = DataFrame(readdlm("/Users/drivas/Factorem/Syncytin/data/diamond/croCro.tsv"), headers)
+end;
+
+```
+
+# Methodology
+
+Using HiC assemblies and our collected _syncytin_ database (protein), we used **diamond v2.0.9** to identify potential _syncytin_ loci. The following plot illustrates the output from this analysis on _Crocuta crocuta_.
+
+**X axis** represents the percentage of the identical matches to syncytin library (protein), whereas **Y axis** show the alignment length in amino acid residues. We used a filtered above 80 percent identity and above 400 amino acid residues, as shown by the red square.
+
+```julia; echo = false, fig_cap = "Alignment of syncytin library (protein) to HiC assembly of Crocuta crocuta"
+
+scatter(
+  crocro.pident,
+  crocro.length,
+   markersize = 2,
+  markercolor = :grey,
+  ylim = (0, 2000),
+  xlim = (0, 105),
+  ylabel = "Alignment length",
+  xlabel = "Percentage of identical matches",
+  label = "Alignment records",
+  title = "Diamond alignment Crocuta crocuta",
+  dpi = 300,
+)
+
+plot!(
+  Shape(
+    [80, 105, 105, 80],
+    [400, 400, 800, 800]
+  ),
+  opacity = 0.5,
+  col = :red,
+  label = "Selected space",
+)
+
+```
+
+The selected hits are shown below, where we labeled them manually as a function of their origin, as depicted by colored elipses.
+
+```julia; echo = false, fig_cap = "Selected syncytin hits on Crocuta crocuta"
+
+scatter(
+  crocro.pident,
+  crocro.length,
+  markersize = 2,
+  markercolor = :grey,
+  ylim = (400, 800),
+  xlim = (80, 105),
+  ylabel = "Alignment length",
+  xlabel = "Percentage of identical matches",
+  label = "Alignment records",
+  title = "Diamond alignment Crocuta crocuta [selected space]",
+  dpi = 300,
+)
+
+function elipseShape(x, y, rx, ry)
+  θ = LinRange(0, 2 * π, 500)
+  y .+ ry * sin.(θ), x .+ rx * cos.(θ)
+end
+
+plot!(elipseShape(473, 90, 20, 10), seriestype = [:shape], col = :red, fillalpha = 0.5, label = "Carnivora") # Carnivora group
+plot!(elipseShape(650, 98, 10, 2), seriestype = [:shape], col = :green, fillalpha = 0.5, label = "Hyaenidea") # Other Hyenas
+plot!(elipseShape(498, 100, 8, 1), seriestype = [:shape], col = :blue, fillalpha = 0.5, label = "Crocuta crocuta") # Hyena Crocuta crocuta
+
+```
+
+This labels also correlate with chromosomal coordinates, where _Crocuta crocuta_ sequence, pressumably the same one identified by **Funk _et al_.**, is located on scaffold 7 at 86_244_852 - 86_246_345, _syncytin-Car1_ is located on scaffold 13 at 166_978_265 - 166979_686, and sequences from other members of the _Hyaenidea_ family are found on scaffold 17 at 43_817_757 - 43_815_811, as displayed below.
+
+```julia; echo = false
+
+crocroFilt = crocro |> p -> p[p.pident .> 80, :] |> p -> p[p.length .> 400, :]
+
+```
