@@ -1,0 +1,5 @@
+
+assemblyDir = "/scratch/pawsey0263/drivas/Factorem/Syncytin/data/DNAzoo"
+library     = "CURATEDsyncytinLibrary.fasta"
+libraryDir  = "/scratch/pawsey0263/drivas/Factorem/Syncytin/data/syncytinDB/protein"
+outDir      = "/scratch/pawsey0263/drivas/Factorem/Syncytin/data/diamondOutput"
