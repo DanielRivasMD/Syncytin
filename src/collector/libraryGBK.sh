@@ -2,11 +2,8 @@
 
 ################################################################################
 
-syncProj=$HOME/Factorem/Syncytin
-syncDB=${syncProj}/data/syncytinDB
-accNDir=${syncDB}/accessionN
-
-################################################################################
+# download protein accessions
+echo "Download protein accessions..."
 
 cd ${syncDB}/genBank
 

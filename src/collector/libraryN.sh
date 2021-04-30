@@ -2,12 +2,6 @@
 
 ################################################################################
 
-syncProj=$HOME/Factorem/Syncytin
-syncDB=${syncProj}/data/syncytinDB
-accNDir=${syncDB}/accessionN
-
-################################################################################
-
 cd ${syncProj}
 
 ncbi-acc-download \
