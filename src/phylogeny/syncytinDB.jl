@@ -20,7 +20,7 @@ end;
 ################################################################################
 
 "read `fasta` syncytin library file to array"
-function syncytinReader(; synDB::String, )
+function syncytinReader(; synDB::String)
 
   # declare empty array
   synOutArr = Array{FASTX.FASTA.Record}(undef, 1)
@@ -44,12 +44,12 @@ function syncytinReader(; synDB::String, )
 end
 
 "read `csv` syncytin groups file to array"
-function syncytinGroupReader(; synG::String, )
+function syncytinGroupReader(; synG::String)
   return CSV.read(synG, DataFrame, header = false)
 end
 
 "write `fasta` file from array"
-function syncytinWriter(; synAr::Vector{FASTX.FASTA.Record}, synFA::String, )
+function syncytinWriter(; synAr::Vector{FASTX.FASTA.Record}, synFA::String)
 
   # loop over array
   open(FASTA.Writer, synFA) do w
@@ -62,7 +62,7 @@ end
 ################################################################################
 
 "calculate levenshtein distances"
-function levenshteinDist(synAr::Vector{FASTX.FASTA.Record}, )
+function levenshteinDist(synAr::Vector{FASTX.FASTA.Record})
 
   # construct array
   synLen = length(synAr)
@@ -88,12 +88,12 @@ function levenshteinDist(synAr::Vector{FASTX.FASTA.Record}, )
 end
 
 "build hierarchical clustering"
-function levHClust(levAr::Matrix{Float64}, )
+function levHClust(levAr::Matrix{Float64})
   return Clustering.hclust(levAr, linkage = :average, branchorder = :optimal)
 end
 
 "build sequence length array"
-function buildLen(synAr::Vector{FASTX.FASTA.Record}, )
+function buildLen(synAr::Vector{FASTX.FASTA.Record})
 
   # sequence length
   lenAr = FASTA.seqlen.(synAr)
@@ -102,7 +102,7 @@ function buildLen(synAr::Vector{FASTX.FASTA.Record}, )
 end
 
 "create tag group vector"
-function tagGroup(synAr::Vector{FASTX.FASTA.Record}, syngDf::DataFrame, )
+function tagGroup(synAr::Vector{FASTX.FASTA.Record}, syngDf::DataFrame)
 
   # contruct array
   synLen = length(synAr)
@@ -122,19 +122,19 @@ function tagGroup(synAr::Vector{FASTX.FASTA.Record}, syngDf::DataFrame, )
 end
 
 "trim matrix based on vector"
-function trimmer!(douAr::Matrix, trimVc::BitVector, )
+function trimmer!(douAr::Matrix, trimVc::BitVector)
   return douAr[trimVc, trimVc]
 end
 
 "trim array based on vector"
-function trimmer!(unAr::Vector, trimVc::BitVector, )
+function trimmer!(unAr::Vector, trimVc::BitVector)
   return unAr[trimVc]
 end
 
 ################################################################################
 
 "plot sequence length"
-function synLenPlot(synAr::Vector{FASTX.FASTA.Record}, syngDf::DataFrame; trim::Bool = false, )
+function synLenPlot(synAr::Vector{FASTX.FASTA.Record}, syngDf::DataFrame; trim::Bool = false)
 
   lenAr = buildLen(synAr)
 
@@ -165,9 +165,9 @@ function synLenPlot(synAr::Vector{FASTX.FASTA.Record}, syngDf::DataFrame; trim::
     cpLenAr = copy(lenAr)
     cpLenAr[findall(x -> x != ix, tagAr), 1] .= 0
     if ix == size(syngDf, 1) + 1
-      StatsPlots.bar!(p, cpLenAr, label = "Unassigned", lw = 0, )
+      StatsPlots.bar!(p, cpLenAr, label = "Unassigned", lw = 0)
     else
-      StatsPlots.bar!(p, cpLenAr, label = syngDf[ix, 2], lw = 0, )
+      StatsPlots.bar!(p, cpLenAr, label = syngDf[ix, 2], lw = 0)
     end
   end
 
@@ -175,7 +175,7 @@ function synLenPlot(synAr::Vector{FASTX.FASTA.Record}, syngDf::DataFrame; trim::
 end
 
 "plot distances & clustering"
-function synLevHCPlot(levAr::Matrix{Float64}, syngDf::DataFrame, synAr::Vector{FASTX.FASTA.Record}; trim::Bool = false, )
+function synLevHCPlot(levAr::Matrix{Float64}, syngDf::DataFrame, synAr::Vector{FASTX.FASTA.Record}; trim::Bool = false)
 
   tagAr = tagGroup(synAr, syngDf)
 
@@ -206,19 +206,19 @@ function synLevHCPlot(levAr::Matrix{Float64}, syngDf::DataFrame, synAr::Vector{F
     StatsPlots.plot(synHC, ylims = (0, 30), xticks = false),
 
     # top group bar
-    StatsPlots.heatmap(reshape(tagAr[synHC.order], (1, length(tagAr))), colorbar = false, ticks = false, fillcolor = :roma, ),
+    StatsPlots.heatmap(reshape(tagAr[synHC.order], (1, length(tagAr))), colorbar = false, ticks = false, fillcolor = :roma),
 
     # group annotations
-    StatsPlots.heatmap([""], annotBar, reshape(annotBar, (syngLen, 1)), fillcolor = :roma, colorbar = false, xticks = false, yflip = true, ),
+    StatsPlots.heatmap([""], annotBar, reshape(annotBar, (syngLen, 1)), fillcolor = :roma, colorbar = false, xticks = false, yflip = true),
 
     # ordered distance matrix
-    StatsPlots.heatmap(levAr[synHC.order, synHC.order], colorbar = false, fillcolor = :balance, ),
+    StatsPlots.heatmap(levAr[synHC.order, synHC.order], colorbar = false, fillcolor = :balance),
 
     # right group bar
-    StatsPlots.heatmap(reshape(tagAr[synHC.order], (length(tagAr), 1)), colorbar = false, ticks = false, fillcolor = :roma, ),
+    StatsPlots.heatmap(reshape(tagAr[synHC.order], (length(tagAr), 1)), colorbar = false, ticks = false, fillcolor = :roma),
 
     # right dendrogram
-    StatsPlots.plot(synHC, xlims = (0, 30), yticks = false, xrotation = 90, orientation = :horizontal, ),
+    StatsPlots.plot(synHC, xlims = (0, 30), yticks = false, xrotation = 90, orientation = :horizontal),
 
     layout = ly,
     dpi = 300,
