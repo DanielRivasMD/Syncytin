@@ -113,6 +113,21 @@ function nunique(x::AbstractArray{T}) where T
   duplicatedvector
 end
 
+"select unique element indexes"
+function uniqueix(x::AbstractArray{T}) where T
+  uniqueset = Set{T}()
+  ex = eachindex(x)
+  ixs = Vector{eltype(ex)}()
+  for i in ex
+    xi = x[i]
+    if !(xi in uniqueset)
+      push!(ixs, i)
+      push!(uniqueset, xi)
+    end
+  end
+  ixs
+end
+
 "create tag group vector"
 function tagGroup(synAr::Vector{FASTX.FASTA.Record}, syngDf::DataFrame)
 
