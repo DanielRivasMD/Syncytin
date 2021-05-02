@@ -128,6 +128,13 @@ function uniqueix(x::AbstractArray{T}) where T
   ixs
 end
 
+"purge records by duplicated sequence"
+function purgeSequences(synAr::Vector{FASTX.FASTA.Record})
+  registerVc = FASTX.sequence.(synAr)
+  registerIx = uniqueix(registerVc)
+  return synAr[registerIx]
+end
+
 "create tag group vector"
 function tagGroup(synAr::Vector{FASTX.FASTA.Record}, syngDf::DataFrame)
 
