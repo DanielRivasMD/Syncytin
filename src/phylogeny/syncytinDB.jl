@@ -101,6 +101,18 @@ function buildLen(synAr::Vector{FASTX.FASTA.Record})
   return lenAr
 end
 
+"select non unique elements"
+function nunique(x::AbstractArray{T}) where T
+  xs = sort(x)
+  duplicatedvector = T[]
+  for i in 2:length(xs)
+    if (isequal(xs[i], xs[i - 1]) && (length(duplicatedvector) == 0 || !isequal(duplicatedvector[end], xs[i])))
+      push!(duplicatedvector, xs[i])
+    end
+  end
+  duplicatedvector
+end
+
 "create tag group vector"
 function tagGroup(synAr::Vector{FASTX.FASTA.Record}, syngDf::DataFrame)
 
