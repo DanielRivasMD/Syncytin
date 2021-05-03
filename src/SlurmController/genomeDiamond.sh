@@ -11,7 +11,7 @@ sbatch \
   --partition workq \
   --job-name ${jobId} \
   --output ${reportFolder}/${jobId}.out \
-  --rror ${reportFolder}/${jobId}.err \
+  --error ${reportFolder}/${jobId}.err \
   --time 24:0:0 \
   --nodes 1 \
   --ntasks 4 \
