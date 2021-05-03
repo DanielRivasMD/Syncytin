@@ -20,7 +20,7 @@ end;
 ################################################################################
 
 "read `fasta` syncytin library file to array"
-function syncytinReader(; synDB::String)
+function syncytinReader(synDB::String)
 
   # declare empty array
   synOutArr = Array{FASTX.FASTA.Record}(undef, 1)
@@ -44,12 +44,12 @@ function syncytinReader(; synDB::String)
 end
 
 "read `csv` syncytin groups file to array"
-function syncytinGroupReader(; synG::String)
+function syncytinGroupReader(synG::String)
   return CSV.read(synG, DataFrame, header = false)
 end
 
 "write `fasta` file from array"
-function syncytinWriter(; synAr::Vector{FASTX.FASTA.Record}, synFA::String)
+function syncytinWriter(synFA::String, synAr::Vector{FASTX.FASTA.Record})
 
   # loop over array
   open(FASTA.Writer, synFA) do w
@@ -101,6 +101,8 @@ function buildLen(synAr::Vector{FASTX.FASTA.Record})
   return lenAr
 end
 
+################################################################################
+
 "select non unique elements"
 function nunique(x::AbstractArray{T}) where T
   xs = sort(x)
@@ -134,6 +136,8 @@ function purgeSequences(synAr::Vector{FASTX.FASTA.Record})
   registerIx = uniqueix(registerVc)
   return synAr[registerIx]
 end
+
+################################################################################
 
 "create tag group vector"
 function tagGroup(synAr::Vector{FASTX.FASTA.Record}, syngDf::DataFrame)
