@@ -8,7 +8,7 @@ jobId=SyncytinDiamond
 
 sbatch \
   --account ${projectId} \
-  --partition gpuq \
+  --partition workq \
   --job-name ${jobId} \
   --output ${reportFolder}/${jobId}.out \
   --rror ${reportFolder}/${jobId}.err \
