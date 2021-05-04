@@ -19,7 +19,7 @@ sbatch \
   --export sourceFolder=${sourceFolder} \
   --array 1-$( awk 'END{print NR}' ${curatedAssembly} ) \
   --wrap \
-    'bender GenomeBlast --config ${sourceFolder}/src/blast/genomeBlast.toml \
+    'bender AssemblySearch blast --config ${sourceFolder}/src/blast/genomeBlast.toml \
     --species $( sed -n "$SLURM_ARRAY_TASK_ID"p "${curatedAssembly}" | cut -d " " -f1 ) \
     --assembly $( sed -n "$SLURM_ARRAY_TASK_ID"p "${curatedAssembly}" | cut -d " " -f2 )'
 

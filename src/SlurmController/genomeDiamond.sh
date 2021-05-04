@@ -17,7 +17,7 @@ sbatch \
   --ntasks 4 \
   --export sourceFolder=${sourceFolder} \
   --wrap \
-    'bender GenomeDiamond --config ${sourceFolder}/src/diamond/genomeDiamond.toml \
+    'bender AssemblySearch diamond --config ${sourceFolder}/src/diamond/genomeDiamond.toml \
     --species $( sed -n "$SLURM_ARRAY_TASK_ID"p "${curatedAssembly}" | cut -d " " -f1 ) \
     --assembly $( sed -n "$SLURM_ARRAY_TASK_ID"p "${curatedAssembly}" | cut -d " " -f2 )'
 
