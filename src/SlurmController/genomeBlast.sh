@@ -1,26 +1,26 @@
 #!/bin/bash
 
-# NOTE: runs on Magnus for parallelization
 source ${HOME}/Factorem/Syncytin/src/SlurmController/Syncytin_slurmConfig.sh
 jobId=SyncytinBlast
 
 ################################################################################
 
-# TODO: write a bounty collector
 sbatch \
   --account ${projectId} \
-  --partition gpuq \
+  --partition workq \
   --job-name ${jobId} \
   --output ${reportFolder}/${jobId}.out \
   --error ${reportFolder}/${jobId}.err \
   --time 24:0:0 \
   --nodes 1 \
   --ntasks 1 \
-  --export sourceFolder=${sourceFolder} \
+  --export sourceFolder=${sourceFolder},curatedAssembly=${curatedAssembly} \
   --array 1-$( awk 'END{print NR}' ${curatedAssembly} ) \
   --wrap \
-    'bender AssemblySearch blast --config ${sourceFolder}/src/blast/genomeBlast.toml \
-    --species $( sed -n "$SLURM_ARRAY_TASK_ID"p "${curatedAssembly}" | cut -d " " -f1 ) \
-    --assembly $( sed -n "$SLURM_ARRAY_TASK_ID"p "${curatedAssembly}" | cut -d " " -f2 )'
+  'bender AssemblySearch blast \
+  --configPath ${sourceFolder}/src/blast/ \
+  --configFile genomeDiamond.toml \
+  --species $( sed -n "$SLURM_ARRAY_TASK_ID"p "${curatedAssembly}" | cut -d " " -f1 ) \
+  --assembly $( sed -n "$SLURM_ARRAY_TASK_ID"p "${curatedAssembly}" | cut -d " " -f2 )'
 
 ################################################################################
