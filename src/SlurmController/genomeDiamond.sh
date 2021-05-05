@@ -15,11 +15,13 @@ sbatch \
   --time 24:0:0 \
   --nodes 1 \
   --ntasks 4 \
-  --export sourceFolder=${sourceFolder} \
+  --export sourceFolder=${sourceFolder},curatedAssembly=${curatedAssembly} \
   --wrap \
-    'bender AssemblySearch diamond --config ${sourceFolder}/src/diamond/genomeDiamond.toml \
-    --species $( sed -n "$SLURM_ARRAY_TASK_ID"p "${curatedAssembly}" | cut -d " " -f1 ) \
-    --assembly $( sed -n "$SLURM_ARRAY_TASK_ID"p "${curatedAssembly}" | cut -d " " -f2 )'
+  'bender AssemblySearch diamond \
+  --configPath ${sourceFolder}/src/diamond/ \
+  --configFile genomeDiamond.toml \
+  --species $( sed -n "$SLURM_ARRAY_TASK_ID"p "${curatedAssembly}" | cut -d " " -f1 ) \
+  --assembly $( sed -n "$SLURM_ARRAY_TASK_ID"p "${curatedAssembly}" | cut -d " " -f2 )'
 
     #'gzip -dc Crocuta_crocuta_HiC.fasta.gz | diamond blastx -d syncytinLibraryProt.dmnd -q - -o croCro.tsv'
 
