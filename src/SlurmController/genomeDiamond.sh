@@ -7,23 +7,20 @@ jobId=SyncytinDiamond
 
 sbatch \
   --account ${projectId} \
-  --partition workq \
+  --partition gpuq \
   --job-name ${jobId} \
-  --output ${reportFolder}/${jobId}.out \
-  --error ${reportFolder}/${jobId}.err \
+  --output ${reportFolder}/topaz${jobId}.out \
+  --error ${reportFolder}/topaz${jobId}.err \
   --time 24:0:0 \
   --nodes 1 \
-  --ntasks 4 \
+  --ntasks 16 \
   --export sourceFolder=${sourceFolder},curatedAssembly=${curatedAssembly} \
-  --array 1-30 \
+  --array 1-$( awk 'END{print NR}' ${curatedAssembly} ) \
   --wrap \
   'bender AssemblySearch diamond \
   --configPath ${sourceFolder}/src/diamond/ \
   --configFile genomeDiamond.toml \
   --species $( sed -n "$SLURM_ARRAY_TASK_ID"p "${curatedAssembly}" | cut -d " " -f1 ) \
   --assembly $( sed -n "$SLURM_ARRAY_TASK_ID"p "${curatedAssembly}" | cut -d " " -f2 )'
-
-# --array 1-$( awk 'END{print NR}' ${curatedAssembly} ) \
-  #'gzip -dc Crocuta_crocuta_HiC.fasta.gz | diamond blastx -d syncytinLibraryProt.dmnd -q - -o croCro.tsv'
 
 ################################################################################e
