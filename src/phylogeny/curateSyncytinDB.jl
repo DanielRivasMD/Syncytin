@@ -1,33 +1,8 @@
 
-import DelimitedFiles
+using DelimitedFiles
 
 # load modules & functions
 include("/Users/drivas/Factorem/Syncytin/src/phylogeny/syncytinDB.jl");
-
-# load protein database
-synAr = syncytinReader("/Users/drivas/Factorem/Syncytin/data/syncytinDB/protein/syncytinLibrary.fasta")
-
-# declare filter criteria & specific sequences to exclude
-selectRecords = @pipe synAr |> findall(x ->
-  FASTA.seqlen(x) >= 400 && (
-    contains(FASTX.description(x), "syncytin") ||
-    contains(FASTX.description(x), "envelope") ||
-    isequal(FASTX.description(x), "sodium-dependent neutral amino acid transporter type 2 [Dasypus novemcinctus]")
-  ) && (
-    !isequal(FASTX.description(x), "PREDICTED: similar to envelope glycoprotein syncytin-B [Rattus norvegicus]") &&
-    !isequal(FASTX.description(x), "envelope glycoprotein [RD114 retrovirus]") &&
-    !isequal(FASTX.description(x), "envelope protein [Trichosurus vulpecula]") &&
-    !isequal(FASTX.description(x), "envelope glycoprotein [Squirrel monkey retrovirus]") &&
-    !isequal(FASTX.description(x), "envelope glycoprotein [Squirrel monkey retrovirus-H]") &&
-    !isequal(FASTX.description(x), "envelope polyprotein [Simian retrovirus 1]") &&
-    !isequal(FASTX.description(x), "envelope protein [Simian retrovirus 4]") &&
-    !isequal(FASTX.description(x), "envelope polyprotein [Human immunodeficiency virus 1]")
-  ), _) |>
-  getindex(synAr, _)
-
-# recover sequence information
-sequenceDs = FASTX.description.(selectRecords)
-sequenceId = FASTX.identifier.(selectRecords)
 
 # manually annoatated groups
 groupAnnoation = String[
@@ -176,15 +151,45 @@ groupAnnoation = String[
 "Rodentia [Cav1]",
 ]
 
+# load protein database
+synAr = syncytinReader("/Users/drivas/Factorem/Syncytin/data/syncytinDB/protein/syncytinLibrary.fasta")
+
+# declare filter criteria & specific sequences to exclude
+selectIxs = @pipe synAr |> findall(x ->
+  FASTA.seqlen(x) >= 400 && (
+    contains(FASTX.description(x), "syncytin") ||
+    contains(FASTX.description(x), "envelope") ||
+    isequal(FASTX.description(x), "sodium-dependent neutral amino acid transporter type 2 [Dasypus novemcinctus]")
+  ) && (
+    !isequal(FASTX.description(x), "PREDICTED: similar to envelope glycoprotein syncytin-B [Rattus norvegicus]") &&
+    !isequal(FASTX.description(x), "envelope glycoprotein [RD114 retrovirus]") &&
+    !isequal(FASTX.description(x), "envelope protein [Trichosurus vulpecula]") &&
+    !isequal(FASTX.description(x), "envelope glycoprotein [Squirrel monkey retrovirus]") &&
+    !isequal(FASTX.description(x), "envelope glycoprotein [Squirrel monkey retrovirus-H]") &&
+    !isequal(FASTX.description(x), "envelope polyprotein [Simian retrovirus 1]") &&
+    !isequal(FASTX.description(x), "envelope protein [Simian retrovirus 4]") &&
+    !isequal(FASTX.description(x), "envelope polyprotein [Human immunodeficiency virus 1]")
+  ), _)
+
+selectRecords = getindex(synAr, selectIxs)
+
+# recover sequence information
+sequenceDs = FASTX.description.(selectRecords)
+sequenceId = FASTX.identifier.(selectRecords)
+
 # purge duplicated sequences
 selectIx = selectRecords .|> FASTX.sequence |> uniqueix
 selectRecords = selectRecords |> purgeSequences
 
+# write curated indexes
+writedlm("/Users/drivas/Factorem/Syncytin/data/syncytinDB/protein/CURATEDindexes.csv", selectIxs[selectIx])
+
 # bind array to write
-syncytinGroups = [string.(sequenceId, " ", sequenceDs) groupAnnoation][selectIx, :]
+syncytinGroups = [string.(sequenceId, ",", sequenceDs) groupAnnoation][selectIx, :]
 
 # write curated group annoation
-DelimitedFiles.writedlm("/Users/drivas/Factorem/Syncytin/data/syncytinDB/protein/CURATEDsyncytinGroups.csv", syncytinGroups, ',')
+writedlm("/Users/drivas/Factorem/Syncytin/data/syncytinDB/protein/CURATEDsyncytinGroups.csv", syncytinGroups, ',')
 
 # write curated fasta library
 syncytinWriter("/Users/drivas/Factorem/Syncytin/data/syncytinDB/protein/CURATEDsyncytinLibrary.fasta", selectRecords)
+
