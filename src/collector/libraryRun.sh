@@ -4,6 +4,7 @@
 
 syncProj=$HOME/Factorem/Syncytin
 collector=${syncProj}/src/collector
+excalibur=${syncProj}/src/excalibur
 syncDB=${syncProj}/data/syncytinDB
 accNDir=${syncDB}/accessionN
 accPDir=${syncDB}/accessionP
@@ -33,7 +34,12 @@ do
   fi
   while read genRecord
   do
-    awk -f ${collector}/proteinAcc.awk ${genBank}/${genRecord}.gbk >> ${accPDir}/${art}
+    if [[ ! -x ${excalibur}/proteinAcc ]]
+    then
+      echo "Building Go executable..."
+      go build -o ${excalibur}/ ${collector}/proteinAcc.go
+    fi
+    ${excalibur}/proteinAcc ${genBank}/${genRecord}.gbk >> ${accPDir}/${art}
   done < ${accNDir}/${art}
 done
 
