@@ -16,7 +16,7 @@ end;
 scatter(
   crocro.pident,
   crocro.length,
-   markersize = 2,
+  markersize = 2,
   markercolor = :grey,
   ylim = (0, 2000),
   xlim = (0, 105),
