@@ -7,7 +7,10 @@ import (
 	"strings"
 )
 
-var readFile string = os.Args[1]
+var (
+	readFile string = os.Args[1]
+	fileOut  string = os.Args[2]
+)
 
 func main() {
 
@@ -33,8 +36,22 @@ func proteinAccessionCollect(readFile string) {
 			records := strings.Split(scanner.Text(), "=")
 			accession := strings.ReplaceAll(records[1], "\"", "")
 
-			// write to stdout
-			println(accession)
+			// write / append
+			f, err := os.OpenFile(fileOut, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0666)
+
+			if err != nil {
+				panic(err)
+			}
+
+			defer f.Close()
+
+			w := bufio.NewWriter(f)
+			_, err = w.WriteString(accession + "\n")
+			if err != nil {
+				panic(err)
+			}
+
+			w.Flush()
 
 		}
 	}
