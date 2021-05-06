@@ -30,6 +30,6 @@ _default:
 # retrieve data from remote
 @ hermesData:
   echo "Retriving data..."
-  echo "# TODO"
+  rsync -azvhP drivas@topaz.pawsey.org.au:/scratch/pawsey0263/drivas/Factorem/Syncytin/data/diamondOutput data/
 
 ################################################################################
