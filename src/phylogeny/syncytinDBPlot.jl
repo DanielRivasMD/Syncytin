@@ -16,11 +16,11 @@ for d in [:N, :P]
 
   # read sequences from file
   synAr = Symbol("synAr", d)
-  @eval $synAr = syncytinReader( synDB = string("/Users/drivas/Factorem/Syncytin/data/syncytinDB/", db[ad], "/", "syncytinLibrary.fasta") )
+  @eval $synAr = syncytinReader( string("/Users/drivas/Factorem/Syncytin/data/syncytinDB/", db[ad], "/", "syncytinLibrary.fasta") )
 
   # group syncytin sequences
   syngDf = Symbol("syngDf", d)
-  @eval $syngDf = syncytinGroupReader( synG = string("/Users/drivas/Factorem/Syncytin/data/syncytinDB/", db[ad], "/", "syncytinGroups.csv") )
+  @eval $syngDf = syncytinGroupReader( string("/Users/drivas/Factorem/Syncytin/data/syncytinDB/", db[ad], "/", "syncytinGroups.csv") )
 
   # calculate distance & hierarchical clustering
   levAr = Symbol("levAr", d)
