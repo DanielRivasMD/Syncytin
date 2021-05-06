@@ -28,7 +28,7 @@ for d in [:N, :P]
   @eval if isfile($levFile)
     $levAr = readdlm($levFile)
   else
-    $levAr = levenshteinDist(synPAr);
+    $levAr = levenshteinDist($synAr);
     writedlm($levFile, $levAr, '\t')
   end
 end

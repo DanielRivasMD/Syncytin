@@ -39,7 +39,7 @@ for d in [:N, :P]
   @eval if isfile($levFile)
     $levAr = DelimitedFiles.readdlm($levFile)
   else
-    $levAr = levenshteinDist(synPAr);
+    $levAr = levenshteinDist($synAr);
     DelimitedFiles.writedlm($levFile, $levAr, '\t')
   end
 
