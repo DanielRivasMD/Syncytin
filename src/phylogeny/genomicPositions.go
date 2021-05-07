@@ -14,7 +14,6 @@ var (
 )
 
 func main() {
-
 	genomicPositionsCollect(readFile)
 }
 
@@ -53,24 +52,28 @@ func genomicPositionsCollect(readFile string) {
 		alignLen, _ := strconv.ParseFloat(records[3], 64)
 
 		if pIdent > 80 && alignLen > 400 {
-
-			// write / append
-			f, err := os.OpenFile(fileOut, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0666)
-
-			if err != nil {
-				panic(err)
-			}
-
-			defer f.Close()
-
-			w := bufio.NewWriter(f)
-			_, err = w.WriteString(records[0] + "," + records[1] + "," + records[6] + "," + records[7] + "\n")
-			if err != nil {
-				panic(err)
-			}
-
-			w.Flush()
-
+			writeGenomicPositions(fileOut, records)
 		}
+
 	}
+}
+
+func writeGenomicPositions(fileOut string, records []string) {
+
+	// write
+	f, err := os.OpenFile(fileOut, os.O_WRONLY|os.O_CREATE, 0666)
+
+	if err != nil {
+		panic(err)
+	}
+
+	defer f.Close()
+
+	w := bufio.NewWriter(f)
+	_, err = w.WriteString(records[0] + "," + records[1] + "," + records[6] + "," + records[7] + "\n")
+	if err != nil {
+		panic(err)
+	}
+
+	w.Flush()
 }
