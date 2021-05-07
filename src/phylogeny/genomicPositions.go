@@ -10,10 +10,14 @@ import (
 
 var (
 	readFile string = os.Args[1]
-	fileOut  string = os.Args[2]
+	fileOut  string
 )
 
 func main() {
+	fileOut = readFile
+	fileOut = strings.TrimSuffix(fileOut, ".tsv")
+	fileOut = fileOut + "_filtered.tsv"
+
 	genomicPositionsCollect(readFile)
 }
 
@@ -61,7 +65,7 @@ func genomicPositionsCollect(readFile string) {
 func writeGenomicPositions(fileOut string, records []string) {
 
 	// write
-	f, err := os.OpenFile(fileOut, os.O_WRONLY|os.O_CREATE, 0666)
+	f, err := os.OpenFile(fileOut, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0666)
 
 	if err != nil {
 		panic(err)
@@ -70,7 +74,7 @@ func writeGenomicPositions(fileOut string, records []string) {
 	defer f.Close()
 
 	w := bufio.NewWriter(f)
-	_, err = w.WriteString(records[0] + "," + records[1] + "," + records[6] + "," + records[7] + "\n")
+	_, err = w.WriteString(records[0] + " " + records[1] + " " + records[6] + " " + records[7] + "\n")
 	if err != nil {
 		panic(err)
 	}
