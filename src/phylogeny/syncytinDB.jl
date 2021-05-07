@@ -54,7 +54,7 @@ function syncytinWriter(synFA::String, synAr::Vector{FASTX.FASTA.Record})
   # loop over array
   open(FASTA.Writer, synFA) do w
     for rc in synAr
-      write(w, FASTA.Record(FASTX.identifier(synAr[1]), FASTX.description(synAr[1]), FASTX.sequence(synAr[1])))
+      write(w, FASTA.Record(FASTX.identifier(rc), FASTX.description(rc), FASTX.sequence(rc)))
     end
   end
 end

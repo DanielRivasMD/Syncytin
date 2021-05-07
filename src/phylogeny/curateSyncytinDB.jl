@@ -192,4 +192,3 @@ writedlm("/Users/drivas/Factorem/Syncytin/data/syncytinDB/protein/CURATEDsyncyti
 
 # write curated fasta library
 syncytinWriter("/Users/drivas/Factorem/Syncytin/data/syncytinDB/protein/CURATEDsyncytinLibrary.fasta", selectRecords)
-
