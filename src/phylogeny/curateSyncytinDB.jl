@@ -185,7 +185,7 @@ selectRecords = selectRecords |> purgeSequences
 writedlm("/Users/drivas/Factorem/Syncytin/data/syncytinDB/protein/CURATEDindexes.csv", selectIxs[selectIx])
 
 # bind array to write
-syncytinGroups = [string.(sequenceId, ",", sequenceDs) groupAnnoation][selectIx, :]
+syncytinGroups = [sequenceId sequenceDs groupAnnoation][selectIx, :]
 
 # write curated group annoation
 writedlm("/Users/drivas/Factorem/Syncytin/data/syncytinDB/protein/CURATEDsyncytinGroups.csv", syncytinGroups, ',')
