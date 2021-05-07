@@ -22,6 +22,13 @@ source ${collector}/libraryGBK.sh
 
 ################################################################################
 
+# check for Go executable
+if [[ ! -x ${excalibur}/proteinAcc ]]
+then
+  echo "Building Go executable..."
+  go build -o ${excalibur}/ ${collector}/proteinAcc.go
+fi
+
 # extract protein accessions
 echo "Writting protein accessions..."
 
@@ -34,12 +41,7 @@ do
   fi
   while read genRecord
   do
-    if [[ ! -x ${excalibur}/proteinAcc ]]
-    then
-      echo "Building Go executable..."
-      go build -o ${excalibur}/ ${collector}/proteinAcc.go
-    fi
-    ${excalibur}/proteinAcc ${genBank}/${genRecord}.gbk >> ${accPDir}/${art}
+    ${excalibur}/proteinAcc ${genBank}/${genRecord}.gbk ${accPDir}/${art}
   done < ${accNDir}/${art}
 done
 
