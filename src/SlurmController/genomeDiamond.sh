@@ -11,7 +11,7 @@ sbatch \
   --job-name ${jobId} \
   --output ${reportFolder}/topaz${jobId}.out \
   --error ${reportFolder}/topaz${jobId}.err \
-  --time 24:0:0 \
+  --time 4:0:0 \
   --nodes 1 \
   --ntasks 16 \
   --export sourceFolder=${sourceFolder},curatedAssembly=${curatedAssembly} \
