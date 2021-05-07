@@ -56,20 +56,21 @@ func genomicPositionsCollect(readFile string) {
 
 		records := strings.Split(scanner.Text(), "\t")
 
-		// collect pattern
+		// collect patterns
 		pIdent, _ := strconv.ParseFloat(records[2], 64)
 		alignLen, _ := strconv.ParseFloat(records[3], 64)
 
 		if pIdent > 80 && alignLen > 400 {
+			// write
 			writeGenomicPositions(fileOut, records)
 		}
 
 	}
 }
 
+// write positions
 func writeGenomicPositions(fileOut string, records []string) {
 
-	// write
 	f, err := os.OpenFile(fileOut, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0666)
 
 	if err != nil {
