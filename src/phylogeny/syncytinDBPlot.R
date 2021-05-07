@@ -4,9 +4,9 @@ library(dendextend)
 
 # distance matrix rlevAr to plot
 # pdf(figName, width = 10, height = 9)
-jpeg(figName, width = 1200, height = 1000)
+jpeg(figName, width = 1600, height = 1200)
 defParMar <- par('mar')
-syncytinColors <- c('darkred', 'yellow', 'lightyellow4', 'darkolivegreen', 'navyblue', 'violetred2', 'steelblue', 'slateblue', 'lawngreen', 'orange4', 'darksalmon', 'darkslateblue', 'cyan', 'blueviolet')
+syncytinColors <- c('darkred', 'yellow', 'lightyellow4', 'darkolivegreen', 'navyblue', 'violetred2', 'steelblue', 'slateblue', 'lawngreen', 'orange4', 'darksalmon', 'darkslateblue', 'cyan', 'blueviolet', 'red')
 
 # matrix dimensions
 di <- dim(rlevAr)
@@ -74,7 +74,7 @@ annotScale <- 1 / length(syncytinColors)
 
 par(xpd = NA)
 
-for ( colix in 1:length(syncytinColors) ) {
+for ( colix in seq_along(syncytinColors) ) {
   rect(
     xleft = (par('usr')[2] * 1.04),                         #: a vector (or scalar) of left x positions.
     ybottom = (par('usr')[4] * (colix - 0.9) * annotScale), #: a vector (or scalar) of bottom y positions.
@@ -86,7 +86,7 @@ for ( colix in 1:length(syncytinColors) ) {
   text(
     x = (par('usr')[2] * 1.08),
     y = (par('usr')[4] * (colix - 0.5) * annotScale),
-    label = syngDf[colix, 2],
+    label = synGroups[colix],
     cex = 2,
     lwd = 5,
     adj = 0
