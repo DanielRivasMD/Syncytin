@@ -80,7 +80,7 @@ func writeGenomicPositions(fileOut string, records []string) {
 	defer f.Close()
 
 	w := bufio.NewWriter(f)
-	_, err = w.WriteString(records[0] + " " + records[1] + " " + records[6] + " " + records[7] + "\n")
+	_, err = w.WriteString(records[0] + " " + records[1] + " " + records[2] + " " + records[6] + " " + records[7] + " " + records[10] + "\n")
 	if err != nil {
 		panic(err)
 	}
