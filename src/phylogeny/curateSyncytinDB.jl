@@ -1,8 +1,13 @@
+################################################################################
 
 using DelimitedFiles
 
+################################################################################
+
 # load modules & functions
 include("/Users/drivas/Factorem/Syncytin/src/phylogeny/syncytinDB.jl");
+
+################################################################################
 
 # manually annoatated groups
 groupAnnoation = String[
@@ -151,8 +156,12 @@ groupAnnoation = String[
 "Rodentia [Cav1]",
 ]
 
+################################################################################
+
 # load protein database
 synAr = syncytinReader("/Users/drivas/Factorem/Syncytin/data/syncytinDB/protein/syncytinLibrary.fasta")
+
+################################################################################
 
 # declare filter criteria & specific sequences to exclude
 selectIxs = @pipe synAr |> findall(x ->
@@ -173,6 +182,8 @@ selectIxs = @pipe synAr |> findall(x ->
 
 selectRecords = getindex(synAr, selectIxs)
 
+################################################################################
+
 # recover sequence information
 sequenceDs = FASTX.description.(selectRecords)
 sequenceId = FASTX.identifier.(selectRecords)
@@ -181,8 +192,12 @@ sequenceId = FASTX.identifier.(selectRecords)
 selectIx = selectRecords .|> FASTX.sequence |> uniqueix
 selectRecords = selectRecords |> purgeSequences
 
+################################################################################
+
 # write curated indexes
 writedlm("/Users/drivas/Factorem/Syncytin/data/syncytinDB/protein/CURATEDindexes.csv", selectIxs[selectIx])
+
+################################################################################
 
 # bind array to write
 syncytinGroups = [sequenceId sequenceDs groupAnnoation][selectIx, :]
@@ -190,5 +205,9 @@ syncytinGroups = [sequenceId sequenceDs groupAnnoation][selectIx, :]
 # write curated group annoation
 writedlm("/Users/drivas/Factorem/Syncytin/data/syncytinDB/protein/CURATEDsyncytinGroups.csv", syncytinGroups, ',')
 
+################################################################################
+
 # write curated fasta library
 syncytinWriter("/Users/drivas/Factorem/Syncytin/data/syncytinDB/protein/CURATEDsyncytinLibrary.fasta", selectRecords)
+
+################################################################################
