@@ -7,7 +7,7 @@ using DataFrames
 
 "return best position (highest identity percentage) on alignment"
 function bestPosition(df::DataFrame)
-  return map(groupby(df, [:Scaffold, :start])) do x
+  return map(groupby(df, [:Scaffold, :start, :Group])) do x
     x[findmax(x.Identity)[2], :]
   end |> DataFrame
 end
