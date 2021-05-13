@@ -35,10 +35,10 @@ for ix ∈ eachindex(dirs)
     rename!(assemblyAlign, ["Scaffold", "Id", "Identity", "start", "end", "evalue"])
 
     # add species
-    insertcols!(assemblyAlign, size(assemblyAlign, 2) + 1, :Species => replace(replace(lr[xr][1], "filtered.tsv" => ""), "_" => " "))
+    insertcols!(assemblyAlign, :Species => replace(replace(lr[xr][1], "filtered.tsv" => ""), "_" => " "))
 
     # add syncytin group label
-    insertcols!(assemblyAlign, size(assemblyAlign, 2) + 1, :Group => repeat([""], size(assemblyAlign, 1)))
+    insertcols!(assemblyAlign, :Group => repeat([""], size(assemblyAlign, 1)))
     assemblyAlign.Group = map(assemblyAlign.Id) do y
       findfirst(x -> y == x, synGroups.Id) |> p -> getindex(synGroups.Group, p) |> p -> convert(String, p)
     end
