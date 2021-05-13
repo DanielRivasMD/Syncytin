@@ -15,13 +15,13 @@ do
 
   # collect taxonomy
   #echo ${id//_/ }
-  ncbi-taxonomist collect --names ${id//_/ } > ${dir}/${id}_taxonomist.json
+  ncbi-taxonomist collect --names ${id//_/ } --xml > ${dir}/${id}_taxonomist.xml
 
   # decompose taxonomy
   for tx in "${taxGroups[@]}"
   do
     #echo $tx
-    grep -w $tx ${dir}/${id}_taxonomist.json > ${dir}/${id}_${tx}.json
+    grep -w $tx ${dir}/${id}_taxonomist.xml > ${dir}/${id}_${tx}.xml
   done
 
 done < data/CURATEDassembly.list
