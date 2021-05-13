@@ -29,7 +29,7 @@ for dr ∈ dirs
   lr = readdir( string(dDir, "/", dr) )
   xr = contains.(lr, r"filtered")
   if sum(xr) != 0
-    @info lr[xr]
+    @debug lr[xr]
     # load assembly data
     assemblyAlign = readdlm( string(dDir, "/", dr, "/", lr[xr][1]) ) |> DataFrame
     rename!(assemblyAlign, ["Scaffold", "Id", "Identity", "start", "end", "evalue"])
@@ -44,7 +44,7 @@ for dr ∈ dirs
     end
 
     bestPositions = bestPosition(assemblyAlign)
-    @info bestPositions
+    @debug bestPositions
 
     ct += 1
     if ct == 1
