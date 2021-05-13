@@ -23,9 +23,9 @@ rename!(synGroups, ["Id", "Description", "Group"])
 # load assembly results
 dDir = "data/diamondOutput"
 dirs = readdir(dDir)
-ct = 0
 
-for dr ∈ dirs
+for ix ∈ eachindex(dirs)
+  dr = dirs[ix]
   lr = readdir( string(dDir, "/", dr) )
   xr = contains.(lr, r"filtered")
   if sum(xr) != 0
@@ -46,8 +46,7 @@ for dr ∈ dirs
     bestPositions = bestPosition(assemblyAlign)
     @debug bestPositions
 
-    ct += 1
-    if ct == 1
+    if ix == 1
       global outDf = bestPositions
     else
       outDf = [outDf; bestPositions]
