@@ -35,7 +35,6 @@ function taxonomist(sp::String; taxGroups::Vector{String} = ["Kingdom", "Phylum"
   return outDf
 end
 
-
 # sp = "Acinonyx_jubatus"
 
 # load assembly results
@@ -43,15 +42,18 @@ dDir = "data/diamondOutput"
 dirs = readdir(dDir)
 
 for ix ∈ eachindex(dirs)
-  dr = dirs[ix]
+  local sp = dirs[ix]
 
-  taxDf = taxonomist(dr)
+  taxDf = nothing
+  taxDf = taxonomist(sp)
   @debug taxDf
 
-  if ix == 1
     global outDf = taxDf
-  else
     outDf = [outDf; taxDf]
+  if !isnothing(taxDf)
+    if ix == 1
+    else
+    end
   end
 
 end
