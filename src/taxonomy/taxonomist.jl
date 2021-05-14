@@ -15,12 +15,21 @@ function taxonomist(sp::String; taxGroups::Vector{String} = ["Kingdom", "Phylum"
     @debug tx
 
     # parse XML files
-    txFile = parse_file( string(dir, "/", sp, "_", tx, ".xml") )
-    for c ∈ child_elements( LightXML.root(txFile) )
-      if name(c) == "name"
-        insertcols!(outDf, Symbol(tx) => content(c))
+    xfile = string(dir, "/", sp, "_", tx, ".xml")
+    try
+      @eval txFile = parse_file( $xfile )
+
+      for c ∈ child_elements( LightXML.root(txFile) )
+        if name(c) == "name"
+          insertcols!(outDf, Symbol(tx) => content(c))
+        end
       end
+
+    catch e
+      @warn "File was not parsed. Rerturning empty DataFrame" exception = (e, catch_backtrace())
+      insertcols!(outDf, Symbol(tx) => "")
     end
+
   end
 
   return outDf
