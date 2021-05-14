@@ -35,7 +35,7 @@ for ix ∈ eachindex(dirs)
     rename!(assemblyAlign, ["Scaffold", "Id", "Identity", "start", "end", "evalue"])
 
     # add species
-    insertcols!(assemblyAlign, :Species => replace(replace(lr[xr][1], "filtered.tsv" => ""), "_" => " "))
+    insertcols!(assemblyAlign, :Species => replace(replace(dr, "filtered.tsv" => ""), "_" => " "))
 
     # add syncytin group label
     insertcols!(assemblyAlign, :Group => repeat([""], size(assemblyAlign, 1)))
