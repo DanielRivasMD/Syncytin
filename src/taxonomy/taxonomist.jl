@@ -48,11 +48,11 @@ for ix ∈ eachindex(dirs)
   taxDf = taxonomist(sp)
   @debug taxDf
 
-    global outDf = taxDf
-    outDf = [outDf; taxDf]
   if !isnothing(taxDf)
     if ix == 1
+      global taxonomyDf = taxDf
     else
+      taxonomyDf = [taxonomyDf; taxDf]
     end
   end
 

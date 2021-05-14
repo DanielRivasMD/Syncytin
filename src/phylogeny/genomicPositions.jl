@@ -47,9 +47,9 @@ for ix ∈ eachindex(dirs)
     @debug bestPositions
 
     if ix == 1
-      global outDf = bestPositions
+      global positionDf = bestPositions
     else
-      outDf = [outDf; bestPositions]
+      positionDf = [positionDf; bestPositions]
     end
   end
 end
