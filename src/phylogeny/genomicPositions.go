@@ -29,25 +29,25 @@ func genomicPositionsCollect(readFile string) {
 		log.Fatal("Error opening input file : ", readErr)
 	}
 
-	//check whether out file exists to avoid appending
+	// check whether file exists to avoid appending
 	if fileExists(fileOut) {
 		os.Remove(fileOut)
 	}
 
-	//headers := []string{
-	//"qseqid",
-	//"sseqid",
-	//"pident",
-	//"length",
-	//"mismatch",
-	//"gapopen",
-	//"qstart",
-	//"qend",
-	//"sstart",
-	//"send",
-	//"evalue",
-	//"bitscore",
-	//}
+	// headers := []string{
+	// 	"qseqid",
+	// 	"sseqid",
+	// 	"pident",
+	// 	"length",
+	// 	"mismatch",
+	// 	"gapopen",
+	// 	"qstart",
+	// 	"qend",
+	// 	"sstart",
+	// 	"send",
+	// 	"evalue",
+	// 	"bitscore",
+	// }
 
 	// scanner.Scan() advances to the next token returning false if an error was encountered
 	scanner := bufio.NewScanner(inputFile)
