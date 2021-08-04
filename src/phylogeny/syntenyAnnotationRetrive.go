@@ -174,18 +174,20 @@ func collectAnnotations(records []string, ct int) int {
 // pass struct as reference to update
 func segregateAttributes(attrs string, annots *annotStruct) {
 
+	// collect attribute struct field names
+	fields := reflect.TypeOf(annots.annots)
+
 	// collect attributes
 	attr := strings.Split(attrs, ";")
+
+	// loop over attribute string array
 	for ix := 0; ix < len(attr); ix++ {
 
-		// fmt.Println("DEBUG: ", attr[ix])
-
-		annots.annots.AddAttribute(attr[ix], "ID")     // id
-		annots.annots.AddAttribute(attr[ix], "Name")   // name
-		annots.annots.AddAttribute(attr[ix], "Alias")  // alias
-		annots.annots.AddAttribute(attr[ix], "Parent") // parent
-		annots.annots.AddAttribute(attr[ix], "Target") // target
-		annots.annots.AddAttribute(attr[ix], "Note")   // note
+		// loop over attribute struct fields
+		for i := 0; i < fields.NumField(); i++ {
+			field := fields.Field(i)
+			annots.annots.AddAttribute(attr[ix], field.Name)
+		}
 	}
 }
 
