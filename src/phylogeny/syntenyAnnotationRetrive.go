@@ -6,6 +6,7 @@ import (
 	"log"
 	"math"
 	"os"
+	"reflect"
 	"strconv"
 	"strings"
 )
@@ -30,12 +31,12 @@ type positionStruct struct {
 }
 
 type attributesStruct struct {
-	id     string
-	name   string
-	alias  string
-	parent string
-	target string
-	note   string
+	ID     string
+	Name   string
+	Alias  string
+	Parent string
+	Target string
+	Note   string
 }
 
 func main() {
@@ -178,35 +179,21 @@ func segregateAttributes(attrs string, annots *annotStruct) {
 	for ix := 0; ix < len(attr); ix++ {
 
 		// fmt.Println("DEBUG: ", attr[ix])
-		// id
-		if strings.Contains(attr[ix], "ID") {
-			annots.annots.id = strings.TrimPrefix(attr[ix], "ID=")
-		}
 
-		// name
-		if strings.Contains(attr[ix], "Name") {
-			annots.annots.name = strings.TrimPrefix(attr[ix], "Name=")
-		}
+		annots.annots.AddAttribute(attr[ix], "ID")     // id
+		annots.annots.AddAttribute(attr[ix], "Name")   // name
+		annots.annots.AddAttribute(attr[ix], "Alias")  // alias
+		annots.annots.AddAttribute(attr[ix], "Parent") // parent
+		annots.annots.AddAttribute(attr[ix], "Target") // target
+		annots.annots.AddAttribute(attr[ix], "Note")   // note
+	}
+}
 
-		// alias
-		if strings.Contains(attr[ix], "Alias") {
-			annots.annots.alias = strings.TrimPrefix(attr[ix], "Alias=")
-		}
-
-		// parent
-		if strings.Contains(attr[ix], "Parent") {
-			annots.annots.parent = strings.TrimPrefix(attr[ix], "Parent=")
-		}
-
-		// target
-		if strings.Contains(attr[ix], "Target") {
-			annots.annots.target = strings.TrimPrefix(attr[ix], "Target=")
-		}
-
-		// note
-		if strings.Contains(attr[ix], "Note") {
-			annots.annots.note = strings.TrimPrefix(attr[ix], "Note=")
-		}
+func (att *attributesStruct) AddAttribute(ats, field string) {
+	if strings.Contains(ats, field) {
+		out := strings.TrimPrefix(ats, field+"=")
+		final := reflect.ValueOf(att).Elem()
+		final.FieldByName(field).Set(reflect.ValueOf(out))
 	}
 }
 
