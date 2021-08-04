@@ -89,14 +89,14 @@ func annotFunc(readFile string) {
 
 func collectAnnotations(records []string, ct int) int {
 
-	// declare struct
-	var annots annotStruct
+	if len(records) > 1 {
 
-	// TODO: redesign logic to account for non desired lines
-	// scaffold
-	annots.scaffold = records[0]
+		// declare annotation struct
+		var annots annotStruct
 
-	if len(records) >= 4 {
+		// scaffold
+		annots.scaffold = records[0]
+
 		// class / type
 		annots.class = records[2]
 
@@ -112,47 +112,46 @@ func collectAnnotations(records []string, ct int) int {
 
 		// strand
 		annots.strand = records[6]
-	}
 
-	// initialize raw attribute holder
-	var attrs string
-	if len(records) == 9 {
-		attrs = records[8]
-	}
+		// raw attributes
+		attrs := records[8]
 
-	// TODO: test on scaffold 3
-	annotStart := 21359746.
-	annotEnd := 21358328.
-	fixedStart := int(math.Min(annotStart, annotEnd))
-	fixedEnd := int(math.Max(annotStart, annotEnd))
-	nuclWindow := 100000
+		// TODO: test on scaffold 3
+		annotStart := 21359746.
+		annotEnd := 21358328.
+		fixedStart := int(math.Min(annotStart, annotEnd))
+		fixedEnd := int(math.Max(annotStart, annotEnd))
+		nuclWindow := 100000
 
-	if len(records) == 9 && annots.scaffold == "HiC_scaffold_3" && annots.position.start > (fixedStart-nuclWindow) && annots.position.end < (fixedEnd+nuclWindow) && annots.class == "gene" {
-		// counter
-		ct++
+		if /*len(records) == 9 && */ annots.scaffold == "HiC_scaffold_3" && annots.position.start > (fixedStart-nuclWindow) && annots.position.end < (fixedEnd+nuclWindow) && annots.class == "gene" {
+			// counter
+			ct++
 
-		// segregate attributes
-		segregateAttributes(attrs, &annots)
+			// segregate attributes
+			segregateAttributes(attrs, &annots)
 
-		// printing
-		fmt.Println("")
-		fmt.Println("Scaffold: ", annots.scaffold)
-		fmt.Println("Syncytin positions: ", fixedStart, " - ", fixedEnd)
-		fmt.Println("Positions: ", annots.position.start, " - ", annots.position.end)
-		fmt.Println("Class / Type: ", annots.class)
-		fmt.Println("Score: ", annots.score)
-		fmt.Println("Strand: ", annots.strand)
+			// printing
+			fmt.Println("")
+			fmt.Println("Scaffold: ", annots.scaffold)
+			fmt.Println("Syncytin positions: ", fixedStart, " - ", fixedEnd)
+			fmt.Println("Positions: ", annots.position.start, " - ", annots.position.end)
+			fmt.Println("Class / Type: ", annots.class)
+			fmt.Println("Score: ", annots.score)
+			fmt.Println("Strand: ", annots.strand)
 
-		fmt.Println("Attributes")
-		fmt.Println("\tID: ", annots.annots.id)
-		fmt.Println("\tName: ", annots.annots.name)
-		fmt.Println("\tAlias: ", annots.annots.alias)
-		fmt.Println("\tParent: ", annots.annots.parent)
-		fmt.Println("\tTarget: ", annots.annots.target)
-		fmt.Println("\tNote: ", annots.annots.note)
-		fmt.Println("Annotations: ", attrs)
-		fmt.Println("Other data: ", records)
-		fmt.Println("")
+			fmt.Println("Attributes")
+			fmt.Println("\tID: ", annots.annots.ID)
+			fmt.Println("\tName: ", annots.annots.Name)
+			fmt.Println("\tAlias: ", annots.annots.Alias)
+			fmt.Println("\tParent: ", annots.annots.Parent)
+			fmt.Println("\tTarget: ", annots.annots.Target)
+			fmt.Println("\tNote: ", annots.annots.Note)
+			// fmt.Println("Annotations: ", attrs)
+			// fmt.Println("Other data: ", records)
+			// fmt.Println("")
+		}
+	} else if records[0] != "###" {
+		fmt.Println("Records: ", records)
 	}
 	return ct
 }
