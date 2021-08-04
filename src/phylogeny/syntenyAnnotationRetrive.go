@@ -17,7 +17,10 @@ var (
 
 type annotStruct struct {
 	scaffold string
+	class    string
 	position positionStruct
+	score    int64
+	strand   string
 	annots   attributesStruct
 }
 
@@ -29,10 +32,16 @@ type positionStruct struct {
 type attributesStruct struct {
 	id     string
 	name   string
+	alias  string
+	parent string
 	target string
+	note   string
 }
 
 func main() {
+
+	// fileOut := readFile
+
 	annotFunc(readFile)
 }
 
@@ -83,16 +92,26 @@ func collectAnnotations(records []string, ct int) int {
 	// declare struct
 	var annots annotStruct
 
+	// TODO: redesign logic to account for non desired lines
 	// scaffold
 	annots.scaffold = records[0]
 
 	if len(records) >= 4 {
+		// class / type
+		annots.class = records[2]
+
 		// positions
 		tmpStart, _ := strconv.ParseFloat(records[3], 64)
 		tmpEnd, _ := strconv.ParseFloat(records[4], 64)
 
 		annots.position.start = int(math.Min(tmpStart, tmpEnd))
 		annots.position.end = int(math.Max(tmpStart, tmpEnd))
+
+		// score
+		annots.score, _ = strconv.ParseInt(records[5], 10, 64)
+
+		// strand
+		annots.strand = records[6]
 	}
 
 	// initialize raw attribute holder
@@ -106,9 +125,9 @@ func collectAnnotations(records []string, ct int) int {
 	annotEnd := 21358328.
 	fixedStart := int(math.Min(annotStart, annotEnd))
 	fixedEnd := int(math.Max(annotStart, annotEnd))
-	nuclWindow := 1000
+	nuclWindow := 100000
 
-	if len(records) == 9 && annots.scaffold == "HiC_scaffold_3" && annots.position.start > (fixedStart-nuclWindow) && annots.position.end < (fixedEnd+nuclWindow) {
+	if len(records) == 9 && annots.scaffold == "HiC_scaffold_3" && annots.position.start > (fixedStart-nuclWindow) && annots.position.end < (fixedEnd+nuclWindow) && annots.class == "gene" {
 		// counter
 		ct++
 
@@ -120,10 +139,17 @@ func collectAnnotations(records []string, ct int) int {
 		fmt.Println("Scaffold: ", annots.scaffold)
 		fmt.Println("Syncytin positions: ", fixedStart, " - ", fixedEnd)
 		fmt.Println("Positions: ", annots.position.start, " - ", annots.position.end)
+		fmt.Println("Class / Type: ", annots.class)
+		fmt.Println("Score: ", annots.score)
+		fmt.Println("Strand: ", annots.strand)
+
 		fmt.Println("Attributes")
 		fmt.Println("\tID: ", annots.annots.id)
 		fmt.Println("\tName: ", annots.annots.name)
+		fmt.Println("\tAlias: ", annots.annots.alias)
+		fmt.Println("\tParent: ", annots.annots.parent)
 		fmt.Println("\tTarget: ", annots.annots.target)
+		fmt.Println("\tNote: ", annots.annots.note)
 		fmt.Println("Annotations: ", attrs)
 		fmt.Println("Other data: ", records)
 		fmt.Println("")
@@ -163,9 +189,24 @@ func segregateAttributes(attrs string, annots *annotStruct) {
 			annots.annots.name = strings.TrimPrefix(attr[ix], "Name=")
 		}
 
+		// alias
+		if strings.Contains(attr[ix], "Alias") {
+			annots.annots.alias = strings.TrimPrefix(attr[ix], "Alias=")
+		}
+
+		// parent
+		if strings.Contains(attr[ix], "Parent") {
+			annots.annots.parent = strings.TrimPrefix(attr[ix], "Parent=")
+		}
+
 		// target
 		if strings.Contains(attr[ix], "Target") {
 			annots.annots.target = strings.TrimPrefix(attr[ix], "Target=")
+		}
+
+		// note
+		if strings.Contains(attr[ix], "Note") {
+			annots.annots.note = strings.TrimPrefix(attr[ix], "Note=")
 		}
 	}
 }
