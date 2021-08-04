@@ -155,17 +155,17 @@ func segregateAttributes(attrs string, annots *annotStruct) {
 		// fmt.Println("DEBUG: ", attr[ix])
 		// id
 		if strings.Contains(attr[ix], "ID") {
-			annots.annots.id = attr[ix]
+			annots.annots.id = strings.TrimPrefix(attr[ix], "ID=")
 		}
 
 		// name
 		if strings.Contains(attr[ix], "Name") {
-			annots.annots.name = attr[ix]
+			annots.annots.name = strings.TrimPrefix(attr[ix], "Name=")
 		}
 
 		// target
 		if strings.Contains(attr[ix], "Target") {
-			annots.annots.target = attr[ix]
+			annots.annots.target = strings.TrimPrefix(attr[ix], "Target=")
 		}
 	}
 }
