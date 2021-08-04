@@ -66,6 +66,18 @@ func annotFunc(readFile string) {
 	fmt.Println("Number of hits: ", ct)
 }
 
+// annotations := []string{
+// 	"seqid",
+// 	"source",
+// 	"type",
+// 	"start",
+// 	"end",
+// 	"score",
+// 	"strand",
+// 	"phase",
+// 	"attributes",
+// }
+
 func collectAnnotations(records []string, ct int) int {
 
 	// declare struct
@@ -118,6 +130,20 @@ func collectAnnotations(records []string, ct int) int {
 	}
 	return ct
 }
+
+// attributes := []strings{
+// 	"ID",
+// 	"Name",
+// 	"Alias",
+// 	"Parent",
+// 	"Target",
+// 	"Gap",
+// 	"Derives_from",
+// 	"Note",
+// 	"Dbxref",
+// 	"Ontology_term",
+// 	"Is_circular",
+// }
 
 // pass struct as reference to update
 func segregateAttributes(attrs string, annots *annotStruct) {
