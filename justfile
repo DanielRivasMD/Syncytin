@@ -42,9 +42,11 @@ print:
 
 # GO tools
 @ genomicPositions:
+  if [[ -x ${HOME}/Factorem/Syncytin/src/excalibur/genomicPositions ]]; then rm ${HOME}/Factorem/Syncytin/src/excalibur/genomicPositions; fi;
   source ${HOME}/Factorem/Syncytin/src/phylogeny/genomicPositions.sh
 
 @ syntenyAnnotationRetrive:
+  if [[ -x ${HOME}/Factorem/Syncytin/src/excalibur/syntenyAnnotationRetrive ]]; then rm ${HOME}/Factorem/Syncytin/src/excalibur/syntenyAnnotationRetrive; fi
   source ${HOME}/Factorem/Syncytin/src/phylogeny/syntenyAnnotationRetrive.sh
 
 ################################################################################
