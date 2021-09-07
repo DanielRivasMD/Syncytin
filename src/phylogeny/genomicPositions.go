@@ -30,7 +30,7 @@ func genomicPositionsCollect(readFile string) {
 	}
 
 	// check whether file exists to avoid appending
-	if fileExists(fileOut) {
+	if fileExist(fileOut) {
 		os.Remove(fileOut)
 	}
 
@@ -88,9 +88,9 @@ func writeGenomicPositions(fileOut string, records []string) {
 	w.Flush()
 }
 
-// fileExists checks if a file exists and is not a directory before
+// fileExist checks if a file exists and is not a directory before
 // try using it to prevent further errors
-func fileExists(filename string) bool {
+func fileExist(filename string) bool {
 	info, err := os.Stat(filename)
 	if os.IsNotExist(err) {
 		return false
