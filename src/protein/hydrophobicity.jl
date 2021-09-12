@@ -41,4 +41,20 @@ function calculateHydropathy(record, hydro)
   return score
 end
 
+function windowSlide(score, bin, weight)
+  # contruct vector
+  sliced = Array{Float64, 1}(undef, 0)
+  # iterate on vector
+  for ι ∈ 1:length(score)
+    # do not overshoot vector boundries
+    ω = ι + bin - 1
+    if ω > length(score)
+      break
+    end
+    # calculate bin average
+    push!(sliced, sum(score[ι:ω] .* weight) / bin)
+  end
+  return sliced
+end
+
 ################################################################################
