@@ -2,6 +2,7 @@
 
 using DelimitedFiles
 using DataFrames
+using RCall
 
 ################################################################################
 
@@ -34,6 +35,10 @@ function windowSlide(score, bin = 9, weight = repeat([1.], 9))
     push!(sliced, sum(score[ι:ω] .* weight) / bin)
   end
   return sliced
+end
+
+function plotHydropathyR(to_plot)
+  R"plot($to_plot, type = 'l', ylim = c(-4, 4))"
 end
 
 ################################################################################
