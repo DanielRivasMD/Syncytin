@@ -31,9 +31,14 @@ synAr = syncytinReader("/Users/drivas/Factorem/Syncytin/data/syncytinDB/protein/
 
 ################################################################################
 
-score = Array{Float64, 1}(undef, 0)
-for aa in synAr[1] |> FASTX.sequence
-  push!(score, findfirst(χ -> χ == aa, hydro.OneLetterCode) |> π -> hydro[π, :HydropathyScore])
+function calculateHydropathy(record, hydro)
+  # contrusct empty score vector
+  score = Array{Float64, 1}(undef, 0)
+  # collect aminoacid values
+  for aa in record |> FASTX.sequence
+    push!(score, findfirst(χ -> χ == aa, hydro.OneLetterCode) |> π -> hydro[π, :HydropathyScore])
+  end
+  return score
 end
 
 ################################################################################
