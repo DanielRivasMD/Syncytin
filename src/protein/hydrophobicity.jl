@@ -18,9 +18,11 @@ hydro = @chain begin
 end
 
 # cast columns
-hydro.AminoAcid = map(χ -> convert(String, χ), hydro.AminoAcid)
-hydro.OneLetterCode = map(χ -> AminoAcid(collect(χ)[end]), hydro.OneLetterCode)
-hydro.HydropathyScore = map(χ -> convert(Float64, χ), hydro.HydropathyScore)
+begin
+  hydro.AminoAcid = map(χ -> convert(String, χ), hydro.AminoAcid)
+  hydro.OneLetterCode = map(χ -> AminoAcid(collect(χ)[end]), hydro.OneLetterCode)
+  hydro.HydropathyScore = map(χ -> convert(Float64, χ), hydro.HydropathyScore)
+end
 
 ################################################################################
 
