@@ -37,8 +37,19 @@ function windowSlide(score, bin = 9, weight = repeat([1.], 9))
   return sliced
 end
 
-function plotHydropathyR(to_plot)
-  R"plot($to_plot, type = 'l', ylim = c(-4, 4))"
+function plotHydropathyR(to_plot, title)
+  R"
+    plot(
+      $to_plot,
+      type = 'l',
+      main = $title,
+      sub = 'Kyle-Doolittle hydropathy plot',
+      xlab = 'Amino acid sequence',
+      ylab = 'Hydropathy',
+      xlim = c(0, 750),
+      ylim = c(-4, 4)
+    )
+  "
 end
 
 ################################################################################
@@ -61,5 +72,24 @@ end
 
 # load protein database
 synAr = syncytinReader("/Users/drivas/Factorem/Syncytin/data/syncytinDB/protein/CURATEDsyncytinLibrary.fasta")
+
+################################################################################
+
+# construct plot
+R"pdf('hydropathy.pdf')"
+
+for ι in 1:length(synAr)
+
+  # calculate values
+  score = calculateHydropathy(synAr[ι], hydro)
+  to_plot = windowSlide(score)
+
+  # plot
+  plotHydropathyR(to_plot, string( (synAr[ι] |> FASTX.identifier), " - ", (synAr[ι] |> FASTX.description) ))
+
+end
+
+# close graphic device
+R"dev.off()"
 
 ################################################################################
