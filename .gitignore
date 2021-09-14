@@ -16,7 +16,7 @@ data/
 report/
 
 # executables
-src/excalibur/
+excalibur/
 
 # software
 software/

@@ -11,8 +11,8 @@ end;
 
 ################################################################################
 
-# load modules & functions
-include("/Users/drivas/Factorem/Syncytin/src/phylogeny/syncytinDB.jl");
+# load functions
+include("/Users/drivas/Factorem/Syncytin/src/Clustering/syncytinDB.jl");
 
 ################################################################################
 
@@ -166,7 +166,7 @@ groupAnnoation = String[
 ################################################################################
 
 # load protein database
-synAr = syncytinReader("/Users/drivas/Factorem/Syncytin/data/syncytinDB/protein/syncytinLibrary.fasta")
+synAr = syncytinReader( string( collectionDB, "/protein/syncytinLibrary.fasta" ) )
 
 ################################################################################
 
@@ -202,7 +202,7 @@ selectRecords = selectRecords |> purgeSequences
 ################################################################################
 
 # write curated indexes
-writedlm("/Users/drivas/Factorem/Syncytin/data/syncytinDB/protein/CURATEDindexes.csv", selectIxs[selectIx])
+writedlm( string( collectionDB, "/protein/CURATEDindexes.csv" ), selectIxs[selectIx] )
 
 ################################################################################
 
@@ -210,11 +210,11 @@ writedlm("/Users/drivas/Factorem/Syncytin/data/syncytinDB/protein/CURATEDindexes
 syncytinGroups = [sequenceId sequenceDs groupAnnoation][selectIx, :]
 
 # write curated group annoation
-writedlm("/Users/drivas/Factorem/Syncytin/data/syncytinDB/protein/CURATEDsyncytinGroups.csv", syncytinGroups, ',')
+writedlm( string( collectionDB, "/protein/CURATEDsyncytinGroups.csv" ), syncytinGroups, ',' )
 
 ################################################################################
 
 # write curated fasta library
-syncytinWriter("/Users/drivas/Factorem/Syncytin/data/syncytinDB/protein/CURATEDsyncytinLibrary.fasta", selectRecords)
+syncytinWriter( string( collectionDB, "/protein/CURATEDsyncytinLibrary.fasta" ), selectRecords )
 
 ################################################################################

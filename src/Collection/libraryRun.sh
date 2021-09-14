@@ -3,8 +3,8 @@
 ################################################################################
 
 syncProj=$HOME/Factorem/Syncytin
-collector=${syncProj}/src/collector
-excalibur=${syncProj}/src/excalibur
+collector=${syncProj}/src/Collection
+excalibur=${syncProj}/excalibur
 syncDB=${syncProj}/data/syncytinDB
 accNDir=${syncDB}/accessionN
 accPDir=${syncDB}/accessionP

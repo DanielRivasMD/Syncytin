@@ -19,6 +19,13 @@ end;
 
 ################################################################################
 
+# variables
+begin
+  collectionDB = "/Users/drivas/Factorem/Syncytin/data/syncytinDB"
+end
+
+################################################################################
+
 "read `fasta` syncytin library file to array"
 function syncytinReader(synDB::String)
 

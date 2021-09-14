@@ -1,12 +1,18 @@
+################################################################################
 
+# load packages
 library(tidyverse)
 library(dendextend)
+
+################################################################################
 
 # distance matrix rlevAr to plot
 # pdf(figName, width = 10, height = 9)
 jpeg(figName, width = 1600, height = 1200)
 defParMar <- par('mar')
 syncytinColors <- c('darkred', 'yellow', 'lightyellow4', 'darkolivegreen', 'navyblue', 'violetred2', 'steelblue', 'slateblue', 'lawngreen', 'orange4', 'darksalmon', 'darkslateblue', 'cyan', 'blueviolet', 'red')
+
+################################################################################
 
 # matrix dimensions
 di <- dim(rlevAr)
@@ -15,6 +21,8 @@ nc <- di[2L]
 
 # default margins
 margins = c(5, 5)
+
+################################################################################
 
 # default row & col dendrogram
 Rowv <- rowMeans(rlevAr, na.rm = TRUE)
@@ -32,11 +40,15 @@ hcc <- hclust(as.dist(t(rlevAr)), method = 'average')
 ddc <- as.dendrogram(hcc)
 ddc <- reorder(ddc, Colv)
 
+################################################################################
+
 # layout
 # lmat <- rbind(c(3, NA), 1:2)
 lmat <- rbind(c(NA, 3), 2:1)
 lwid <- c(1, 4)
 lhei <- c(1, 4)
+
+################################################################################
 
 # side bars
 # lmat <- rbind(lmat[1, ] + 1, c(1, NA), lmat[2, ] + 1)
@@ -51,12 +63,16 @@ lwid <- c(lwid[1L], 0.1, lwid[2L])
 lmat[is.na(lmat)] <- 0
 layout(lmat, widths = lwid, heights = lhei, respect = TRUE)
 
+################################################################################
+
 # side bars
 par(mar = c(margins[1L], 0, 0, 0.5))
 image(rbind(1L:nr), col = syncytinColors[rtagAr[hcr$order]], axes = FALSE)
 
 par(mar = c(0.5, 0, 0, margins[2L]))
 image(cbind(1L:nc), col = syncytinColors[rtagAr[hcc$order]], axes = FALSE)
+
+################################################################################
 
 # heatmap
 par(mar = c(margins[1L], 0, 0, margins[2L]))
@@ -69,6 +85,8 @@ ddr %>% set("branches_lwd", 3) %>% plot(., horiz = TRUE, axes = FALSE, yaxs = 'i
 # column dendrogram
 par(mar = c(0, 0, 0, margins[2L]))
 ddc %>% set("branches_lwd", 3) %>% plot(., axes = FALSE, xaxs = 'i', leaflab = 'none')
+
+################################################################################
 
 annotScale <- 1 / length(syncytinColors)
 
@@ -95,3 +113,5 @@ for ( colix in seq_along(syncytinColors) ) {
 par(mar = defParMar)
 
 dev.off()
+
+################################################################################
