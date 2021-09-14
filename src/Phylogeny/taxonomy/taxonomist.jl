@@ -12,7 +12,7 @@ end;
 
 ################################################################################
 
-""
+"construct taxonomy dataframe"
 function taxonomist(ζ::String; taxGroups::Vector{String} = ["Kingdom", "Phylum", "Class", "Order", "Family", "genus"])
 
   # define path

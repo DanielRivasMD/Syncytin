@@ -1,11 +1,12 @@
 ################################################################################
 
-# library
+# load packages
 library(ggplot2)
 library(dplyr)
 
 ################################################################################
 
+# define dataframe
 assemblyHits <- data.frame(
   Species = unlist(assemblyHits[, 1]),
   hits = unlist(assemblyHits[, 2])
@@ -13,9 +14,10 @@ assemblyHits <- data.frame(
 
 ################################################################################
 
-pdf("/Users/drivas/Factorem/Syncytin/arch/plots/GenomeBlast.pdf", width = 6, height = 4)
+# pdf("/Users/drivas/Factorem/Syncytin/arch/plots/GenomeBlast.pdf", width = 6, height = 4)
 jpeg("/Users/drivas/Factorem/Syncytin/arch/plots/GenomeBlast.jpg", width = 1200, height = 1000)
 
+# plot
 assemblyHits %>%
   ggplot(
     aes(
