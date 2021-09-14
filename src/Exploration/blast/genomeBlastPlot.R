@@ -6,11 +6,6 @@ library(dplyr)
 
 ################################################################################
 
-# assemblyHits <- data.frame(
-#   Species = c("Crocuta crocuta", "Eubalaena glacialis", "Nasua narica", "Neofelis nebulosa", "Rhinoceros unicornis"),
-#   hits = c(26, 0, 16, 19, 0)
-# )
-
 assemblyHits <- data.frame(
   Species = unlist(assemblyHits[, 1]),
   hits = unlist(assemblyHits[, 2])
