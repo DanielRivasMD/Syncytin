@@ -1,6 +1,13 @@
 ################################################################################
 
-using DelimitedFiles
+# load packages
+begin
+
+  using Pkg
+  Pkg.activate("/Users/drivas/Factorem/Syncytin/")
+
+  using DelimitedFiles
+end;
 
 ################################################################################
 

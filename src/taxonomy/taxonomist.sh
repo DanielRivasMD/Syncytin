@@ -27,6 +27,4 @@ do
 done < data/CURATEDassembly.list
 #done <<< `awk 'NR == 1 {print $0}' data/CURATEDassembly.list`
 
-
 ################################################################################
-

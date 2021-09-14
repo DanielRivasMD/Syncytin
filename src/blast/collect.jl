@@ -1,6 +1,16 @@
+################################################################################
 
-using DelimitedFiles
-using RCall
+# load packages
+begin
+
+  using Pkg
+  Pkg.activate("/Users/drivas/Factorem/Syncytin/")
+
+  using DelimitedFiles
+  using RCall
+end;
+
+################################################################################
 
 unfilt = "data/out"
 filt = "data/outfilt"
@@ -17,5 +27,9 @@ for f in filtlist
   assemblyHits[assemblyHits[:, 1] .== sp, 2] .= sum(fr, dims = 1)[1] / sum(fr, dims = 1)[2]
 end
 
+################################################################################
+
 @rput assemblyHits
 R"source('src/blast/genomeBlastPlot.R')"
+
+################################################################################

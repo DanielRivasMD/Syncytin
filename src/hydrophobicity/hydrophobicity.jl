@@ -1,8 +1,15 @@
 ################################################################################
 
-using DelimitedFiles
-using DataFrames
-using RCall
+# load packages
+begin
+
+  using Pkg
+  Pkg.activate("/Users/drivas/Factorem/Syncytin/")
+
+  using DelimitedFiles
+  using DataFrames
+  using RCall
+end;
 
 ################################################################################
 

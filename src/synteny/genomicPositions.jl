@@ -1,15 +1,22 @@
 ################################################################################
 
-using DelimitedFiles
-using DataFrames
+# load packages
+begin
+
+  using Pkg
+  Pkg.activate("/Users/drivas/Factorem/Syncytin/")
+
+  using DelimitedFiles
+  using DataFrames
+end;
 
 ################################################################################
 
 "return best position (highest identity percentage) on alignment"
 function bestPosition(df::DataFrame)
   #  TODO: alternatively, find minimum e-value
-  return map(groupby(df, [:Scaffold, :start, :Group])) do x
-    x[findmax(x.Identity)[2], :]
+  return map(groupby(df, [:Scaffold, :start, :Group])) do χ
+    χ[findmax(χ.Identity)[2], :]
   end |> DataFrame
 end
 
@@ -25,8 +32,8 @@ rename!(synGroups, ["Id", "Description", "Group"])
 dDir = "data/diamondOutput"
 dirs = readdir(dDir)
 
-for ix ∈ eachindex(dirs)
-  dr = dirs[ix]
+for ι ∈ eachindex(dirs)
+  dr = dirs[ι]
   lr = readdir( string(dDir, "/", dr) )
   xr = contains.(lr, r"filtered")
   if sum(xr) != 0
@@ -47,7 +54,7 @@ for ix ∈ eachindex(dirs)
     bestPositions = bestPosition(assemblyAlign)
     @debug bestPositions
 
-    if ix == 1
+    if ι == 1
       global positionDf = bestPositions
     else
       positionDf = [positionDf; bestPositions]

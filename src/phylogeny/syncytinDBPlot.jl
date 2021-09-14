@@ -1,11 +1,22 @@
+################################################################################
 
 # load packages
-using DelimitedFiles
-using RCall
-using FreqTables
+begin
+
+  using Pkg
+  Pkg.activate("/Users/drivas/Factorem/Syncytin/")
+
+  using DelimitedFiles
+  using RCall
+  using FreqTables
+end;
+
+################################################################################
 
 # load modules & functions
 include("/Users/drivas/Factorem/Syncytin/src/phylogeny/syncytinDB.jl");
+
+################################################################################
 
 # calculate distance & hierarchical clustering
 levFile =  string("/Users/drivas/Factorem/Syncytin/data/syncytinDB/protein/levenshteinDistance.tsv")
@@ -18,9 +29,13 @@ else
   writedlm(levFile, levAr, '\t')
 end
 
+################################################################################
+
 # load syncytin groups
 sgDf = CSV.read("/Users/drivas/Factorem/Syncytin/data/syncytinDB/protein/CURATEDsyncytinGroups.csv", DataFrame, header = ["ID", "Description", "Group"])
 synGroups = ((sgDf.Group |> freqtable).dicts .|> keys)[1] |> p -> convert.(String, p)
+
+################################################################################
 
 # subset indexes
 ix = convert.(Int64, readdlm("/Users/drivas/Factorem/Syncytin/data/syncytinDB/protein/CURATEDindexes.csv"))[:, 1]
@@ -38,3 +53,4 @@ end
 @rput synGroups
 R"source('/Users/drivas/Factorem/Syncytin/src/phylogeny/syncytinDBPlot.R')"
 
+################################################################################
