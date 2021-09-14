@@ -11,6 +11,7 @@ include("/Users/drivas/Factorem/Syncytin/src/phylogeny/syncytinDB.jl");
 
 ################################################################################
 
+"retrive hydropathy value for aminoacid residue"
 function calculateHydropathy(record, hydro)
   # contrusct empty score vector
   score = Array{Float64, 1}(undef, 0)
@@ -21,6 +22,7 @@ function calculateHydropathy(record, hydro)
   return score
 end
 
+"slide window with weight to determine local hydrophobicity profile"
 function windowSlide(score, bin = 9, weight = repeat([1.], 9))
   # contruct vector
   sliced = Array{Float64, 1}(undef, 0)
@@ -37,6 +39,7 @@ function windowSlide(score, bin = 9, weight = repeat([1.], 9))
   return sliced
 end
 
+"plot hydrophobicity profile using R"
 function plotHydropathyR(to_plot, title)
   R"
     plot(
