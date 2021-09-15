@@ -2,6 +2,7 @@
 
 ################################################################################
 
+# declarations
 syncProj=$HOME/Factorem/Syncytin
 phylogeny=${syncProj}/src/phylogeny
 excalibur=${syncProj}/src/excalibur
@@ -19,10 +20,10 @@ fi
 # filter alingment results
 echo "Filtering alignment results..."
 
+# iterate on diamond output items
 for align in $( $(which exa) ${diamond} );
 do
   ${excalibur}/genomicPositions ${diamond}/${align}/${align}.tsv
 done
 
 ################################################################################
-

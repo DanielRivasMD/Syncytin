@@ -15,8 +15,8 @@ import (
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var (
-	readFile string = os.Args[1]
-	fileOut  string
+	readFile string = os.Args[1] // command line argument
+	fileOut  string              // infered from input
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -26,11 +26,13 @@ func main() {
 	fileOut = strings.TrimSuffix(fileOut, ".tsv")
 	fileOut = fileOut + "_filtered.tsv"
 
+	// execute logic
 	genomicPositionsCollect(readFile)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// read file, filter records & write
 func genomicPositionsCollect(readFile string) {
 
 	// open an input file, exit on error
@@ -64,12 +66,14 @@ func genomicPositionsCollect(readFile string) {
 
 	for scanner.Scan() {
 
+		// tab separated records
 		records := strings.Split(scanner.Text(), "\t")
 
 		// collect patterns
 		pIdent, _ := strconv.ParseFloat(records[2], 64)
 		alignLen, _ := strconv.ParseFloat(records[3], 64)
 
+		// filter criteria
 		if pIdent > 80 && alignLen > 400 {
 			// write
 			writeGenomicPositions(fileOut, records)

@@ -32,6 +32,7 @@ rename!(synGroups, ["Id", "Description", "Group"])
 dDir = "data/diamondOutput"
 dirs = readdir(dDir)
 
+# iterate on diamond output items
 for ι ∈ eachindex(dirs)
   dr = dirs[ι]
   lr = readdir( string(dDir, "/", dr) )
@@ -61,5 +62,6 @@ for ι ∈ eachindex(dirs)
     end
   end
 end
+# TODO: write dataframe to csv
 
 ################################################################################

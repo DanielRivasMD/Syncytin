@@ -2,19 +2,31 @@ Computational study of _syncitin_ gene in vertebrates.
 
 ### Data description
 
-`annoation` => **DNAzoo** assembly annotations.
+#### `annoation`
 
-`diamondOutput` => output from _diamond_ alignment. organized by assembly. also contains `taxonomist` data.
+**DNAzoo** assembly annotations.
 
-`DNAzoo` holds assemblies from **DNAzoo**.
+#### `diamondOutput`
 
-`syncytinDB` holds all data related to syncytin annotations.
+output from _diamond_ alignment. organized by assembly. also contains `taxonomist` data.
 
-`accessionN` => nucleotide accessions.
-`accessionP` => protein accessions.
-`genBank` => genBank formatted accessions.
-`nucleotide` => nucleotide library.
-`protein` => protein library.
+#### `DNAzoo`
+
+holds assemblies from **DNAzoo**.
+
+#### `syncytinDB`
+
+holds all data related to syncytin annotations.
+
+- `accessionN` => nucleotide accessions.
+
+- `accessionP` => protein accessions.
+
+- `genBank` => genBank formatted accessions.
+
+- `nucleotide` => nucleotide library.
+
+- `protein` => protein library.
 
 ### Workflow
 
@@ -27,5 +39,6 @@ Computational study of _syncitin_ gene in vertebrates.
 - [Alignment](src/Alignment/README.md): perform multiple sequence alignment of library & identified _syncytin_ sequences.
 - [Prediction](src/Prediction/README.md): calculate _syncytin_ sequences tridimensional structures.
 
-[SlumController](src/SlumController/README.md) => control all jobs at SLURM-managed cluster.
+[SlurmController](src/SlurmController/README.md) => control all jobs at _SLURM_-managed cluster.
+
 [Utilities](src/Utilities/README.md) => provide functions.

@@ -14,6 +14,7 @@ end;
 
 ################################################################################
 
+# TODO: dependes on genomicPositions. perhaps write to csv
 diamondHits = freqtable(positionDf.Species)
 toPlotDf = taxonomyDf[:, [:Species, :Order]]
 

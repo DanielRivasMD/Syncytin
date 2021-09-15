@@ -2,6 +2,7 @@
 
 ################################################################################
 
+# declarations
 syncProj=$HOME/Factorem/Syncytin
 phylogeny=${syncProj}/src/phylogeny
 excalibur=${syncProj}/src/excalibur
@@ -19,10 +20,10 @@ fi
 # retrieve annotations
 echo "Retrieving annotations..."
 
+# iterate on available annotations
 for align in $( $(which exa) ${annotation} );
 do
   ${excalibur}/syntenyAnnotationRetrive ${annotation}/${align}
 done
 
 ################################################################################
-

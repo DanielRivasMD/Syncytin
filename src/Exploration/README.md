@@ -1,0 +1,21 @@
+Search for _syncitin_ sequences in assemblies.
+
+### Workflow
+
+`assemblies.sh` => collect **DNAzoo** assemblies from _wasabisys_ to _Pawsey_.
+
+`curateAssemblyList.sh` =>
+
+#### `blast`
+
+- `genomeBlast.toml` => **`bender`** configuration for **`AssemblySearch blast`**.
+
+- `genomeBlastPlot.jl` =>
+
+- `genomeBlastPlot.R` =>
+
+- `ncbi-blast.sh` => retrieve **`blast`** command line application.
+
+#### `diamond`
+
+- `genomeDiamond.toml` => **`bender`** configuration for **`AssemblySearch diamond`**.

@@ -4,4 +4,6 @@ Curate _syncytin_ database based on ids, sequence descriptions & sequences lengh
 
 `curateSyncytinDB.jl` => databse curation. main controller.
 
-`syncytinDBPlot.jl` & `syncytinDBPlot.R` => calculate distance & clustering. control plotting.
+`syncytinDBPlot.jl` => calculate distance & clustering.
+
+`syncytinDBPlot.R` => control plotting.
