@@ -28,3 +28,4 @@ Computational study of _syncitin_ gene in vertebrates.
 - [Prediction](src/Prediction/README.md): calculate _syncytin_ sequences tridimensional structures.
 
 [SlumController](src/SlumController/README.md) => control all jobs at SLURM-managed cluster.
+[Utilities](src/Utilities/README.md) => provide functions.

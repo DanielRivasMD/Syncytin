@@ -14,7 +14,7 @@ end;
 ################################################################################
 
 # load modules & functions
-include("/Users/drivas/Factorem/Syncytin/src/Curation/syncytinDB.jl");
+include("/Users/drivas/Factorem/Syncytin/src/Utilities/syncytinDB.jl");
 
 ################################################################################
 

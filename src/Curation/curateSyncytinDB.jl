@@ -12,7 +12,7 @@ end;
 ################################################################################
 
 # load functions
-include("/Users/drivas/Factorem/Syncytin/src/Clustering/syncytinDB.jl");
+include("/Users/drivas/Factorem/Syncytin/src/Utilities/syncytinDB.jl");
 
 ################################################################################
 
