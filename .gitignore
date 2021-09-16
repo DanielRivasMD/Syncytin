@@ -22,7 +22,7 @@ excalibur/
 software/
 
 # deprecated
-src/deprecated/
+deprecated/
 
 # julia manifest
 Manifest.toml
