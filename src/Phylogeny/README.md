@@ -2,9 +2,11 @@ Visualize results from **Exploration** in the phylogenetic context.
 
 ### Workflow
 
-`alignmentPlot.jl` =>
+`alignmentPlot.jl` => parse results from diamond search.
 
-`alignmentPlot.R` =>
+`alignmentPlot.R` => plot results from diamond search.
+
+`plotTree.R` => draw species phylogenetic tree & alignment information.
 
 #### `taxonomy`
 
