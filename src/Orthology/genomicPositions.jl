@@ -16,9 +16,9 @@ end;
 "return best position (highest identity percentage) on alignment"
 function bestPosition(df::DataFrame)
   #  TODO: alternatively, find minimum e-value
-  return map(groupby(df, [:Scaffold, :start, :Group])) do χ
-    χ[findmax(χ.Identity)[2], :]
-  end |> DataFrame
+  return combine(groupby(df, [:Scaffold, :start, :Group])) do χ
+    χ[argmax(χ.Identity), :]
+  end
 end
 
 ################################################################################
