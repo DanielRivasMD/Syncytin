@@ -6,6 +6,7 @@ begin
   using Pkg
   Pkg.activate("/Users/drivas/Factorem/Syncytin/")
 
+  import Chain: @chain
   using DelimitedFiles
   using DataFrames
 end;
@@ -23,8 +24,11 @@ end
 ################################################################################
 
 # load syncytin groups
-synGroups = readdlm("data/syncytinDB/protein/CURATEDsyncytinGroups.csv", ',') |> DataFrame
-rename!(synGroups, ["Id", "Description", "Group"])
+synGroups = @chain begin
+  readdlm("data/syncytinDB/protein/CURATEDsyncytinGroups.csv", ',')
+  DataFrame(:auto)
+  rename!(["Id", "Description", "Group"])
+end
 
 ################################################################################
 
@@ -39,17 +43,26 @@ for ι ∈ eachindex(dirs)
   xr = contains.(lr, r"filtered")
   if sum(xr) != 0
     @debug lr[xr]
+
     # load assembly data
-    assemblyAlign = readdlm( string(dDir, "/", dr, "/", lr[xr][1]) ) |> DataFrame
-    rename!(assemblyAlign, ["Scaffold", "Id", "Identity", "start", "end", "evalue"])
+    assemblyAlign = @chain begin
+      readdlm( string(dDir, "/", dr, "/", lr[xr][1]) )
+      DataFrame(:auto)
+      rename!(["Scaffold", "Id", "Identity", "start", "end", "evalue"])
+    end
 
-    # add species
-    insertcols!(assemblyAlign, :Species => replace(replace(dr, "filtered.tsv" => ""), "_" => " "))
+    # append columns
+    @chain assemblyAlign begin
+      # add species
+      insertcols!(:Species => replace(dr, "filtered.tsv" => "") |> π -> replace(π, "_" => " "))
 
-    # add syncytin group label
-    insertcols!(assemblyAlign, :Group => repeat([""], size(assemblyAlign, 1)))
-    assemblyAlign.Group = map(assemblyAlign.Id) do y
-      findfirst(x -> y == x, synGroups.Id) |> p -> getindex(synGroups.Group, p) |> p -> convert(String, p)
+      # add syncytin group label
+      insertcols!(_, :Group => repeat([""], size(_, 1)))
+
+      # add phylogenetic group
+      _.Group = map(_.Id) do χ
+        findfirst(ζ -> χ == ζ, synGroups.Id) |> π -> getindex(synGroups.Group, π) |> π -> convert(String, π)
+      end
     end
 
     bestPositions = bestPosition(assemblyAlign)
@@ -62,6 +75,7 @@ for ι ∈ eachindex(dirs)
     end
   end
 end
+
 # TODO: write dataframe to csv
 
 ################################################################################
