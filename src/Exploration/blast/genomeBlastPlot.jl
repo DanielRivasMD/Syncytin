@@ -1,10 +1,14 @@
 ################################################################################
 
+# project
+projDir = "/Users/drivas/Factorem/Syncytin"
+
+################################################################################
+
 # load packages
 begin
-
   using Pkg
-  Pkg.activate("/Users/drivas/Factorem/Syncytin/")
+  Pkg.activate(projDir)
 
   using DelimitedFiles
   using RCall
@@ -12,8 +16,8 @@ end;
 
 ################################################################################
 
-unfilt = "data/out"
-filt = "data/outfilt"
+unfilt = string( projDir, "/data/out" )
+filt = string( projDir, "/data/outfilt" )
 
 unfiltlist = readdir(unfilt)
 filtlist = readdir(filt)
@@ -30,6 +34,6 @@ end
 ################################################################################
 
 @rput assemblyHits
-R"source('src/blast/genomeBlastPlot.R')"
+R"source( paste0( $projDir, '/src/blast/genomeBlastPlot.R' ) )"
 
 ################################################################################

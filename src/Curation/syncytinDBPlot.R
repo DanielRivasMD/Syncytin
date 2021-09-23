@@ -1,8 +1,15 @@
 ################################################################################
 
+# project
+projDir <- '/Users/drivas/Factorem/Syncytin'
+
+################################################################################
+
 # load packages
-library(tidyverse)
-library(dendextend)
+require(magrittr)
+require(tidyverse)
+
+require(dendextend)
 
 ################################################################################
 

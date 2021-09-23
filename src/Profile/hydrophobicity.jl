@@ -1,10 +1,14 @@
 ################################################################################
 
+# project
+projDir = "/Users/drivas/Factorem/Syncytin"
+
+################################################################################
+
 # load packages
 begin
-
   using Pkg
-  Pkg.activate("/Users/drivas/Factorem/Syncytin/")
+  Pkg.activate(projDir)
 
   using DelimitedFiles
   using DataFrames
@@ -13,8 +17,8 @@ end;
 
 ################################################################################
 
-# load modules & functions
-include("/Users/drivas/Factorem/Syncytin/src/Utilities/syncytinDB.jl");
+# load modules
+include( string( projDir, "/src/Utilities/syncytinDB.jl" ) );
 
 ################################################################################
 
@@ -66,9 +70,9 @@ end
 
 # load hydrophobicity values
 hydro = @chain begin
-  readdlm("src/protein/hydrophobicity.tsv")
-  DataFrame(_, :auto)
-  rename!(_, ["AminoAcid", "OneLetterCode", "HydropathyScore"])
+  readdlm( string( projDir, "/src/protein/hydrophobicity.tsv" ) )
+  DataFrame(:auto)
+  rename!(["AminoAcid", "OneLetterCode", "HydropathyScore"])
 end
 
 # cast columns
@@ -81,12 +85,12 @@ end
 ################################################################################
 
 # load protein database
-synAr = syncytinReader("/Users/drivas/Factorem/Syncytin/data/syncytinDB/protein/CURATEDsyncytinLibrary.fasta")
+synAr = syncytinReader( string( projDir, "/data/syncytinDB/protein/CURATEDsyncytinLibrary.fasta" ) )
 
 ################################################################################
 
 # construct plot
-R"pdf('hydropathy.pdf')"
+R"pdf( paste0( projDir, '/data/profile/hydropathy.pdf', ) )"
 
 for ι in 1:length(synAr)
 

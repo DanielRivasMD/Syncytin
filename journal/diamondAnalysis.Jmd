@@ -14,15 +14,23 @@ Moreover, _syncytin_ expression in placental tissues has been identified and cha
 
 ```julia; echo = false
 
+# project
+projDir = "/Users/drivas/Factorem/Syncytin"
+
 # load packages
-using DelimitedFiles
-using DataFrames
-using Plots
+begin
+  using Pkg
+  Pkg.activate(projDir)
+
+  using DelimitedFiles
+  using DataFrames
+  using Plots
+end
 
 # load diamond output file
 begin
   headers = ["qseqid", "sseqid", "pident", "length", "mismatch", "gapopen", "qstart", "qend", "sstart", "send", "evalue", "bitscore"] # default diamond headers
-  crocro = DataFrame(readdlm("/Users/drivas/Factorem/Syncytin/data/diamond/croCro.tsv"), headers)
+  crocro = DataFrame(readdlm( string( projDir, "/data/diamond/croCro.tsv" ) ), headers)
 end;
 
 ```

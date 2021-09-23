@@ -1,10 +1,14 @@
 ################################################################################
 
+# project
+projDir = "/Users/drivas/Factorem/Syncytin"
+
+################################################################################
+
 # load packages
 begin
-
   using Pkg
-  Pkg.activate("/Users/drivas/Factorem/Syncytin/")
+  Pkg.activate(projDir)
 
   using DelimitedFiles
   using RCall
@@ -13,8 +17,8 @@ end;
 
 ################################################################################
 
-# load modules & functions
-include("/Users/drivas/Factorem/Syncytin/src/Utilities/syncytinDB.jl");
+# load modules
+include( string( projDir, "/src/Utilities/syncytinDB.jl" ) );
 
 ################################################################################
 
@@ -40,7 +44,7 @@ synGroups = ((sgDf.Group |> freqtable).dicts .|> keys)[1] |> π -> convert.(Stri
 # subset indexes
 ι = convert.(Int64, readdlm( string( collectionDB, "/protein/CURATEDindexes.csv" ) ))[:, 1]
 
-figName = "/Users/drivas/Factorem/Syncytin/arch/manuscripts/Figures/CURATEDhclustProt.jpg"
+figName = string( projDir, "/arch/manuscripts/Figures/CURATEDhclustProt.jpg" )
 rlevAr = levAr[ι, ι]
 rtagAr = zeros(Int64, size(sgDf, 1))
 for ι in eachindex(synGroups)
@@ -51,6 +55,6 @@ end
 @rput rlevAr
 @rput rtagAr
 @rput synGroups
-R"source('/Users/drivas/Factorem/Syncytin/src/Clustering/syncytinDBPlot.R')"
+R"source( paste0( $projDir, '/src/Clustering/syncytinDBPlot.R' ) )"
 
 ################################################################################

@@ -3,10 +3,10 @@
 ################################################################################
 
 # declarations
-syncProj=$HOME/Factorem/Syncytin
-phylogeny=${syncProj}/src/phylogeny
-excalibur=${syncProj}/src/excalibur
-annotation=${syncProj}/data/annotation
+projDir=$HOME/Factorem/Syncytin
+phylogeny=${projDir}/src/phylogeny
+excalibur=${projDir}/excalibur
+annotation=${projDir}/data/annotation
 
 ################################################################################
 

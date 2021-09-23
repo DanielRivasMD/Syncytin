@@ -1,10 +1,14 @@
 ################################################################################
 
+# project
+projDir = "/Users/drivas/Factorem/Syncytin"
+
+################################################################################
+
 # load packages
 begin
-
   using Pkg
-  Pkg.activate("/Users/drivas/Factorem/Syncytin/")
+  Pkg.activate(projDir)
 
   using DelimitedFiles
 end;
@@ -12,7 +16,7 @@ end;
 ################################################################################
 
 # load functions
-include("/Users/drivas/Factorem/Syncytin/src/Utilities/syncytinDB.jl");
+include( string( projDir, "/src/Utilities/syncytinDB.jl" ));
 
 ################################################################################
 

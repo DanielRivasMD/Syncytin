@@ -1,28 +1,28 @@
 ################################################################################
 
 # project
-projDir <- '/Users/drivas/Factorem/Syncytin/'
+projDir <- '/Users/drivas/Factorem/Syncytin'
 
 ################################################################################
 
 # load packages
-library(tidyverse)
-library(magrittr)
-library(ggtreeExtra)
-library(ggstar)
-library(ggplot2)
-library(ggtree)
-library(treeio)
-library(ggnewscale)
+require(magrittr)
+require(tidyverse)
+
+require(ggtree)
+require(ggtreeExtra)
+require(ggstar)
+require(treeio)
+require(ggnewscale)
 
 ################################################################################
 
 # load tree file
-trfile <- 'data/phylogeny/assemblyTree.nwk'
+trfile <- paste0( projDir, '/data/phylogeny/assemblyTree.nwk' )
 tree <- read.tree(trfile)
 
 # load alignment hits
-dmfile <- 'data/phylogeny/diamondHits.csv'
+dmfile <- paste0( projDir, '/data/phylogeny/diamondHits.csv' )
 diamondHits <- read_csv(dmfile)
 
 ################################################################################

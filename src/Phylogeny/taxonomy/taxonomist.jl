@@ -1,7 +1,7 @@
 ################################################################################
 
 # project
-projDir = "/Users/drivas/Factorem/Syncytin/"
+projDir = "/Users/drivas/Factorem/Syncytin"
 
 ################################################################################
 
@@ -17,7 +17,7 @@ end;
 ################################################################################
 
 # load modules
-include( string(projDir, "src/Utilities/ioDataFrame.jl") )
+include( string( projDir, "/src/Utilities/ioDataFrame.jl" ) );
 
 ################################################################################
 
@@ -25,7 +25,7 @@ include( string(projDir, "src/Utilities/ioDataFrame.jl") )
 function taxonomist(ζ::String; taxGroups::Vector{String} = ["Kingdom", "Phylum", "Class", "Order", "Family", "genus"])
 
   # define path
-  dir = string( projDir, "data/diamondOutput/", ζ, "/taxonomist" )
+  dir = string( projDir, "/data/diamondOutput/", ζ, "/taxonomist" )
 
   # create data frame
   outDf = DataFrame( :Species => ζ )
@@ -54,7 +54,7 @@ end
 ################################################################################
 
 # load assembly results
-dDir = "data/diamondOutput"
+dDir = string( projDir, "/data/diamondOutput" )
 dirs = readdir(dDir)
 
 for ι ∈ eachindex(dirs)
@@ -76,6 +76,6 @@ end
 ################################################################################
 
 # write csv
-writedf( string(projDir, "data/phylogeny/taxonomyDf.csv", taxonomyDf, ',') )
+writedf( string( projDir, "/data/phylogeny/taxonomyDf.csv" ), taxonomyDf, ',')
 
 ################################################################################

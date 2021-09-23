@@ -2,10 +2,10 @@
 
 ################################################################################
 
-syncProj=$HOME/Factorem/Syncytin
-collector=${syncProj}/src/Collection
-excalibur=${syncProj}/excalibur
-syncDB=${syncProj}/data/syncytinDB
+projDir=$HOME/Factorem/Syncytin
+collector=${projDir}/src/Collection
+excalibur=${projDir}/excalibur
+syncDB=${projDir}/data/syncytinDB
 accNDir=${syncDB}/accessionN
 accPDir=${syncDB}/accessionP
 genBank=${syncDB}/genBank

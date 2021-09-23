@@ -1,7 +1,7 @@
 ################################################################################
 
 # project
-projDir = "/Users/drivas/Factorem/Syncytin/"
+projDir = "/Users/drivas/Factorem/Syncytin"
 
 ################################################################################
 
@@ -18,7 +18,7 @@ end;
 ################################################################################
 
 # load modules
-include( string(projDir, "src/Utilities/ioDataFrame.jl") )
+include( string( projDir, "/src/Utilities/ioDataFrame.jl" ) );
 
 ################################################################################
 
@@ -34,7 +34,7 @@ end
 
 # load syncytin groups
 synGroups = @chain begin
-  readdlm( string(projDir, "data/syncytinDB/protein/CURATEDsyncytinGroups.csv", ',') )
+  readdlm( string( projDir, "/data/syncytinDB/protein/CURATEDsyncytinGroups.csv", ',' ) )
   DataFrame(:auto)
   rename!(["Id", "Description", "Group"])
 end
@@ -42,20 +42,20 @@ end
 ################################################################################
 
 # load assembly results
-dDir = "data/diamondOutput"
+dDir = string( projDir, "/data/diamondOutput" )
 dirs = readdir(dDir)
 
 # iterate on diamond output items
 for ι ∈ eachindex(dirs)
   dr = dirs[ι]
-  lr = readdir( string(dDir, "/", dr) )
+  lr = readdir( string( dDir, "/", dr ) )
   xr = contains.(lr, r"filtered")
   if sum(xr) != 0
     @debug lr[xr]
 
     # load assembly data
     assemblyAlign = @chain begin
-      readdlm( string(dDir, "/", dr, "/", lr[xr][1]) )
+      readdlm( string( dDir, "/", dr, "/", lr[xr][1] ) )
       DataFrame(:auto)
       rename!(["Scaffold", "Id", "Identity", "start", "end", "evalue"])
     end
@@ -88,6 +88,6 @@ end
 ################################################################################
 
 # write csv
-writedf( string(projDir, "data/phylogeny/positionDf.csv", positionDf, ',') )
+writedf( string( projDir, "/data/phylogeny/positionDf.csv" ), positionDf, ',' )
 
 ################################################################################

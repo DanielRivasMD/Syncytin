@@ -1,8 +1,13 @@
 ################################################################################
 
+# project
+projDir <- '/Users/drivas/Factorem/Syncytin'
+
+################################################################################
+
 # load packages
-library(ggplot2)
-library(dplyr)
+require(magrittr)
+require(tidyverse)
 
 ################################################################################
 
@@ -14,8 +19,8 @@ assemblyHits <- data.frame(
 
 ################################################################################
 
-# pdf("/Users/drivas/Factorem/Syncytin/arch/plots/GenomeBlast.pdf", width = 6, height = 4)
-jpeg("/Users/drivas/Factorem/Syncytin/arch/plots/GenomeBlast.jpg", width = 1200, height = 1000)
+# pdf( paste0( projDir, '/arch/plots/GenomeBlast.pdf' ), width = 6, height = 4 )
+jpeg( paste0( projDir, '/arch/plots/GenomeBlast.jpg' ), width = 1200, height = 1000 )
 
 # plot
 assemblyHits %>%

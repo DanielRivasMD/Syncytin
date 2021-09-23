@@ -2,6 +2,10 @@
 
 ################################################################################
 
+# declarations
+projDir=$HOME/Factorem/Syncytin
+phylogeny=${projDir}/data/phylogeny
+diamond=${projDir}/data/diamondOutput
 taxGroups=(kingdom phylum class order family genus)
 
 ################################################################################
@@ -10,7 +14,7 @@ while read id ass ann
 do
 
   # create directory
-  dir="/Users/drivas/Factorem/Syncytin/data/diamondOutput/${id}/taxonomist"
+  dir="${diamond}/${id}/taxonomist"
   mkdir -p ${dir}
 
   # collect taxonomy
@@ -24,7 +28,7 @@ do
     grep -w $tx ${dir}/${id}_taxonomist.xml > ${dir}/${id}_${tx}.xml
   done
 
-done < data/phylogeny/CURATEDassembly.list
-#done <<< `awk 'NR == 1 {print $0}' data/phylogeny/CURATEDassembly.list`
+done < ${phylogeny}/CURATEDassembly.list
+#done <<< `awk 'NR == 1 {print $0}' ${phylogeny}/CURATEDassembly.list`
 
 ################################################################################

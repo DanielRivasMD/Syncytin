@@ -1,10 +1,14 @@
 ################################################################################
 
+# project
+projDir = "/Users/drivas/Factorem/Syncytin"
+
+################################################################################
+
 # load packages
 begin
-
   using Pkg
-  Pkg.activate("/Users/drivas/Factorem/Syncytin/")
+  Pkg.activate(projDir)
 
   using Distances
   using BioAlignments
@@ -21,7 +25,7 @@ end;
 
 # variables
 begin
-  collectionDB = "/Users/drivas/Factorem/Syncytin/data/syncytinDB"
+  collectionDB = string( projDir, "/data/syncytinDB" )
 end
 
 ################################################################################

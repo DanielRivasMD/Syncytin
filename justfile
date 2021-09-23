@@ -41,18 +41,20 @@ print:
 ################################################################################
 
 # GO tools
-# @ buildGenomicPositions:
-#   go build -o ${HOME}/Factorem/Syncytin/src/excalibur ${HOME}/Factorem/Syncytin/src/phylogeny/genomicPositions.go
+################################################################################
 
-# @ runGenomicPositions:
-#   if [[ -x ${HOME}/Factorem/Syncytin/src/excalibur/genomicPositions ]]; then rm ${HOME}/Factorem/Syncytin/src/excalibur/genomicPositions; fi;
-#   source ${HOME}/Factorem/Syncytin/src/phylogeny/genomicPositions.sh
+@ buildGenomicPositions:
+  go build -o ${HOME}/Factorem/Syncytin/excalibur ${HOME}/Factorem/Syncytin/src/Orthology/genomicPositions.go
+
+@ runGenomicPositions:
+  if [[ -x ${HOME}/Factorem/Syncytin/excalibur/genomicPositions ]]; then rm ${HOME}/Factorem/Syncytin/excalibur/genomicPositions; fi;
+  source ${HOME}/Factorem/Syncytin/src/Orthology/genomicPositions.sh
 
 @ buildSyntenyAnnotationRetrive:
-  go build -o ${HOME}/Factorem/Syncytin/src/excalibur ${HOME}/Factorem/Syncytin/src/phylogeny/syntenyAnnotationRetrive.go
+  go build -o ${HOME}/Factorem/Syncytin/excalibur ${HOME}/Factorem/Syncytin/src/Orthology/syntenyAnnotationRetrive.go
 
 @ runSyntenyAnnotationRetrive:
-  if [[ -x ${HOME}/Factorem/Syncytin/src/excalibur/syntenyAnnotationRetrive ]]; then rm ${HOME}/Factorem/Syncytin/src/excalibur/syntenyAnnotationRetrive; fi
-  source ${HOME}/Factorem/Syncytin/src/phylogeny/syntenyAnnotationRetrive.sh
+  if [[ -x ${HOME}/Factorem/Syncytin/excalibur/syntenyAnnotationRetrive ]]; then rm ${HOME}/Factorem/Syncytin/excalibur/syntenyAnnotationRetrive; fi
+  source ${HOME}/Factorem/Syncytin/src/Orthology/syntenyAnnotationRetrive.sh
 
 ################################################################################

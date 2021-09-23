@@ -3,10 +3,10 @@
 ################################################################################
 
 # declarations
-syncProj=$HOME/Factorem/Syncytin
-phylogeny=${syncProj}/src/phylogeny
-excalibur=${syncProj}/src/excalibur
-diamond=${syncProj}/data/diamondOutput
+projDir=$HOME/Factorem/Syncytin
+orthology=${projDir}/src/Orthology
+excalibur=${projDir}/excalibur
+diamond=${projDir}/data/diamondOutput
 
 ################################################################################
 
@@ -14,7 +14,7 @@ diamond=${syncProj}/data/diamondOutput
 if [[ ! -x ${excalibur}/genomicPositions ]]
 then
   echo "Building Go executable..."
-  go build -o ${excalibur}/ ${phylogeny}/genomicPositions.go
+  go build -o ${excalibur}/ ${orthology}/genomicPositions.go
 fi
 
 # filter alingment results

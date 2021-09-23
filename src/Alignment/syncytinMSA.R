@@ -1,14 +1,21 @@
 ################################################################################
 
+# project
+projDir <- '/Users/drivas/Factorem/Syncytin'
+
+################################################################################
+
 # load packages
-library(tidyverse)
-library(msa)
-library(bios2mds)
+require(magrittr)
+require(tidyverse)
+
+require(msa)
+require(bios2mds)
 
 ################################################################################
 
 # declare syncytin library
-synFile <- 'data/syncytinDB/protein/CURATEDsyncytinLibrary.fasta'
+synFile <- paste0( projDir, '/data/syncytinDB/protein/CURATEDsyncytinLibrary.fasta' )
 
 ################################################################################
 
@@ -31,6 +38,6 @@ msaPrettyPrint(syncytinMSA, output = 'pdf', showLogo = 'none', askForOverwrite =
 synMSA_as_align <- msaConvert(syncytinMSA, 'bios2mds::align')
 
 # write multiple sequence alignment
-export.fasta(synMSA_as_align, outfile = 'data/syncytinDB/msa/syncytin.fasta')
+export.fasta(synMSA_as_align, outfile = paste0( projDir, '/data/syncytinDB/msa/syncytin.fasta' ) )
 
 ################################################################################

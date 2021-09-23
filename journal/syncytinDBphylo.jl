@@ -1,11 +1,26 @@
+################################################################################
 
-# load modules & functions
-include("/Users/drivas/Factorem/Syncytin/src/Utilities/syncytinDB.jl");
+# project
+projDir = "/Users/drivas/Factorem/Syncytin"
 
+################################################################################
 
+# load packages
+begin
+  using Pkg
+  Pkg.activate(projDir)
+
+  using DelimitedFiles
+end
+
+################################################################################
+
+# load modules
+include( string( projDir, "/src/Utilities/syncytinDB.jl" ) );
+
+################################################################################
 
 # run analysis on nucleotide & protein databases
-import DelimitedFiles
 db = [:nucleotide, :protein]
 ad = 0
 
@@ -16,11 +31,11 @@ for d in [:N, :P]
 
   # read sequences from file
   synAr = Symbol("synAr", d)
-  @eval $synAr = syncytinReader( synDB = string("/Users/drivas/Factorem/Syncytin/data/syncytinDB/", db[ad], "/", "syncytinLibrary.fasta") )
+  @eval $synAr = syncytinReader( synDB = string( projDir, "/data/syncytinDB/", db[ad], "/", "syncytinLibrary.fasta") )
 
   # group syncytin sequences
   syngDf = Symbol("syngDf", d)
-  @eval $syngDf = syncytinGroupReader( synG = string("/Users/drivas/Factorem/Syncytin/data/syncytinDB/", db[ad], "/", "syncytinGroups.csv") )
+  @eval $syngDf = syncytinGroupReader( synG = string( projDir, "/data/syncytinDB/", db[ad], "/", "syncytinGroups.csv") )
 
   # plot sequence length
   lenPlot = Symbol("lenPlot", d)
@@ -28,7 +43,7 @@ for d in [:N, :P]
 
   # calculate distance & hierarchical clustering
   levAr = Symbol("levAr", d)
-  levFile =  string("/Users/drivas/Factorem/Syncytin/data/syncytinDB/", db[ad], "/", "levenshteinDistance.tsv")
+  levFile =  string( projDir, "/data/syncytinDB/", db[ad], "/", "levenshteinDistance.tsv")
   @eval if isfile($levFile)
     $levAr = DelimitedFiles.readdlm($levFile)
   else
@@ -50,6 +65,7 @@ for d in [:N, :P]
 
 end
 
+################################################################################
 
 lenPlotP
 
@@ -73,3 +89,5 @@ lenPlotTrimN
 
 
 levPlotTrimN
+
+################################################################################
