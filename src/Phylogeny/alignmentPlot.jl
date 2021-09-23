@@ -14,8 +14,20 @@ end;
 
 ################################################################################
 
-# TODO: dependes on genomicPositions. perhaps write to csv
-# TODO: dependes on taxonomist. perhaps also write to csv
+# read position
+begin
+  f, h = readdlm("data/phylogeny/positionDf.csv", header = true)
+  positionDf = DataFrame(f, h |> vec)
+end
+
+# read taxonomy
+begin
+  f, h = readdlm("data/phylogeny/taxonomyDf.csv", header = true)
+  taxonomyDf = DataFrame(f, h |> vec)
+end
+
+################################################################################
+
 diamondHits = freqtable(positionDf.Species)
 toPlotDf = taxonomyDf[:, [:Species, :Order]]
 
