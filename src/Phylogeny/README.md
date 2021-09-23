@@ -6,6 +6,8 @@ Visualize results from **Exploration** in the phylogenetic context.
 
 `alignmentPlot.R` => plot results from diamond search.
 
+`plotTree.jl` => concatenate taxonomy & alignment data.
+
 `plotTree.R` => draw species phylogenetic tree & alignment information.
 
 #### `taxonomy`
