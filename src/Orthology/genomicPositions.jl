@@ -77,6 +77,10 @@ for ι ∈ eachindex(dirs)
   end
 end
 
-# TODO: write dataframe to csv
+################################################################################
+
+# write csv
+toWrite = [(positionDf |> names |> permutedims); (positionDf |> Array)]
+writedlm("data/phylogeny/positionDf.csv", toWrite, '\t')
 
 ################################################################################
