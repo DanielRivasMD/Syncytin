@@ -29,9 +29,9 @@ function taxonomist(ζ::String; taxGroups::Vector{String} = ["Kingdom", "Phylum"
     xfile = string(dir, "/", ζ, "_", τ, ".xml")
     try
       @eval txFile = parse_file( $xfile )
-      for c ∈ child_elements( LightXML.root(txFile) )
-        if name(c) == "name"
-          insertcols!(outDf, Symbol(τ) => content(c))
+      for γ ∈ child_elements( LightXML.root(txFile) )
+        if name(γ) == "name"
+          insertcols!(outDf, Symbol(τ) => content(γ))
         end
       end
     catch ε
@@ -63,5 +63,11 @@ for ι ∈ eachindex(dirs)
     end
   end
 end
+
+################################################################################
+
+# write csv
+toWrite = [(taxonomyDf |> names |> permutedims); (taxonomyDf |> Array)]
+writedlm("data/phylogeny/taxonomyDf.csv", toWrite, '\t')
 
 ################################################################################
