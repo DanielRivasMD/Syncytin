@@ -88,7 +88,7 @@ end
 
 ################################################################################
 
-# write tsv
-writedf("data/phylogeny/positionDf.tsv", positionDf)
+# write csv
+writedf("data/phylogeny/positionDf.csv", positionDf, ',')
 
 ################################################################################

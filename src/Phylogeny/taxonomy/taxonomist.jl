@@ -75,7 +75,7 @@ end
 
 ################################################################################
 
-# write tsv
-writedf("data/phylogeny/taxonomyDf.tsv", taxonomyDf)
+# write csv
+writedf("data/phylogeny/taxonomyDf.csv", taxonomyDf, ',')
 
 ################################################################################

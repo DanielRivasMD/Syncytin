@@ -24,10 +24,10 @@ include( string(projDir, "src/Utilities/ioDataFrame.jl") )
 ################################################################################
 
 # read position
-positionDf = readdf("data/phylogeny/positionDf.csv")
+positionDf = readdf("data/phylogeny/positionDf.csv", ',')
 
 # read taxonomy
-taxonomyDf = readdf("data/phylogeny/taxonomyDf.csv")
+taxonomyDf = readdf("data/phylogeny/taxonomyDf.csv", ',')
 
 ################################################################################
 
