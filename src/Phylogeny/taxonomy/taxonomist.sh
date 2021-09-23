@@ -24,7 +24,7 @@ do
     grep -w $tx ${dir}/${id}_taxonomist.xml > ${dir}/${id}_${tx}.xml
   done
 
-done < data/CURATEDassembly.list
-#done <<< `awk 'NR == 1 {print $0}' data/CURATEDassembly.list`
+done < data/phylogeny/CURATEDassembly.list
+#done <<< `awk 'NR == 1 {print $0}' data/phylogeny/CURATEDassembly.list`
 
 ################################################################################

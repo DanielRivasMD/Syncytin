@@ -13,7 +13,7 @@ library(ggnewscale)
 ################################################################################
 
 # load tree file
-trfile <- 'data/assemblyTree.nwk'
+trfile <- 'data/phylogeny/assemblyTree.nwk'
 tree <- read.tree(trfile)
 
 ################################################################################
