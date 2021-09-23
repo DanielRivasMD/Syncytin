@@ -55,6 +55,7 @@ for ι ∈ eachindex(dirs)
     @chain assemblyAlign begin
       # add species
       insertcols!(:Species => replace(dr, "filtered.tsv" => "") |> π -> replace(π, "_" => " "))
+      insertcols!(:ID => replace(dr, "filtered.tsv" => ""))
 
       # add syncytin group label
       insertcols!(_, :Group => repeat([""], size(_, 1)))
