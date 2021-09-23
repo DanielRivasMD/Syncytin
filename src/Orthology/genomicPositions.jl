@@ -34,7 +34,7 @@ end
 
 # load syncytin groups
 synGroups = @chain begin
-  readdlm("data/syncytinDB/protein/CURATEDsyncytinGroups.csv", ',')
+  readdlm( string(projDir, "data/syncytinDB/protein/CURATEDsyncytinGroups.csv", ',') )
   DataFrame(:auto)
   rename!(["Id", "Description", "Group"])
 end
@@ -63,8 +63,7 @@ for ι ∈ eachindex(dirs)
     # append columns
     @chain assemblyAlign begin
       # add species
-      insertcols!(:Species => replace(dr, "filtered.tsv" => "") |> π -> replace(π, "_" => " "))
-      insertcols!(:ID => replace(dr, "filtered.tsv" => ""))
+      insertcols!(:Species => replace(dr, "filtered.tsv" => ""))
 
       # add syncytin group label
       insertcols!(_, :Group => repeat([""], size(_, 1)))
@@ -89,6 +88,6 @@ end
 ################################################################################
 
 # write csv
-writedf("data/phylogeny/positionDf.csv", positionDf, ',')
+writedf( string(projDir, "data/phylogeny/positionDf.csv", positionDf, ',') )
 
 ################################################################################

@@ -25,10 +25,10 @@ include( string(projDir, "src/Utilities/ioDataFrame.jl") )
 function taxonomist(ζ::String; taxGroups::Vector{String} = ["Kingdom", "Phylum", "Class", "Order", "Family", "genus"])
 
   # define path
-  dir = string( "/Users/drivas/Factorem/Syncytin/data/diamondOutput/", ζ, "/taxonomist" )
+  dir = string( projDir, "data/diamondOutput/", ζ, "/taxonomist" )
 
   # create data frame
-  outDf = DataFrame( :Species => replace(ζ, "_" => " ") )
+  outDf = DataFrame( :Species => ζ )
 
   # iterate on taxonomic groups
   for τ ∈ taxGroups
@@ -76,6 +76,6 @@ end
 ################################################################################
 
 # write csv
-writedf("data/phylogeny/taxonomyDf.csv", taxonomyDf, ',')
+writedf( string(projDir, "data/phylogeny/taxonomyDf.csv", taxonomyDf, ',') )
 
 ################################################################################
