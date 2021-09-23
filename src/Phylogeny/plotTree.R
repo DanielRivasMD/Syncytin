@@ -1,5 +1,10 @@
 ################################################################################
 
+# project
+projDir <- '/Users/drivas/Factorem/Syncytin/'
+
+################################################################################
+
 # load packages
 library(tidyverse)
 library(magrittr)
@@ -16,6 +21,10 @@ library(ggnewscale)
 trfile <- 'data/phylogeny/assemblyTree.nwk'
 tree <- read.tree(trfile)
 
+# load alignment hits
+dmfile <- 'data/phylogeny/diamondHits.csv'
+diamondHits <- read_csv(dmfile)
+
 ################################################################################
 
 # create tree plot
@@ -23,17 +32,15 @@ t0 <- ggtree(
   tree, layout = 'fan'
 )
 
-dat1 <- data.frame(ID = tree$tip.label, n = sample(1:10, length(tree), replace = T), p = sample(1:4, length(tree), replace = T))
-
 # add tip labels
 t1 <- t0 +
   geom_fruit(
-    data = dat1,
+    data = diamondHits,
     geom_point,
     mapping = aes(
-      y = ID,
-      size = n,
-      color = p
+      y = Species,
+      size = DiamondHits,
+      color = Order,
     )
   )
 
