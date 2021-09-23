@@ -1,15 +1,24 @@
 ################################################################################
 
+# project
+projDir = "/Users/drivas/Factorem/Syncytin/"
+
+################################################################################
+
 # load packages
 begin
-
   using Pkg
-  Pkg.activate("/Users/drivas/Factorem/Syncytin/")
+  Pkg.activate(projDir)
 
   import Chain: @chain
   using DelimitedFiles
   using DataFrames
 end;
+
+################################################################################
+
+# load modules
+include( string(projDir, "src/Utilities/ioDataFrame.jl") )
 
 ################################################################################
 
@@ -79,8 +88,7 @@ end
 
 ################################################################################
 
-# write csv
-toWrite = [(positionDf |> names |> permutedims); (positionDf |> Array)]
-writedlm("data/phylogeny/positionDf.csv", toWrite, '\t')
+# write tsv
+writedf("data/phylogeny/positionDf.tsv", positionDf)
 
 ################################################################################

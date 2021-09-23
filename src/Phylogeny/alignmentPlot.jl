@@ -1,10 +1,14 @@
 ################################################################################
 
+# project
+projDir = "/Users/drivas/Factorem/Syncytin/"
+
+################################################################################
+
 # load packages
 begin
-
   using Pkg
-  Pkg.activate("/Users/drivas/Factorem/Syncytin/")
+  Pkg.activate(projDir)
 
   using StatsPlots
   using DataFrames
@@ -14,17 +18,16 @@ end;
 
 ################################################################################
 
+# load modules
+include( string(projDir, "src/Utilities/ioDataFrame.jl") )
+
+################################################################################
+
 # read position
-begin
-  f, h = readdlm("data/phylogeny/positionDf.csv", header = true)
-  positionDf = DataFrame(f, h |> vec)
-end
+positionDf = readdf("data/phylogeny/positionDf.csv")
 
 # read taxonomy
-begin
-  f, h = readdlm("data/phylogeny/taxonomyDf.csv", header = true)
-  taxonomyDf = DataFrame(f, h |> vec)
-end
+taxonomyDf = readdf("data/phylogeny/taxonomyDf.csv")
 
 ################################################################################
 

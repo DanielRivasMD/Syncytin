@@ -1,14 +1,23 @@
 ################################################################################
 
+# project
+projDir = "/Users/drivas/Factorem/Syncytin/"
+
+################################################################################
+
 # load packages
 begin
-
   using Pkg
-  Pkg.activate("/Users/drivas/Factorem/Syncytin/")
+  Pkg.activate(projDir)
 
   using DataFrames
   using LightXML
 end;
+
+################################################################################
+
+# load modules
+include( string(projDir, "src/Utilities/ioDataFrame.jl") )
 
 ################################################################################
 
@@ -66,8 +75,7 @@ end
 
 ################################################################################
 
-# write csv
-toWrite = [(taxonomyDf |> names |> permutedims); (taxonomyDf |> Array)]
-writedlm("data/phylogeny/taxonomyDf.csv", toWrite, '\t')
+# write tsv
+writedf("data/phylogeny/taxonomyDf.tsv", taxonomyDf)
 
 ################################################################################
