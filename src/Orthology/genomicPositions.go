@@ -74,7 +74,7 @@ func genomicPositionsCollect(readFile string) {
 		alignLen, _ := strconv.ParseFloat(records[3], 64)
 
 		// filter criteria
-		if pIdent > 80 && alignLen > 400 {
+		if pIdent > 70 && alignLen > 350 {
 			// write
 			writeGenomicPositions(fileOut, records)
 		}
