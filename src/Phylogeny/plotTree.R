@@ -27,6 +27,11 @@ diamondHits <- read_csv(dmfile)
 
 ################################################################################
 
+# replace no hits
+diamondHits %<>% mutate(hits = na_if(hits, 0))
+
+################################################################################
+
 # create tree plot
 t0 <- ggtree(
   tree, layout = 'fan'
@@ -39,7 +44,7 @@ t1 <- t0 +
     geom_point,
     mapping = aes(
       y = Species,
-      size = DiamondHits,
+      size = hits,
       color = Order,
     )
   )
