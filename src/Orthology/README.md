@@ -2,7 +2,7 @@ Collect data on identified _syncitin_ loci.
 
 ### Workflow
 
-`genomicPositions.jl` => collect best loci from filtered output.
+`genomicPositions.jl` => collect best loci from filtered output & write to `/data/phylogeny/positionDf.csv`.
 
 `genomicPositions.go` => read **diamond** assembly search output & filter results.
 
