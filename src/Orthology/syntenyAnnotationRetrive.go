@@ -83,8 +83,11 @@ func main() {
 
 	syncytin.scaffold = annotScaffold
 
-	syncytin.positions.start, _ = strconv.ParseFloat(stringStart, 64)
-	syncytin.positions.end, _ = strconv.ParseFloat(stringEnd, 64)
+	tmpStart, _ := strconv.ParseFloat(stringStart, 64)
+	tmpEnd, _ := strconv.ParseFloat(stringEnd, 64)
+
+	syncytin.positions.start = math.Min(tmpStart, tmpEnd)
+	syncytin.positions.end = math.Max(tmpStart, tmpEnd)
 
 	annotate(readFile, syncytin)
 }
