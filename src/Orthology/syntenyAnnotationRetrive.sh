@@ -25,7 +25,12 @@ echo "Retrieving annotations..."
 for align in $( $(which exa) ${annotation} );
 do
   spp=$( awk -v align=$align 'BEGIN{FS = ","} {if ($3 == align ".gz") print $1}' ${phylogeny}/assembly.list )
-  ${excalibur}/syntenyAnnotationRetrive ${annotation}/${align} $( awk -v spp=$spp 'BEGIN{FS = ","} {if ($8 == spp) print $1, $2, $6}' ${phylogeny}/positionDf.csv )
+  awk -v spp=$spp 'BEGIN{FS = ","} {if ($8 == spp) print $1, $2, $6}' ${phylogeny}/positionDf.csv > ${phylogeny}/${spp}
+  while read scaffold start end
+  do
+    ${excalibur}/syntenyAnnotationRetrive ${annotation}/${align} ${scaffold} ${start} ${end}
+  done < ${phylogeny}/${spp}
+  rm ${phylogeny}/${spp}
 done
 
 ################################################################################
