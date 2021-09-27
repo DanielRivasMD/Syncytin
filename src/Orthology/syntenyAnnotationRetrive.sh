@@ -22,14 +22,31 @@ fi
 echo "Retrieving annotations..."
 
 # iterate on available annotations
-for align in $( $(which exa) ${annotation} );
+for align in $( $(which exa) ${annotation}/*gff3 );
 do
+  # capture file name
+  align=${align/*\/}
+
+  # remove to avoid appending
+  toRemove=${align/gff3/txt}
+  if [[ -f ${annotation}/${toRemove} ]]
+  then
+    rm ${annotation}/${toRemove}
+  fi
+
+  # collect species name
   spp=$( awk -v align=$align 'BEGIN{FS = ","} {if ($3 == align ".gz") print $1}' ${phylogeny}/assembly.list )
+
+  # write candidate loci
   awk -v spp=$spp 'BEGIN{FS = ","} {if ($8 == spp) print $1, $2, $6}' ${phylogeny}/positionDf.csv > ${phylogeny}/${spp}
+
+  # collect annotations around candidate loci
   while read scaffold start end
   do
     ${excalibur}/syntenyAnnotationRetrive ${annotation}/${align} ${scaffold} ${start} ${end}
   done < ${phylogeny}/${spp}
+
+  # remove candidate loci
   rm ${phylogeny}/${spp}
 done
 
