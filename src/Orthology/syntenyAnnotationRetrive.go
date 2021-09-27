@@ -17,6 +17,12 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// synteny range
+const (
+	nuclWindow = 500000.
+)
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // command line arguments
 var (
@@ -157,9 +163,6 @@ func annotationCollect(records []string, syncytin identified, ct int) int {
 
 		// raw attributes
 		rawAttributes := records[8]
-
-		// TODO: test on scaffold 3
-		nuclWindow := 100000
 
 		if annotations.scaffold == syncytin.scaffold && annotations.positions.start > (syncytin.positions.start-nuclWindow) && annotations.positions.end < (syncytin.positions.end+nuclWindow) && annotations.class == "gene" {
 			// counter
