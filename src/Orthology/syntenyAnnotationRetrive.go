@@ -11,6 +11,7 @@ import (
 	"math"
 	"os"
 	"reflect"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -30,10 +31,11 @@ var (
 	syncytin identified // identified struct
 
 	// command line arguments
-	readFile      string = os.Args[1]
-	annotScaffold string = os.Args[2]
-	stringStart   string = os.Args[3]
-	stringEnd     string = os.Args[4]
+	dataDir       string = os.Args[1]
+	readFile      string = os.Args[2]
+	annotScaffold string = os.Args[3]
+	stringStart   string = os.Args[4]
+	stringEnd     string = os.Args[5]
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -80,19 +82,33 @@ type attribute struct {
 
 func main() {
 
-	// declare file output
-	fileOut = readFile
-	fileOut = strings.TrimSuffix(fileOut, ".gff3")
-	fileOut = fileOut + ".txt"
-
 	// scaffold
 	syncytin.scaffold = annotScaffold
 
 	// positions
 	syncytin.positions.parseMinMax(stringStart, stringEnd)
 
+	// declare file output
+	fileOut = defineOut(readFile)
+
 	// execute logic
-	annotate(readFile)
+	annotate(dataDir + "/" + "annotation" + "/" + readFile)
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// define output file
+func defineOut(readFile string) string {
+	fileOut = readFile
+	reg := regexp.MustCompile(`HiC*`)
+	res := reg.FindStringIndex(fileOut)
+	fileOut = fileOut[0:res[0]]
+	fileOut = dataDir + "/" + "synteny" + "/" +
+		fileOut +
+		syncytin.scaffold + "_" +
+		strconv.FormatFloat(syncytin.positions.start, 'f', 0, 64) + "_" +
+		strconv.FormatFloat(syncytin.positions.end, 'f', 0, 64) + ".txt"
+	return fileOut
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -113,7 +129,7 @@ func (annotations *annotation) print() string {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // pass struct as reference to update
-func min_max(position *position, num1, num2 float64) {
+func minMax(position *position, num1, num2 float64) {
 	position.start = math.Min(num1, num2)
 	position.end = math.Max(num1, num2)
 }
@@ -125,7 +141,7 @@ func (position *position) parseMinMax(str1, str2 string) {
 	num1, _ := strconv.ParseFloat(str1, 64)
 	num2, _ := strconv.ParseFloat(str2, 64)
 
-	min_max(position, num1, num2)
+	minMax(position, num1, num2)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

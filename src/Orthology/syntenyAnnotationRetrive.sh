@@ -6,8 +6,9 @@
 projDir=$HOME/Factorem/Syncytin
 orthology=${projDir}/src/Orthology
 excalibur=${projDir}/excalibur
-annotation=${projDir}/data/annotation
-phylogeny=${projDir}/data/phylogeny
+dataDir=${projDir}/data
+annotation=${dataDir}/annotation
+phylogeny=${dataDir}/phylogeny
 
 ################################################################################
 
@@ -22,10 +23,8 @@ fi
 echo "Retrieving annotations..."
 
 # iterate on available annotations
-for align in $( $(which exa) ${annotation}/*gff3 );
+for align in $( $(which exa) ${annotation} );
 do
-  # capture file name
-  align=${align/*\/}
 
   # collect species name
   spp=$( awk -v align=$align 'BEGIN{FS = ","} {if ($3 == align ".gz") print $1}' ${phylogeny}/assembly.list )
@@ -36,7 +35,7 @@ do
   # collect annotations around candidate loci
   while read scaffold start end
   do
-    ${excalibur}/syntenyAnnotationRetrive ${annotation}/${align} ${scaffold} ${start} ${end}
+    ${excalibur}/syntenyAnnotationRetrive ${dataDir} ${align} ${scaffold} ${start} ${end}
   done < ${phylogeny}/${spp}
 
   # remove candidate loci
