@@ -17,8 +17,13 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+// command line arguments
 var (
-	readFile string = os.Args[1] // command line argument
+	readFile      string = os.Args[1]
+	annotScaffold string = os.Args[2]
+	stringStart   string = os.Args[3]
+	stringEnd     string = os.Args[4]
 	// fileOut  string
 )
 
@@ -68,12 +73,19 @@ func main() {
 
 	// fileOut := readFile
 
-	annotate(readFile)
+	var syncytin identified
+
+	syncytin.scaffold = annotScaffold
+
+	syncytin.positions.start, _ = strconv.ParseFloat(stringStart, 64)
+	syncytin.positions.end, _ = strconv.ParseFloat(stringEnd, 64)
+
+	annotate(readFile, syncytin)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func annotate(readFile string) {
+func annotate(readFile string, syncytin identified) {
 
 	// open an input file, exit on error
 	inputFile, readErr := os.Open(readFile)
@@ -96,7 +108,7 @@ func annotate(readFile string) {
 		records := strings.Split(scanner.Text(), "\t")
 
 		// collect patterns. internal values are redeclared every iteration
-		ct = annotationCollect(records, ct)
+		ct = annotationCollect(records, syncytin, ct)
 
 	}
 
@@ -117,7 +129,7 @@ func annotate(readFile string) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-func annotationCollect(records []string, ct int) int {
+func annotationCollect(records []string, syncytin identified, ct int) int {
 
 	if len(records) > 1 {
 
@@ -147,13 +159,9 @@ func annotationCollect(records []string, ct int) int {
 		rawAttributes := records[8]
 
 		// TODO: test on scaffold 3
-		annotStart := 21359746.
-		annotEnd := 21358328.
-		fixedStart := int(math.Min(annotStart, annotEnd))
-		fixedEnd := int(math.Max(annotStart, annotEnd))
 		nuclWindow := 100000
 
-		if /*len(records) == 9 && */ annotations.scaffold == "HiC_scaffold_3" && annotations.positions.start > (fixedStart-nuclWindow) && annotations.positions.end < (fixedEnd+nuclWindow) && annotations.class == "gene" {
+		if annotations.scaffold == syncytin.scaffold && annotations.positions.start > (syncytin.positions.start-nuclWindow) && annotations.positions.end < (syncytin.positions.end+nuclWindow) && annotations.class == "gene" {
 			// counter
 			ct++
 
@@ -163,8 +171,8 @@ func annotationCollect(records []string, ct int) int {
 			// printing
 			fmt.Println("")
 			fmt.Println("Scaffold: ", annotations.scaffold)
-			fmt.Println("Syncytin positions: ", fixedStart, " - ", fixedEnd)
-			fmt.Println("Positions: ", annotations.positions.start, " - ", annotations.positions.end)
+			fmt.Println("Syncytin positions: ", syncytin.positions.start, "-", syncytin.positions.end)
+			fmt.Println("Positions: ", annotations.positions.start, "-", annotations.positions.end)
 			fmt.Println("Class / Type: ", annotations.class)
 			fmt.Println("Score: ", annotations.score)
 			fmt.Println("Strand: ", annotations.strand)
