@@ -79,10 +79,13 @@ func main() {
 
 	// fileOut := readFile
 
+	// declare identified struct
 	var syncytin identified
 
+	// scaffold
 	syncytin.scaffold = annotScaffold
 
+	// positions
 	syncytin.positions.parseMinMax(stringStart, stringEnd)
 
 	annotate(readFile, syncytin)
@@ -90,6 +93,7 @@ func main() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// pass struct as reference to update
 func min_max(position *position, num1, num2 float64) {
 	position.start = math.Min(num1, num2)
 	position.end = math.Max(num1, num2)
@@ -97,6 +101,7 @@ func min_max(position *position, num1, num2 float64) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// parse values & determine minimum / maximum
 func (position *position) parseMinMax(str1, str2 string) {
 	num1, _ := strconv.ParseFloat(str1, 64)
 	num2, _ := strconv.ParseFloat(str2, 64)
@@ -105,6 +110,8 @@ func (position *position) parseMinMax(str1, str2 string) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// read file & collect annotations
 func annotate(readFile string, syncytin identified) {
 
 	// open an input file, exit on error
@@ -135,6 +142,8 @@ func annotate(readFile string, syncytin identified) {
 	fmt.Println("Number of hits: ", ct)
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // annotations := []string{
 // 	"seqid",
 // 	"source",
@@ -149,6 +158,7 @@ func annotate(readFile string, syncytin identified) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// collect annotations
 func annotationCollect(records []string, syncytin identified, ct int) int {
 
 	if len(records) > 1 {
@@ -245,6 +255,7 @@ func attributeSegregate(rawAttributes string, attributes *attribute) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// add collected attribute
 func (attributes *attribute) AddAttribute(ats, field string) {
 	if strings.Contains(ats, field) {
 		out := strings.TrimPrefix(ats, field+"=")
