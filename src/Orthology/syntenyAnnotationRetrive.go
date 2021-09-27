@@ -26,11 +26,11 @@ const (
 
 // command line arguments
 var (
+	fileOut       string // infered from input
 	readFile      string = os.Args[1]
 	annotScaffold string = os.Args[2]
 	stringStart   string = os.Args[3]
 	stringEnd     string = os.Args[4]
-	// fileOut  string
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -77,7 +77,9 @@ type attribute struct {
 
 func main() {
 
-	// fileOut := readFile
+	fileOut = readFile
+	fileOut = strings.TrimSuffix(fileOut, ".gff3")
+	fileOut = fileOut + ".txt"
 
 	// declare identified struct
 	var syncytin identified
@@ -88,6 +90,7 @@ func main() {
 	// positions
 	syncytin.positions.parseMinMax(stringStart, stringEnd)
 
+	// execute logic
 	annotate(readFile, syncytin)
 }
 
@@ -103,6 +106,21 @@ func (annotations *annotation) print() string {
 		annotations.attributes.ID + "," +
 		annotations.attributes.Alias + "," +
 		annotations.attributes.Note + "\n"
+
+	// fmt.Println("Scaffold: ", annotations.scaffold)
+	// fmt.Println("Syncytin positions: ", syncytin.positions.start, "-", syncytin.positions.end)
+	// fmt.Println("Positions: ", annotations.positions.start, "-", annotations.positions.end)
+	// fmt.Println("Class / Type: ", annotations.class)
+	// fmt.Println("Score: ", annotations.score)
+	// fmt.Println("Strand: ", annotations.strand)
+	//
+	// fmt.Println("Attributes")
+	// fmt.Println("\tID: ", annotations.attributes.ID)
+	// fmt.Println("\tName: ", annotations.attributes.Name)
+	// fmt.Println("\tAlias: ", annotations.attributes.Alias)
+	// fmt.Println("\tParent: ", annotations.attributes.Parent)
+	// fmt.Println("\tTarget: ", annotations.attributes.Target)
+	// fmt.Println("\tNote: ", annotations.attributes.Note)
 
 }
 
@@ -134,11 +152,6 @@ func annotate(readFile string, syncytin identified) {
 	if readErr != nil {
 		log.Fatal("Error opending input file :", readErr)
 	}
-
-	// // check whether file exists to avoid appending
-	// if fileExist(fileOut) {
-	// 	os.Remove(fileOut)
-	// }
 
 	ct := 0
 	// scanner.Scan() advances to the next token returning false if an error was encountered
@@ -199,32 +212,19 @@ func annotationCollect(records []string, syncytin identified, ct int) int {
 		// raw attributes
 		rawAttributes := records[8]
 
-		if annotations.scaffold == syncytin.scaffold && annotations.positions.start > (syncytin.positions.start-nuclWindow) && annotations.positions.end < (syncytin.positions.end+nuclWindow) && annotations.class == "gene" {
+		if annotations.scaffold == syncytin.scaffold &&
+			annotations.positions.start > (syncytin.positions.start-nuclWindow) &&
+			annotations.positions.end < (syncytin.positions.end+nuclWindow) &&
+			annotations.class == "gene" {
 			// counter
 			ct++
 
 			// segregate attributes
 			attributeSegregate(rawAttributes, &annotations.attributes)
 
-			// printing
-			fmt.Println("")
-			fmt.Println("Scaffold: ", annotations.scaffold)
-			fmt.Println("Syncytin positions: ", syncytin.positions.start, "-", syncytin.positions.end)
-			fmt.Println("Positions: ", annotations.positions.start, "-", annotations.positions.end)
-			fmt.Println("Class / Type: ", annotations.class)
-			fmt.Println("Score: ", annotations.score)
-			fmt.Println("Strand: ", annotations.strand)
-
-			fmt.Println("Attributes")
-			fmt.Println("\tID: ", annotations.attributes.ID)
-			fmt.Println("\tName: ", annotations.attributes.Name)
-			fmt.Println("\tAlias: ", annotations.attributes.Alias)
-			fmt.Println("\tParent: ", annotations.attributes.Parent)
-			fmt.Println("\tTarget: ", annotations.attributes.Target)
-			fmt.Println("\tNote: ", annotations.attributes.Note)
+			// write
+			writeSyntenyGenes(fileOut, annotations)
 		}
-	} else if records[0] != "###" {
-		fmt.Println("Records: ", records)
 	}
 	return ct
 }
