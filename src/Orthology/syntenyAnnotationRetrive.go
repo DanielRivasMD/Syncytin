@@ -83,17 +83,28 @@ func main() {
 
 	syncytin.scaffold = annotScaffold
 
-	tmpStart, _ := strconv.ParseFloat(stringStart, 64)
-	tmpEnd, _ := strconv.ParseFloat(stringEnd, 64)
-
-	syncytin.positions.start = math.Min(tmpStart, tmpEnd)
-	syncytin.positions.end = math.Max(tmpStart, tmpEnd)
+	syncytin.positions.parseMinMax(stringStart, stringEnd)
 
 	annotate(readFile, syncytin)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+func min_max(position *position, num1, num2 float64) {
+	position.start = math.Min(num1, num2)
+	position.end = math.Max(num1, num2)
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+func (position *position) parseMinMax(str1, str2 string) {
+	num1, _ := strconv.ParseFloat(str1, 64)
+	num2, _ := strconv.ParseFloat(str2, 64)
+
+	min_max(position, num1, num2)
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
 func annotate(readFile string, syncytin identified) {
 
 	// open an input file, exit on error
@@ -152,11 +163,7 @@ func annotationCollect(records []string, syncytin identified, ct int) int {
 		annotations.class = records[2]
 
 		// positions
-		tmpStart, _ := strconv.ParseFloat(records[3], 64)
-		tmpEnd, _ := strconv.ParseFloat(records[4], 64)
-
-		annotations.positions.start = math.Min(tmpStart, tmpEnd)
-		annotations.positions.end = math.Max(tmpStart, tmpEnd)
+		annotations.positions.parseMinMax(records[3], records[4])
 
 		// score
 		annotations.score, _ = strconv.ParseInt(records[5], 10, 64)
