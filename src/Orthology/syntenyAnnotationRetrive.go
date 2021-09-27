@@ -93,6 +93,21 @@ func main() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// print annotations
+func (annotations *annotation) print() string {
+	return annotations.scaffold + "," +
+		strconv.FormatFloat(annotations.positions.start, 'f', 0, 64) + "," +
+		strconv.FormatFloat(annotations.positions.end, 'f', 0, 64) + "," +
+		annotations.class + "," + strconv.FormatInt(annotations.score, 10) + "," +
+		annotations.strand + "," +
+		annotations.attributes.ID + "," +
+		annotations.attributes.Alias + "," +
+		annotations.attributes.Note + "\n"
+
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // pass struct as reference to update
 func min_max(position *position, num1, num2 float64) {
 	position.start = math.Min(num1, num2)
