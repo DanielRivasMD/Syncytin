@@ -281,6 +281,31 @@ func (attributes *attribute) AddAttribute(ats, field string) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// write positions
+func writeSyntenyGenes(fileOut string, annotations annotation) {
+
+	f, err := os.OpenFile(fileOut, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0666)
+
+	if err != nil {
+		panic(err)
+	}
+
+	defer f.Close()
+
+	w := bufio.NewWriter(f)
+
+	// printing
+	_, err = w.WriteString(annotations.print())
+
+	if err != nil {
+		panic(err)
+	}
+
+	w.Flush()
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // fileExist checks if a file exists and is not a directory before
 // try using it to prevent further errors
 func fileExist(filename string) bool {
