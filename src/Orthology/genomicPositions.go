@@ -14,14 +14,19 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// declarations
 var (
-	readFile string = os.Args[1] // command line argument
-	fileOut  string              // infered from input
+	fileOut string // infered from input
+
+	// command line arguments
+	readFile string = os.Args[1]
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func main() {
+
+	// declare file output
 	fileOut = readFile
 	fileOut = strings.TrimSuffix(fileOut, ".tsv")
 	fileOut = fileOut + "_filtered.tsv"

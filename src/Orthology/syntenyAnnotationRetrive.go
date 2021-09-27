@@ -24,10 +24,12 @@ const (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// command line arguments
+// declarations
 var (
-	fileOut       string // infered from input
+	fileOut  string     // infered from input
 	syncytin identified // identified struct
+
+	// command line arguments
 	readFile      string = os.Args[1]
 	annotScaffold string = os.Args[2]
 	stringStart   string = os.Args[3]
@@ -36,7 +38,7 @@ var (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// command line
+// syncytin features
 type identified struct {
 	scaffold  string
 	positions position
@@ -78,6 +80,7 @@ type attribute struct {
 
 func main() {
 
+	// declare file output
 	fileOut = readFile
 	fileOut = strings.TrimSuffix(fileOut, ".gff3")
 	fileOut = fileOut + ".txt"
@@ -104,21 +107,6 @@ func (annotations *annotation) print() string {
 		annotations.attributes.ID + "," +
 		annotations.attributes.Alias + "," +
 		annotations.attributes.Note + "\n"
-
-	// fmt.Println("Scaffold: ", annotations.scaffold)
-	// fmt.Println("Syncytin positions: ", syncytin.positions.start, "-", syncytin.positions.end)
-	// fmt.Println("Positions: ", annotations.positions.start, "-", annotations.positions.end)
-	// fmt.Println("Class / Type: ", annotations.class)
-	// fmt.Println("Score: ", annotations.score)
-	// fmt.Println("Strand: ", annotations.strand)
-	//
-	// fmt.Println("Attributes")
-	// fmt.Println("\tID: ", annotations.attributes.ID)
-	// fmt.Println("\tName: ", annotations.attributes.Name)
-	// fmt.Println("\tAlias: ", annotations.attributes.Alias)
-	// fmt.Println("\tParent: ", annotations.attributes.Parent)
-	// fmt.Println("\tTarget: ", annotations.attributes.Target)
-	// fmt.Println("\tNote: ", annotations.attributes.Note)
 
 }
 
