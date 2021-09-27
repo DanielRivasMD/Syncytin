@@ -46,8 +46,8 @@ type annotation struct {
 
 // positions
 type position struct {
-	start int
-	end   int
+	start float64
+	end   float64
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -134,8 +134,8 @@ func annotationCollect(records []string, ct int) int {
 		tmpStart, _ := strconv.ParseFloat(records[3], 64)
 		tmpEnd, _ := strconv.ParseFloat(records[4], 64)
 
-		annotations.positions.start = int(math.Min(tmpStart, tmpEnd))
-		annotations.positions.end = int(math.Max(tmpStart, tmpEnd))
+		annotations.positions.start = math.Min(tmpStart, tmpEnd)
+		annotations.positions.end = math.Max(tmpStart, tmpEnd)
 
 		// score
 		annotations.score, _ = strconv.ParseInt(records[5], 10, 64)
