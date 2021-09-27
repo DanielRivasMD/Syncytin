@@ -27,13 +27,6 @@ do
   # capture file name
   align=${align/*\/}
 
-  # remove to avoid appending
-  toRemove=${align/gff3/txt}
-  if [[ -f ${annotation}/${toRemove} ]]
-  then
-    rm ${annotation}/${toRemove}
-  fi
-
   # collect species name
   spp=$( awk -v align=$align 'BEGIN{FS = ","} {if ($3 == align ".gz") print $1}' ${phylogeny}/assembly.list )
 

@@ -139,6 +139,11 @@ func annotate(readFile string) {
 		log.Fatal("Error opending input file :", readErr)
 	}
 
+	// check whether file exists to avoid appending
+	if fileExist(fileOut) {
+		os.Remove(fileOut)
+	}
+
 	ct := 0
 	// scanner.Scan() advances to the next token returning false if an error was encountered
 	scanner := bufio.NewScanner(inputFile)
