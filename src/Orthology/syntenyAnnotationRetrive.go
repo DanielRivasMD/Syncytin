@@ -27,6 +27,7 @@ const (
 // command line arguments
 var (
 	fileOut       string // infered from input
+	syncytin identified // identified struct
 	readFile      string = os.Args[1]
 	annotScaffold string = os.Args[2]
 	stringStart   string = os.Args[3]
@@ -81,9 +82,6 @@ func main() {
 	fileOut = strings.TrimSuffix(fileOut, ".gff3")
 	fileOut = fileOut + ".txt"
 
-	// declare identified struct
-	var syncytin identified
-
 	// scaffold
 	syncytin.scaffold = annotScaffold
 
@@ -91,7 +89,7 @@ func main() {
 	syncytin.positions.parseMinMax(stringStart, stringEnd)
 
 	// execute logic
-	annotate(readFile, syncytin)
+	annotate(readFile)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -145,7 +143,7 @@ func (position *position) parseMinMax(str1, str2 string) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // read file & collect annotations
-func annotate(readFile string, syncytin identified) {
+func annotate(readFile string) {
 
 	// open an input file, exit on error
 	inputFile, readErr := os.Open(readFile)
@@ -163,7 +161,7 @@ func annotate(readFile string, syncytin identified) {
 		records := strings.Split(scanner.Text(), "\t")
 
 		// collect patterns. internal values are redeclared every iteration
-		ct = annotationCollect(records, syncytin, ct)
+		ct = annotationCollect(records, ct)
 
 	}
 
@@ -187,7 +185,7 @@ func annotate(readFile string, syncytin identified) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // collect annotations
-func annotationCollect(records []string, syncytin identified, ct int) int {
+func annotationCollect(records []string, ct int) int {
 
 	if len(records) > 1 {
 
