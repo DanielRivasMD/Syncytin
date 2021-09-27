@@ -4,9 +4,10 @@
 
 # declarations
 projDir=$HOME/Factorem/Syncytin
-phylogeny=${projDir}/src/phylogeny
+orthology=${projDir}/src/Orthology
 excalibur=${projDir}/excalibur
 annotation=${projDir}/data/annotation
+phylogeny=${projDir}/data/phylogeny
 
 ################################################################################
 
@@ -14,7 +15,7 @@ annotation=${projDir}/data/annotation
 if [[ ! -x ${excalibur}/syntenyAnnotationRetrive ]]
 then
   echo "Building Go executable..."
-  go build -o ${excalibur}/ ${phylogeny}/syntenyAnnotationRetrive.go
+  go build -o ${excalibur}/ ${orthology}/syntenyAnnotationRetrive.go
 fi
 
 # retrieve annotations
@@ -23,7 +24,8 @@ echo "Retrieving annotations..."
 # iterate on available annotations
 for align in $( $(which exa) ${annotation} );
 do
-  ${excalibur}/syntenyAnnotationRetrive ${annotation}/${align}
+  spp=$( awk -v align=$align 'BEGIN{FS = ","} {if ($3 == align ".gz") print $1}' ${phylogeny}/assembly.list )
+  ${excalibur}/syntenyAnnotationRetrive ${annotation}/${align} $( awk -v spp=$spp 'BEGIN{FS = ","} {if ($8 == spp) print $1, $2, $6}' ${phylogeny}/positionDf.csv )
 done
 
 ################################################################################
