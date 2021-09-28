@@ -107,7 +107,7 @@ func defineOut(readFile string) string {
 		fileOut +
 		syncytin.scaffold + "_" +
 		strconv.FormatFloat(syncytin.positions.start, 'f', 0, 64) + "_" +
-		strconv.FormatFloat(syncytin.positions.end, 'f', 0, 64) + ".txt"
+		strconv.FormatFloat(syncytin.positions.end, 'f', 0, 64) + ".csv"
 	return fileOut
 }
 
@@ -122,7 +122,8 @@ func (annotations *annotation) print() string {
 		annotations.strand + "," +
 		annotations.attributes.ID + "," +
 		annotations.attributes.Alias + "," +
-		annotations.attributes.Note + "\n"
+		annotations.attributes.Note + "," +
+		annotations.attributes.Target + "\n"
 
 }
 
@@ -222,7 +223,8 @@ func annotationCollect(records []string, ct int) int {
 		if annotations.scaffold == syncytin.scaffold &&
 			annotations.positions.start > (syncytin.positions.start-nuclWindow) &&
 			annotations.positions.end < (syncytin.positions.end+nuclWindow) &&
-			annotations.class == "gene" {
+			(annotations.class == "gene" ||
+				records[1] == "repeatmasker" && annotations.class == "match") {
 			// counter
 			ct++
 
