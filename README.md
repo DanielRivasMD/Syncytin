@@ -6,6 +6,10 @@ Computational study of _syncitin_ gene in vertebrates.
 
 **DNAzoo** assembly annotations.
 
+#### `candidate`
+
+collected candidate sequences from **DNAzoo** assemblies.
+
 #### `diamondOutput`
 
 output from _diamond_ alignment. organized by assembly. also contains `taxonomist` data.
@@ -13,6 +17,14 @@ output from _diamond_ alignment. organized by assembly. also contains `taxonomis
 #### `DNAzoo`
 
 holds assemblies from **DNAzoo**.
+
+#### `phylogeny`
+
+contain assembly lists & output from candidate loci & taxonomy.
+
+#### `synteny`
+
+output from collecting candidate loci. organized by assembly.
 
 #### `syncytinDB`
 
@@ -42,3 +54,8 @@ holds all data related to syncytin annotations.
 [SlurmController](src/SlurmController/README.md) => control all jobs at _SLURM_-managed cluster.
 
 [Utilities](src/Utilities/README.md) => provide functions.
+
+TODO: retrieve syncytin candidate sequences
+TODO: MSA carnivore conserved insertions & surroding sequences
+TODO: MSA hyena alternative insertions
+TODO: compare pre insertion loci accross orders, e.g., primates vs felines
