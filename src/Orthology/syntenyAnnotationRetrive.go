@@ -118,8 +118,10 @@ func (annotations *annotation) print() string {
 	return annotations.scaffold + "," +
 		strconv.FormatFloat(annotations.positions.start, 'f', 0, 64) + "," +
 		strconv.FormatFloat(annotations.positions.end, 'f', 0, 64) + "," +
-		annotations.class + "," + strconv.FormatInt(annotations.score, 10) + "," +
+		annotations.class + "," +
+		strconv.FormatInt(annotations.score, 10) + "," +
 		annotations.strand + "," +
+		strconv.FormatFloat(syncytin.positions.distanceCandidate(annotations.positions), 'f', 0, 64) + "," +
 		annotations.attributes.ID + "," +
 		annotations.attributes.Alias + "," +
 		annotations.attributes.Note + "," +
@@ -143,6 +145,22 @@ func (position *position) parseMinMax(str1, str2 string) {
 	num2, _ := strconv.ParseFloat(str2, 64)
 
 	minMax(position, num1, num2)
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// calculate distance from candidate
+func (candidate *position) distanceCandidate(annotation position) float64 {
+	out := 0.
+	upstream := annotation.end - candidate.start
+	downstream := annotation.start - candidate.end
+	minimum := math.Min(math.Abs(upstream), math.Abs(downstream))
+	if math.Abs(upstream) == math.Abs(downstream) {
+		out = upstream
+	} else if minimum == math.Abs(upstream) {
+		out = upstream
+	} else if minimum == math.Abs(downstream) {
+		out = downstream
+	}
+	return out
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
