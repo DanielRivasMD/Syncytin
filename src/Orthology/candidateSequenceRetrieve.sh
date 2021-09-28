@@ -13,10 +13,10 @@ phylogeny=${dataDir}/phylogeny
 ################################################################################
 
 # check for Go executable
-if [[ ! -x ${excalibur}/candidateSequenceRetrive ]]
+if [[ ! -x ${excalibur}/candidateSequenceRetrieve ]]
 then
   echo "Building Go executable..."
-  go build -o ${excalibur}/ ${orthology}/candidateSequenceRetrive.go
+  go build -o ${excalibur}/ ${orthology}/candidateSequenceRetrieve.go
 fi
 
 # retrieve sequences
@@ -35,7 +35,7 @@ do
   # collect sequences around candidate loci
   while read scaffold start end
   do
-    ${excalibur}/candidateSequenceRetrive ${dataDir} ${assembly} ${scaffold} ${start} ${end}
+    ${excalibur}/candidateSequenceRetrieve ${dataDir} ${assembly} ${scaffold} ${start} ${end}
   done < ${phylogeny}/${spp}
 
   # remove candidate loci

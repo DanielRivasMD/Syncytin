@@ -53,21 +53,21 @@ print:
   source ${HOME}/Factorem/Syncytin/src/Orthology/genomicPositions.sh
 
 # build synteny annotation
-@ buildSyntenyAnnotationRetrive:
-  go build -o ${HOME}/Factorem/Syncytin/excalibur ${HOME}/Factorem/Syncytin/src/Orthology/syntenyAnnotationRetrive.go
+@ buildSyntenyAnnotationRetrieve:
+  go build -o ${HOME}/Factorem/Syncytin/excalibur ${HOME}/Factorem/Syncytin/src/Orthology/syntenyAnnotationRetrieve.go
 
 # run synteny annotation
-@ runSyntenyAnnotationRetrive:
-  if [[ -x ${HOME}/Factorem/Syncytin/excalibur/syntenyAnnotationRetrive ]]; then rm ${HOME}/Factorem/Syncytin/excalibur/syntenyAnnotationRetrive; fi
-  source ${HOME}/Factorem/Syncytin/src/Orthology/syntenyAnnotationRetrive.sh
+@ runSyntenyAnnotationRetrieve:
+  if [[ -x ${HOME}/Factorem/Syncytin/excalibur/syntenyAnnotationRetrieve ]]; then rm ${HOME}/Factorem/Syncytin/excalibur/syntenyAnnotationRetrieve; fi
+  source ${HOME}/Factorem/Syncytin/src/Orthology/syntenyAnnotationRetrieve.sh
 
 # build candidate sequence
 @ buildCandidateSequenceRetrieve:
-  go build -o ${HOME}/Factorem/Syncytin/excalibur ${HOME}/Factorem/Syncytin/src/Orthology/candidateSequenceRetrive.go
+  go build -o ${HOME}/Factorem/Syncytin/excalibur ${HOME}/Factorem/Syncytin/src/Orthology/candidateSequenceRetrieve.go
 
 # run candidate sequence
 @ runCandidateSequenceRetrieve:
-  if [[ -x ${HOME}/Factorem/Syncytin/excalibur/candidateSequenceRetrive ]]; then rm ${HOME}/Factorem/Syncytin/excalibur/candidateSequenceRetrive; fi
-  source ${HOME}/Factorem/Syncytin/src/Orthology/candidateSequenceRetrive.sh
+  if [[ -x ${HOME}/Factorem/Syncytin/excalibur/candidateSequenceRetrieve ]]; then rm ${HOME}/Factorem/Syncytin/excalibur/candidateSequenceRetrieve; fi
+  source ${HOME}/Factorem/Syncytin/src/Orthology/candidateSequenceRetrieve.sh
 
 ################################################################################

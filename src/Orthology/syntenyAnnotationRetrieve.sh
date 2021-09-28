@@ -13,10 +13,10 @@ phylogeny=${dataDir}/phylogeny
 ################################################################################
 
 # check for Go executable
-if [[ ! -x ${excalibur}/syntenyAnnotationRetrive ]]
+if [[ ! -x ${excalibur}/syntenyAnnotationRetrieve ]]
 then
   echo "Building Go executable..."
-  go build -o ${excalibur}/ ${orthology}/syntenyAnnotationRetrive.go
+  go build -o ${excalibur}/ ${orthology}/syntenyAnnotationRetrieve.go
 fi
 
 # retrieve annotations
@@ -35,7 +35,7 @@ do
   # collect annotations around candidate loci
   while read scaffold start end
   do
-    ${excalibur}/syntenyAnnotationRetrive ${dataDir} ${align} ${scaffold} ${start} ${end}
+    ${excalibur}/syntenyAnnotationRetrieve ${dataDir} ${align} ${scaffold} ${start} ${end}
   done < ${phylogeny}/${spp}
 
   # remove candidate loci
