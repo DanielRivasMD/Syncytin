@@ -11,3 +11,7 @@ Collect data on identified _syncitin_ loci.
 `syntenyAnnotationRetrieve.go` => read annotations & collect nearest gene to identified _syncytin_ loci.
 
 `syntenyAnnotationRetrieve.sh` => control `syntenyAnnotationRetrieve.go` executable.
+
+`candidateSequenceRetrieve.go` => extract candidate sequences from assemblies.
+
+`candidateSequenceRetrieve.sh` => control `candidateSequenceRetrieve.go` executable.

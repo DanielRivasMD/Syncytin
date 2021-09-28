@@ -43,18 +43,31 @@ print:
 # GO tools
 ################################################################################
 
+# build genomic positions
 @ buildGenomicPositions:
   go build -o ${HOME}/Factorem/Syncytin/excalibur ${HOME}/Factorem/Syncytin/src/Orthology/genomicPositions.go
 
+# run genomic positions
 @ runGenomicPositions:
   if [[ -x ${HOME}/Factorem/Syncytin/excalibur/genomicPositions ]]; then rm ${HOME}/Factorem/Syncytin/excalibur/genomicPositions; fi;
   source ${HOME}/Factorem/Syncytin/src/Orthology/genomicPositions.sh
 
+# build synteny annotation
 @ buildSyntenyAnnotationRetrive:
   go build -o ${HOME}/Factorem/Syncytin/excalibur ${HOME}/Factorem/Syncytin/src/Orthology/syntenyAnnotationRetrive.go
 
+# run synteny annotation
 @ runSyntenyAnnotationRetrive:
   if [[ -x ${HOME}/Factorem/Syncytin/excalibur/syntenyAnnotationRetrive ]]; then rm ${HOME}/Factorem/Syncytin/excalibur/syntenyAnnotationRetrive; fi
   source ${HOME}/Factorem/Syncytin/src/Orthology/syntenyAnnotationRetrive.sh
+
+# build candidate sequence
+@ buildCandidateSequenceRetrieve:
+  go build -o ${HOME}/Factorem/Syncytin/excalibur ${HOME}/Factorem/Syncytin/src/Orthology/candidateSequenceRetrive.go
+
+# run candidate sequence
+@ runCandidateSequenceRetrieve:
+  if [[ -x ${HOME}/Factorem/Syncytin/excalibur/candidateSequenceRetrive ]]; then rm ${HOME}/Factorem/Syncytin/excalibur/candidateSequenceRetrive; fi
+  source ${HOME}/Factorem/Syncytin/src/Orthology/candidateSequenceRetrive.sh
 
 ################################################################################
