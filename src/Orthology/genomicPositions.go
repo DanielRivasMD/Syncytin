@@ -27,12 +27,20 @@ var (
 func main() {
 
 	// declare file output
-	fileOut = readFile
-	fileOut = strings.TrimSuffix(fileOut, ".tsv")
-	fileOut = fileOut + "_filtered.tsv"
+	fileOut = defineOut(readFile)
 
 	// execute logic
 	genomicPositionsCollect(readFile)
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// define output file
+func defineOut(readFile string) string {
+	fileOut = readFile
+	fileOut = strings.TrimSuffix(fileOut, ".tsv")
+	fileOut = fileOut + "_filtered.tsv"
+	return fileOut
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
