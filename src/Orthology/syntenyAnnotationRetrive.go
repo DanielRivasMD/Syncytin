@@ -132,7 +132,7 @@ func (annotations *annotation) print() string {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // pass struct as reference to update
-func minMax(position *position, num1, num2 float64) {
+func (position *position) minMax(num1, num2 float64) {
 	position.start = math.Min(num1, num2)
 	position.end = math.Max(num1, num2)
 }
@@ -144,7 +144,9 @@ func (position *position) parseMinMax(str1, str2 string) {
 	num1, _ := strconv.ParseFloat(str1, 64)
 	num2, _ := strconv.ParseFloat(str2, 64)
 
-	minMax(position, num1, num2)
+	position.minMax(num1, num2)
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // calculate distance from candidate
