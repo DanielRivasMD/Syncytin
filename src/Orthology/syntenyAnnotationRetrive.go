@@ -181,7 +181,6 @@ func annotate(readFile string) {
 		os.Remove(fileOut)
 	}
 
-	ct := 0
 	// scanner.Scan() advances to the next token returning false if an error was encountered
 	scanner := bufio.NewScanner(inputFile)
 
@@ -191,11 +190,9 @@ func annotate(readFile string) {
 		records := strings.Split(scanner.Text(), "\t")
 
 		// collect patterns. internal values are redeclared every iteration
-		ct = annotationCollect(records, ct)
+		annotationCollect(records)
 
 	}
-
-	fmt.Println("Number of hits: ", ct)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -215,7 +212,7 @@ func annotate(readFile string) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // collect annotations
-func annotationCollect(records []string, ct int) int {
+func annotationCollect(records []string) {
 
 	if len(records) > 1 {
 
@@ -245,17 +242,15 @@ func annotationCollect(records []string, ct int) int {
 			annotations.positions.end < (syncytin.positions.end+nuclWindow) &&
 			(annotations.class == "gene" ||
 				records[1] == "repeatmasker" && annotations.class == "match") {
-			// counter
-			ct++
 
 			// segregate attributes
 			attributeSegregate(rawAttributes, &annotations.attributes)
 
 			// write
 			writeSyntenyGenes(fileOut, annotations)
+
 		}
 	}
-	return ct
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
