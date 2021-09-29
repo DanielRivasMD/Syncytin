@@ -106,10 +106,9 @@ func (position *position) parseMinMax(str1, str2 string) {
 // read file & collect sequences
 func collect(readFile string) {
 
-	// open an input file, exit on error
-	inputFile, readErr := os.Open(readFile)
-	if readErr != nil {
-		log.Fatal("Error opending input file :", readErr)
+	contentFile, err := ioutil.ReadFile(readFile) // the file is inside the local directory
+	if err != nil {
+		log.Fatal("Error opending input file :", err)
 	}
 
 	// check whether file exists to avoid appending
@@ -117,21 +116,27 @@ func collect(readFile string) {
 		os.Remove(fileOut)
 	}
 
-	// scanner.Scan() advances to the next token returning false if an error was encountered
-	scanner := bufio.NewScanner(inputFile)
+	// mount data string
+	dataFasta := strings.NewReader(string(contentFile))
 
-	for scanner.Scan() {
+	// fasta.Reader requires a known type template to fill
+	// with FASTA data. Here we use *linear.Seq.
+	template := linear.NewSeq("", nil, alphabet.DNAredundant)
+	readerFasta := fasta.NewReader(dataFasta, template)
 
-		// split line records by tab
-		records := strings.Split(scanner.Text(), "\t")
+	// Make a seqio.Scanner to simplify iterating over a
+	// stream of data.
+	scanFasta := seqio.NewScanner(readerFasta)
 
-		// collect sequences
-		candidateCollect(records)
+	// Iterate through each sequence in a multifasta and examine the
+	// ID, description and sequence data.
+	for scanFasta.Next() {
+		// Get the current sequence and type assert to *linear.Seq.
+		// While this is unnecessary here, it can be useful to have
+		// the concrete type.
+		sequence := scanFasta.Seq().(*linear.Seq)
 
-	}
-}
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // collect sequences
 func candidateCollect(records []string) {
@@ -142,6 +147,9 @@ func candidateCollect(records []string) {
 
 	// collect sequence by coordinates
 
+	if err := scanFasta.Error(); err != nil {
+		log.Fatal(err)
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
