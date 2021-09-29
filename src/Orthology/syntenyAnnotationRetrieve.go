@@ -307,6 +307,7 @@ func (attributes *attribute) AddAttribute(ats, field string) {
 // write positions
 func writeSyntenyGenes(fileOut string, annotations annotation) {
 
+	// declare io
 	f, err := os.OpenFile(fileOut, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0666)
 
 	if err != nil {
@@ -315,15 +316,17 @@ func writeSyntenyGenes(fileOut string, annotations annotation) {
 
 	defer f.Close()
 
+	// declare writer
 	w := bufio.NewWriter(f)
 
-	// printing
+	// writing
 	_, err = w.WriteString(annotations.print())
 
 	if err != nil {
 		panic(err)
 	}
 
+	// flush writer
 	w.Flush()
 }
 

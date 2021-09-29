@@ -43,6 +43,15 @@ print:
 # GO tools
 ################################################################################
 
+# build protein accessions
+@ buildProteinAccession:
+  go build -o ${HOME}/Factorem/Syncytin/excalibur ${HOME}/Factorem/Syncytin/src/Collection/proteinAcc.go
+
+# run protein accessions
+@ runProteinAccession:
+  if [[ -x ${HOME}/Factorem/Syncytin/excalibur/proteinAcc ]]; then rm ${HOME}/Factorem/Syncytin/excalibur/proteinAcc; fi;
+  source ${HOME}/Factorem/Syncytin/src/Collection/proteinAcc.sh
+
 # build genomic positions
 @ buildGenomicPositions:
   go build -o ${HOME}/Factorem/Syncytin/excalibur ${HOME}/Factorem/Syncytin/src/Orthology/genomicPositions.go

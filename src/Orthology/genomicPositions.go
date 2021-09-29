@@ -100,6 +100,7 @@ func genomicPositionsCollect(readFile string) {
 // write positions
 func writeGenomicPositions(fileOut string, records []string) {
 
+	// declare io
 	f, err := os.OpenFile(fileOut, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0666)
 
 	if err != nil {
@@ -108,12 +109,16 @@ func writeGenomicPositions(fileOut string, records []string) {
 
 	defer f.Close()
 
+	// declare writer
 	w := bufio.NewWriter(f)
+
+	// writing
 	_, err = w.WriteString(records[0] + " " + records[1] + " " + records[2] + " " + records[6] + " " + records[7] + " " + records[10] + "\n")
 	if err != nil {
 		panic(err)
 	}
 
+	// flush writer
 	w.Flush()
 }
 

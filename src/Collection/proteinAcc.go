@@ -13,6 +13,7 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// declarations
 var (
 	readFile string = os.Args[1]
 	fileOut  string = os.Args[2]
@@ -22,11 +23,13 @@ var (
 
 func main() {
 
+	// execute logic
 	proteinAccessionCollect(readFile)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// collect accessions
 func proteinAccessionCollect(readFile string) {
 
 	// open an input file, exit on error
@@ -38,6 +41,7 @@ func proteinAccessionCollect(readFile string) {
 	// scanner.Scan() advances to the next token returning false if an error was encountered
 	scanner := bufio.NewScanner(inputFile)
 
+	// iterate
 	for scanner.Scan() {
 
 		// collect pattern
@@ -57,6 +61,7 @@ func proteinAccessionCollect(readFile string) {
 // write records
 func writeProtRecord(fileOut, accession string) {
 
+	// declare io
 	f, err := os.OpenFile(fileOut, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0666)
 
 	if err != nil {
@@ -65,12 +70,17 @@ func writeProtRecord(fileOut, accession string) {
 
 	defer f.Close()
 
+	// deslcare writer
 	w := bufio.NewWriter(f)
+
+	// writing
 	_, err = w.WriteString(accession + "\n")
+
 	if err != nil {
 		panic(err)
 	}
 
+	// flush writer
 	w.Flush()
 }
 
