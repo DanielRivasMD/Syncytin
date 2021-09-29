@@ -171,8 +171,9 @@ func collectCoordinates(readFile string) {
 				end = end + neighbor
 			}
 
+			id := syncytin.scaffold + "_" + strconv.FormatFloat(syncytin.positions.start, 'f', 0, 64) + "_" + strconv.FormatFloat(syncytin.positions.end, 'f', 0, 64)
 			// find coordinates
-			targatSeq := linear.NewSeq(sequence.ID, sequence.Seq[start:end], alphabet.DNA)
+			targatSeq := linear.NewSeq(id, sequence.Seq[start:end], alphabet.DNA)
 
 			// write candidate
 			writeFasta(fileOut, targatSeq)
