@@ -27,11 +27,11 @@ var (
 	syncytin identified // identified struct
 
 	// command line arguments
-	dataDir       string = os.Args[1]
-	readFile      string = os.Args[2]
-	annotScaffold string = os.Args[3]
-	stringStart   string = os.Args[4]
-	stringEnd     string = os.Args[5]
+	dataDir     string = os.Args[1]
+	readFile    string = os.Args[2]
+	scaffold    string = os.Args[3]
+	stringStart string = os.Args[4]
+	stringEnd   string = os.Args[5]
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -55,7 +55,7 @@ type position struct {
 func main() {
 
 	// scaffold
-	syncytin.scaffold = annotScaffold
+	syncytin.scaffold = scaffold
 
 	// positions
 	syncytin.positions.parseMinMax(stringStart, stringEnd)
@@ -64,7 +64,7 @@ func main() {
 	fileOut = defineOut(readFile)
 
 	// execute logic
-	collect(dataDir + "/" + "DNAzoo" + "/" + readFile)
+	collectCoordinates(dataDir + "/" + "DNAzoo" + "/" + readFile)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -104,7 +104,7 @@ func (position *position) parseMinMax(str1, str2 string) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // read file & collect sequences
-func collect(readFile string) {
+func collectCoordinates(readFile string) {
 
 	contentFile, err := ioutil.ReadFile(readFile) // the file is inside the local directory
 	if err != nil {
@@ -136,16 +136,21 @@ func collect(readFile string) {
 		// the concrete type.
 		sequence := scanFasta.Seq().(*linear.Seq)
 
+		// find scaffold
+		if sequence.ID == syncytin.scaffold {
 
+			// cast coordinates
+			start := int(syncytin.positions.start)
+			end := int(syncytin.positions.end)
 
-// collect sequences
-func candidateCollect(records []string) {
+			// find coordinates
+			targatSeq := linear.NewSeq(sequence.ID, sequence.Seq[start:end], alphabet.DNA)
 
-	// find scaffold
+			// write candidate
+			writeFasta(fileOut, targatSeq)
+		}
 
-	// concatenate sequence
-
-	// collect sequence by coordinates
+	}
 
 	if err := scanFasta.Error(); err != nil {
 		log.Fatal(err)
