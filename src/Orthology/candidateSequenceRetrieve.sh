@@ -35,7 +35,15 @@ do
   # collect sequences around candidate loci
   while read scaffold start end
   do
-    ${excalibur}/candidateSequenceRetrieve ${dataDir} ${assembly} ${scaffold} ${start} ${end}
+    # candidate
+    ${excalibur}/candidateSequenceRetrieve ${dataDir} ${assembly} ${scaffold} ${start} ${end} ""
+
+    # upstream
+    ${excalibur}/candidateSequenceRetrieve ${dataDir} ${assembly} ${scaffold} ${start} ${end} "_upstream"
+
+    # downstream
+    ${excalibur}/candidateSequenceRetrieve ${dataDir} ${assembly} ${scaffold} ${start} ${end} "_downstream"
+
   done < ${phylogeny}/${spp}
 
   # remove candidate loci

@@ -21,6 +21,13 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// neighborhood range
+const (
+	neighbor = 10000
+)
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // declarations
 var (
 	fileOut  string     // infered from input
@@ -32,6 +39,7 @@ var (
 	scaffold    string = os.Args[3]
 	stringStart string = os.Args[4]
 	stringEnd   string = os.Args[5]
+	suffix      string = os.Args[6]
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -61,7 +69,7 @@ func main() {
 	syncytin.positions.parseMinMax(stringStart, stringEnd)
 
 	// declare file output
-	fileOut = defineOut(readFile)
+	fileOut = defineOut(readFile, suffix)
 
 	// execute logic
 	collectCoordinates(dataDir + "/" + "DNAzoo" + "/" + readFile)
@@ -70,16 +78,26 @@ func main() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // define output file
-func defineOut(readFile string) string {
+func defineOut(readFile, suffix string) string {
+
+	var path string
+	if suffix == "" {
+		path = "candidate"
+	} else {
+		path = "insertion"
+	}
+
 	fileOut = readFile
 	reg := regexp.MustCompile(`HiC*`)
 	res := reg.FindStringIndex(fileOut)
 	fileOut = fileOut[0:res[0]]
-	fileOut = dataDir + "/" + "candidate" + "/" +
+
+	fileOut = dataDir + "/" + path + "/" +
 		fileOut +
 		syncytin.scaffold + "_" +
 		strconv.FormatFloat(syncytin.positions.start, 'f', 0, 64) + "_" +
-		strconv.FormatFloat(syncytin.positions.end, 'f', 0, 64) + ".fasta"
+		strconv.FormatFloat(syncytin.positions.end, 'f', 0, 64) +
+		suffix + ".fasta"
 	return fileOut
 }
 
@@ -142,6 +160,16 @@ func collectCoordinates(readFile string) {
 			// cast coordinates
 			start := int(syncytin.positions.start)
 			end := int(syncytin.positions.end)
+
+			// extract neighborhood
+			switch suffix {
+			case "_upstream":
+				end = start
+				start = start - neighbor
+			case "_downstream":
+				start = end
+				end = end + neighbor
+			}
 
 			// find coordinates
 			targatSeq := linear.NewSeq(sequence.ID, sequence.Seq[start:end], alphabet.DNA)
