@@ -160,8 +160,9 @@ func collectCoordinates(readFile string) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // write positions
-func writeSyntenyGenes(fileOut string, sequence sequence) {
+func writeFasta(fileOut string, sequence *linear.Seq) {
 
+	// declare io
 	f, err := os.OpenFile(fileOut, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0666)
 
 	if err != nil {
@@ -170,16 +171,15 @@ func writeSyntenyGenes(fileOut string, sequence sequence) {
 
 	defer f.Close()
 
-	w := bufio.NewWriter(f)
+	// declare writer
+	w := fasta.NewWriter(f, 10000)
 
-	// printing
-	_, err = w.WriteString(sequence.print())
+	// writing
+	_, err = w.Write(sequence)
 
 	if err != nil {
 		panic(err)
 	}
-
-	w.Flush()
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
