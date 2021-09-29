@@ -6,12 +6,18 @@ package main
 
 import (
 	"bufio"
+	"io/ioutil"
 	"log"
 	"math"
 	"os"
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/biogo/biogo/alphabet"
+	"github.com/biogo/biogo/io/seqio"
+	"github.com/biogo/biogo/io/seqio/fasta"
+	"github.com/biogo/biogo/seq/linear"
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
