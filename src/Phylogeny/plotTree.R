@@ -32,21 +32,37 @@ diamondHits %<>% mutate(hits = na_if(hits, 0))
 
 ################################################################################
 
+# open io
+pdf( paste0( projDir, '/arch/plots/plotTree.pdf' ) )
+
 # create tree plot
 t0 <- ggtree(
   tree, layout = 'fan'
 )
 
 # add tip labels
-t1 <- t0 +
+t1 <- t0 + geom_tiplab(
+  size = 1.5,
+)
+
+# add bars
+t2 <- t1 +
   geom_fruit(
     data = diamondHits,
-    geom_point,
+    geom = geom_bar,
     mapping = aes(
       y = Species,
-      size = hits,
-      color = Order,
-    )
+      x = hits,
+      fill = Order,
+    ),
+    stat = 'identity',
+    orientation = 'y',
+    offset = 0.8,
   )
+
+t2 %>% print
+
+# close plotting device
+dev.off()
 
 ################################################################################
