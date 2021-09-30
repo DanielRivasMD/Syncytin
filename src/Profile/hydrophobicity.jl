@@ -70,17 +70,17 @@ end
 
 # load hydrophobicity values
 hydro = @chain begin
-  readdlm( string( projDir, "/src/protein/hydrophobicity.tsv" ) )
+  readdlm( string( projDir, "/data/profile/hydrophobicity.tsv" ) )
   DataFrame(:auto)
   rename!(["AminoAcid", "OneLetterCode", "HydropathyScore"])
-end
+end;
 
 # cast columns
 begin
   hydro.AminoAcid = map(χ -> convert(String, χ), hydro.AminoAcid)
   hydro.OneLetterCode = map(χ -> AminoAcid(collect(χ)[end]), hydro.OneLetterCode)
   hydro.HydropathyScore = map(χ -> convert(Float64, χ), hydro.HydropathyScore)
-end
+end;
 
 ################################################################################
 
@@ -90,7 +90,7 @@ synAr = syncytinReader( string( projDir, "/data/syncytinDB/protein/CURATEDsyncyt
 ################################################################################
 
 # construct plot
-R"pdf( paste0( projDir, '/data/profile/hydropathy.pdf', ) )"
+R"pdf( paste0( $projDir, '/arch/plots/hydrophobicity.pdf' ) )"
 
 for ι in 1:length(synAr)
 
