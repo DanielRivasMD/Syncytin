@@ -19,7 +19,7 @@ require(ggnewscale)
 
 # load tree file
 trfile <- paste0( projDir, '/data/phylogeny/assemblyTree.nwk' )
-tree <- read.tree(trfile)
+synt <- read.tree(trfile)
 
 # load alignment hits
 dmfile <- paste0( projDir, '/data/phylogeny/diamondHits.csv' )
@@ -32,18 +32,47 @@ diamondHits %<>% mutate(hits = na_if(hits, 0))
 
 ################################################################################
 
+# empty list
+gr <- list()
+
+# collect taxomonic names
+tb <- diamondHits %$% table(Order)
+
+# collect names
+getNames <- function(d, n) {
+  return(d$Species[which(d$Order == n)])
+}
+
+# iteratate over groups
+for ( ι in seq_along(tb) ) {
+  gr[[ι]] <- getNames(diamondHits, names(tb)[ι])
+}
+
+# group by taxonomic unit
+syntree <- groupOTU(synt, gr)
+
+################################################################################
+
 # open io
 pdf( paste0( projDir, '/arch/plots/plotTree.pdf' ) )
 
 # create tree plot
 t0 <- ggtree(
-  tree, layout = 'fan'
-)
+    syntree,
+    aes(
+      color = group
+    ),
+    layout = 'fan'
+  )
 
 # add tip labels
-t1 <- t0 + geom_tiplab(
-  size = 1.5,
-)
+t1 <- t0 +
+  geom_tiplab(
+    aes(
+      label = label
+    ),
+    size = 1.5,
+  )
 
 # add bars
 t2 <- t1 +
@@ -60,6 +89,7 @@ t2 <- t1 +
     offset = 0.8,
   )
 
+# plot
 t2 %>% print
 
 # close plotting device
