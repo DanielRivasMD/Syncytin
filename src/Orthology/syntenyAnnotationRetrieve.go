@@ -106,7 +106,7 @@ func defineOut(readFile string) string {
 		fileOut +
 		syncytin.scaffold + "_" +
 		strconv.FormatFloat(syncytin.positions.start, 'f', 0, 64) + "_" +
-		strconv.FormatFloat(syncytin.positions.end, 'f', 0, 64) + ".csv"
+		strconv.FormatFloat(syncytin.positions.end, 'f', 0, 64)
 	return fileOut
 }
 
@@ -236,18 +236,24 @@ func annotationCollect(records []string) {
 		// raw attributes
 		rawAttributes := records[8]
 
+		// segregate attributes
+		attributeSegregate(rawAttributes, &annotations.attributes)
+
 		if annotations.scaffold == syncytin.scaffold &&
 			annotations.positions.start > (syncytin.positions.start-nuclWindow) &&
-			annotations.positions.end < (syncytin.positions.end+nuclWindow) &&
-			(annotations.class == "gene" ||
-				records[1] == "repeatmasker" && annotations.class == "match") {
+			annotations.positions.end < (syncytin.positions.end+nuclWindow) {
 
-			// segregate attributes
-			attributeSegregate(rawAttributes, &annotations.attributes)
+			if annotations.class == "gene" {
 
-			// write
-			writeSyntenyGenes(fileOut, annotations)
+				// write
+				writeSyntenyGenes(fileOut+"_gene.csv", annotations)
 
+			} else if records[1] == "repeatmasker" && annotations.class == "match" {
+
+				// write
+				writeSyntenyGenes(fileOut+"_repm.csv", annotations)
+
+			}
 		}
 	}
 }
