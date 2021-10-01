@@ -20,14 +20,17 @@ import (
 // synteny range
 const (
 	nuclWindow = 500000.
+	header     = "seqid" + "," + "start" + "," + "end" + "," + "source" + "," + "score" + "," + "strand" + "," + "distance" + "," + "att_id" + "," + "att_alias" + "," + "att_note" + "," + "att_target" + "\n"
 )
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // declarations
 var (
-	fileOut  string     // infered from input
-	syncytin identified // identified struct
+	prefixOut string            // infered from input
+	syncytin  identified        // identified struct
+	headg     bool       = true // head gene
+	headr     bool       = true // head repeatmasker
 
 	// command line arguments
 	dataDir       string = os.Args[1]
@@ -88,7 +91,7 @@ func main() {
 	syncytin.positions.parseMinMax(stringStart, stringEnd)
 
 	// declare file output
-	fileOut = defineOut(readFile)
+	prefixOut = defineOut(readFile)
 
 	// execute logic
 	annotate(dataDir + "/" + "annotation" + "/" + readFile)
@@ -98,16 +101,16 @@ func main() {
 
 // define output file
 func defineOut(readFile string) string {
-	fileOut = readFile
+	prefixOut = readFile
 	reg := regexp.MustCompile(`HiC*`)
-	res := reg.FindStringIndex(fileOut)
-	fileOut = fileOut[0:res[0]]
-	fileOut = dataDir + "/" + "synteny" + "/" +
-		fileOut +
+	res := reg.FindStringIndex(prefixOut)
+	prefixOut = prefixOut[0:res[0]]
+	prefixOut = dataDir + "/" + "synteny" + "/" +
+		prefixOut +
 		syncytin.scaffold + "_" +
 		strconv.FormatFloat(syncytin.positions.start, 'f', 0, 64) + "_" +
 		strconv.FormatFloat(syncytin.positions.end, 'f', 0, 64)
-	return fileOut
+	return prefixOut
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -175,9 +178,14 @@ func annotate(readFile string) {
 		log.Fatal("Error opending input file :", readErr)
 	}
 
-	// check whether file exists to avoid appending
-	if fileExist(fileOut) {
-		os.Remove(fileOut)
+	// gene check whether file exists to avoid appending
+	if fileExist(prefixOut + "_gene.csv") {
+		os.Remove(prefixOut + "_gene.csv")
+	}
+
+	// repeatmasker check whether file exists to avoid appending
+	if fileExist(prefixOut + "_repm.csv") {
+		os.Remove(prefixOut + "_repm.csv")
 	}
 
 	// scanner.Scan() advances to the next token returning false if an error was encountered
@@ -246,12 +254,12 @@ func annotationCollect(records []string) {
 			if annotations.class == "gene" {
 
 				// write
-				writeSyntenyGenes(fileOut+"_gene.csv", annotations)
+				writeSyntenyGenes(prefixOut, "gene", annotations)
 
 			} else if records[1] == "repeatmasker" && annotations.class == "match" {
 
 				// write
-				writeSyntenyGenes(fileOut+"_repm.csv", annotations)
+				writeSyntenyGenes(prefixOut, "repm", annotations)
 
 			}
 		}
@@ -311,10 +319,10 @@ func (attributes *attribute) AddAttribute(ats, field string) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // write positions
-func writeSyntenyGenes(fileOut string, annotations annotation) {
+func writeSyntenyGenes(prefixOut, suffixOut string, annotations annotation) {
 
 	// declare io
-	f, err := os.OpenFile(fileOut, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0666)
+	f, err := os.OpenFile(prefixOut+"_"+suffixOut+".csv", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0666)
 
 	if err != nil {
 		panic(err)
@@ -324,6 +332,26 @@ func writeSyntenyGenes(fileOut string, annotations annotation) {
 
 	// declare writer
 	w := bufio.NewWriter(f)
+
+	// gene header
+	if headg && suffixOut == "gene" {
+		headg = false
+		_, err = w.WriteString(header)
+
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	// repeatmasker header
+	if headr && suffixOut == "repm" {
+		headr = false
+		_, err = w.WriteString(header)
+
+		if err != nil {
+			panic(err)
+		}
+	}
 
 	// writing
 	_, err = w.WriteString(annotations.print())
