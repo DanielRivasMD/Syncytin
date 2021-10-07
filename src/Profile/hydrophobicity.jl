@@ -96,10 +96,10 @@ for ι in 1:length(synAr)
 
   # calculate values
   score = calculateHydropathy(synAr[ι], hydro)
-  to_plot = windowSlide(score)
+  toPlot = windowSlide(score)
 
   # plot
-  plotHydropathyR(to_plot, string( (synAr[ι] |> FASTX.identifier), " - ", (synAr[ι] |> FASTX.description) ))
+  plotHydropathyR(toPlot, string( (synAr[ι] |> FASTX.identifier), " - ", (synAr[ι] |> FASTX.description) ))
 
 end
 
