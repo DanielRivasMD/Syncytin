@@ -1,6 +1,12 @@
 Computational study of _syncitin_ gene in vertebrates.
 
+### Archive
+
 ### Data description
+
+#### `alignment`
+
+concatenated fasta sequence for multiple sequence alignment.
 
 #### `annoation`
 
@@ -12,15 +18,23 @@ collected candidate sequences from **DNAzoo** assemblies.
 
 #### `diamondOutput`
 
-output from _diamond_ alignment. organized by assembly. also contains `taxonomist` data.
+output from _diamond_ alignment. organized by assembly. also contains `stats` & `taxonomist` data per species.
 
 #### `DNAzoo`
 
 holds assemblies from **DNAzoo**.
 
+#### `insertion`
+
+surroding sequences of the insertions candidate under the same nomemclature.
+
 #### `phylogeny`
 
 contain assembly lists & output from candidate loci & taxonomy.
+
+#### `profile`
+
+hydrophobicity profiles.
 
 #### `synteny`
 
