@@ -3,9 +3,11 @@
 ################################################################################
 
 # declarations
-projDir=$HOME/Factorem/Syncytin
-phylogeny=${projDir}/data/phylogeny
-diamond=${projDir}/data/diamondOutput
+projDir=${HOME}/Factorem/Syncytin
+dataDir=${projDir}/data
+taxonomist=${dataDir}/taxonomist
+phylogeny=${dataDir}/phylogeny
+diamond=${dataDir}/diamondOutput
 taxGroups=(kingdom phylum class order family genus)
 
 ################################################################################
@@ -14,7 +16,7 @@ while read id ass ann
 do
 
   # create directory
-  dir="${diamond}/${id}/taxonomist"
+  dir=${taxonomist}/${id}
   mkdir -p ${dir}
 
   # collect taxonomy
@@ -24,11 +26,9 @@ do
   # decompose taxonomy
   for tx in "${taxGroups[@]}"
   do
-    #echo $tx
     grep -w $tx ${dir}/${id}_taxonomist.xml > ${dir}/${id}_${tx}.xml
   done
 
 done < ${phylogeny}/CURATEDassembly.list
-#done <<< `awk 'NR == 1 {print $0}' ${phylogeny}/CURATEDassembly.list`
 
 ################################################################################

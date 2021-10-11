@@ -18,11 +18,11 @@ collected candidate sequences from **DNAzoo** assemblies.
 
 #### `diamondOutput`
 
-output from _diamond_ alignment. organized by assembly. also contains `stats` & `taxonomist` data per species.
+output from _diamond_ alignment. organized by assembly. also contains `stats`
 
 #### `DNAzoo`
 
-holds assemblies from **DNAzoo**.
+hold assemblies from **DNAzoo**.
 
 #### `insertion`
 
@@ -39,6 +39,10 @@ hydrophobicity profiles.
 #### `synteny`
 
 output from collecting candidate loci. organized by assembly.
+
+#### `taxonomist`
+
+hold taxonomy data per species.
 
 #### `syncytinDB`
 

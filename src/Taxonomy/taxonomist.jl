@@ -25,7 +25,7 @@ include( string( projDir, "/src/Utilities/ioDataFrame.jl" ) );
 function taxonomist(ζ::String; taxGroups::Vector{String} = ["Kingdom", "Phylum", "Class", "Order", "Family", "genus"])
 
   # define path
-  dir = string( projDir, "/data/diamondOutput/", ζ, "/taxonomist" )
+  dir = string( projDir, "/data/taxonomist/", ζ )
 
   # create data frame
   outDf = DataFrame( :Species => ζ )
