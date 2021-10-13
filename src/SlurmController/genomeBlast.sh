@@ -17,7 +17,7 @@ sbatch \
   --export sourceFolder=${sourceFolder},curatedAssembly=${curatedAssembly} \
   --array 1-$( awk 'END{print NR}' ${curatedAssembly} ) \
   --wrap \
-  'bender AssemblySearch blast \
+  'bender Assembly Search blast \
   --configPath ${sourceFolder}/src/blast/ \
   --configFile genomeDiamond.toml \
   --species $( sed -n "$SLURM_ARRAY_TASK_ID"p "${curatedAssembly}" | cut -d " " -f1 ) \

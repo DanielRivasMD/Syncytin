@@ -8,7 +8,7 @@ Search for _syncitin_ sequences in assemblies.
 
 #### `blast`
 
-- `genomeBlast.toml` => **`bender`** configuration for **`AssemblySearch blast`**.
+- `genomeBlast.toml` => **`bender`** configuration for **`Assembly Search blast`**.
 
 - `genomeBlastPlot.jl` =>
 
@@ -18,4 +18,4 @@ Search for _syncitin_ sequences in assemblies.
 
 #### `diamond`
 
-- `genomeDiamond.toml` => **`bender`** configuration for **`AssemblySearch diamond`**.
+- `genomeDiamond.toml` => **`bender`** configuration for **`Assembly Search diamond`**.
