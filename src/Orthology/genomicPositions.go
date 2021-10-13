@@ -14,6 +14,14 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// filter thresholds
+const (
+	identity  = 80
+	alignment = 400
+)
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // declarations
 var (
 	fileOut string // infered from input
@@ -87,7 +95,7 @@ func genomicPositionsCollect(readFile string) {
 		alignLen, _ := strconv.ParseFloat(records[3], 64)
 
 		// filter criteria
-		if pIdent > 70 && alignLen > 350 {
+		if pIdent >= identity && alignLen >= alignment {
 			// write
 			writeGenomicPositions(fileOut, records)
 		}
