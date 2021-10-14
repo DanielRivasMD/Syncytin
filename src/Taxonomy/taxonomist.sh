@@ -2,15 +2,13 @@
 
 ################################################################################
 
-# declarations
-projDir=${HOME}/Factorem/Syncytin
-dataDir=${projDir}/data
-taxonomist=${dataDir}/taxonomist
-phylogeny=${dataDir}/phylogeny
-diamond=${dataDir}/diamondOutput
-taxGroups=(kingdom phylum class order family genus)
+# config
+source ${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh
 
 ################################################################################
+
+# taxonomy
+taxGroups=(kingdom phylum class order family genus)
 
 while read id ass ann
 do

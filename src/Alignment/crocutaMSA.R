@@ -17,7 +17,7 @@ require(ggtree)
 ################################################################################
 
 # hyena candidate insertions
-crocuta <- readDNAStringSet('data/alignment/Crocuta_crocuta.fasta')
+crocuta <- readDNAStringSet( paste0( projDir, '/data/alignment/Crocuta_crocuta.fasta' ) )
 
 ################################################################################
 

@@ -2,11 +2,8 @@
 
 ################################################################################
 
-# declarations
-projDir=$HOME/Factorem/Syncytin
-dataDir=${projDir}/data
-diamond=${dataDir}/diamondOutput
-stats=${diamond}/stats
+# config
+source ${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh
 
 ################################################################################
 

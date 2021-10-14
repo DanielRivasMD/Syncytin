@@ -2,7 +2,7 @@
 
 ################################################################################
 
-cd $HOME/Factorem/Syncytin/data/DNAzoo/
+cd ${HOME}/Factorem/Syncytin/data/DNAzoo/
 
 while read name assembly annotation
 do
@@ -11,7 +11,7 @@ do
     wget https://dnazoo.s3.wasabisys.com/${name}/${assembly}
     wget https://dnazoo.s3.wasabisys.com/${name}/${annotation}
   fi
-done < $HOME/Factorem/Syncytin/data/phylogeny/CURATEDassembly.list # target HiC assemblies with available annotation
+done < ${HOME}/Factorem/Syncytin/data/phylogeny/CURATEDassembly.list # target HiC assemblies with available annotation
 
 cd - > /dev/null
 

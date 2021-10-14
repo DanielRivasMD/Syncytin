@@ -2,13 +2,8 @@
 
 ################################################################################
 
-# declarations
-projDir=$HOME/Factorem/Syncytin
-orthology=${projDir}/src/Orthology
-excalibur=${projDir}/excalibur
-dataDir=${projDir}/data
-DNAzoo=${dataDir}/DNAzoo
-phylogeny=${dataDir}/phylogeny
+# config
+source ${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh
 
 ################################################################################
 

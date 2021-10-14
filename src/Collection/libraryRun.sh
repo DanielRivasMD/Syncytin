@@ -2,13 +2,8 @@
 
 ################################################################################
 
-projDir=$HOME/Factorem/Syncytin
-collector=${projDir}/src/Collection
-excalibur=${projDir}/excalibur
-syncDB=${projDir}/data/syncytinDB
-accNDir=${syncDB}/accessionN
-accPDir=${syncDB}/accessionP
-genBank=${syncDB}/genBank
+# config
+source ${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh
 
 ################################################################################
 

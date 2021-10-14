@@ -2,11 +2,8 @@
 
 ################################################################################
 
-# declarations
-projDir=$HOME/Factorem/Syncytin
-dataDir=${projDir}/data
-alignment=${dataDir}/alignment
-candidate=${dataDir}/candidate
+# config
+source ${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh
 
 ################################################################################
 

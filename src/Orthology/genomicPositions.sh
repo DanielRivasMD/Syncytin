@@ -2,11 +2,8 @@
 
 ################################################################################
 
-# declarations
-projDir=$HOME/Factorem/Syncytin
-orthology=${projDir}/src/Orthology
-excalibur=${projDir}/excalibur
-diamond=${projDir}/data/diamondOutput
+# config
+source ${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh
 
 ################################################################################
 
