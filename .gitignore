@@ -1,9 +1,5 @@
 # archive
-arch/manuscripts
-arch/presentations
 arch/plots
-arch/notebooks
-arch/UppmaxProposal/
 
 # journal cache & output
 journal/jl_*
