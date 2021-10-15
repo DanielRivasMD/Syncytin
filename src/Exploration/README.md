@@ -2,6 +2,8 @@ Search for _syncitin_ sequences in assemblies.
 
 ### Workflow
 
+`collectList.py` => scrap _wasabisys_ to collect information on available data.
+
 `assemblies.sh` => collect **DNAzoo** assemblies from _wasabisys_ to _Pawsey_.
 
 `curateAssemblyList.sh` =>
