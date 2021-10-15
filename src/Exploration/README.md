@@ -12,10 +12,6 @@ Search for _syncitin_ sequences in assemblies.
 
 - `genomeBlast.toml` => **`bender`** configuration for **`Assembly Search blast`**.
 
-- `genomeBlastPlot.jl` =>
-
-- `genomeBlastPlot.R` =>
-
 - `ncbi-blast.sh` => retrieve **`blast`** command line application.
 
 #### `diamond`
