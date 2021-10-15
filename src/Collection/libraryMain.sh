@@ -17,6 +17,7 @@ source ${collector}/libraryGBK.sh
 
 ################################################################################
 
+# TODO: update executable call
 # check for Go executable
 if [[ ! -x ${excalibur}/proteinAcc ]]
 then

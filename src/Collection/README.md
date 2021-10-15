@@ -2,7 +2,7 @@ Collect _syncytin_ sequences & create database.
 
 ### Workflow
 
-`libraryRun.sh` => collect all records. main controller.
+`libraryMain.sh` => collect all records. main controller.
 
 `libraryN.sh` => collect nucleotide sequences.
 
