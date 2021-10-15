@@ -9,5 +9,3 @@ Collect _syncytin_ sequences & create database.
 `libraryGBK.sh` => collect gene bank records.
 
 `libraryP.sh` => collect protein sequences.
-
-`proteinAcc.go` => writes protein accession records given gene bank records.

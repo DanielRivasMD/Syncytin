@@ -4,4 +4,4 @@ Analyze _syncitin_ sequences hydrophobicity profile.
 
 `hydrophobicity.jl` => load hydrophobicity table & calculate local values for aminoacid sequence.
 
-`hydrophobicity.tsv` => contain hydrophobicity values for aminoacid residue.
+@`data/profile/` -> `hydrophobicity.tsv` => contain hydrophobicity values for aminoacid residue.

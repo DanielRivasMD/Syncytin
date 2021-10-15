@@ -4,49 +4,29 @@ Computational study of _syncitin_ gene in vertebrates.
 
 ### Data description
 
-#### `alignment`
+#### `alignment` => concatenated fasta sequence for multiple sequence alignment.
 
-concatenated fasta sequence for multiple sequence alignment.
+#### `annoation` => **DNAzoo** assembly annotations.
 
-#### `annoation`
+#### `candidate` => collected candidate sequences from **DNAzoo** assemblies.
 
-**DNAzoo** assembly annotations.
+#### `diamondOutput` => output from _diamond_ alignment. organized by assembly. also contains `stats`
 
-#### `candidate`
+#### `DNAzoo` => hold assemblies from **DNAzoo**.
 
-collected candidate sequences from **DNAzoo** assemblies.
+#### `insertion` => surroding sequences of the insertions candidate under the same nomemclature.
 
-#### `diamondOutput`
+#### `phylogeny` => contain assembly lists & output from candidate loci & taxonomy.
 
-output from _diamond_ alignment. organized by assembly. also contains `stats`
+#### `profile` => hydrophobicity profiles.
 
-#### `DNAzoo`
+#### `synteny` => output from collecting candidate loci. organized by assembly.
 
-hold assemblies from **DNAzoo**.
+#### `taxonomist` => hold taxonomy data per species.
 
-#### `insertion`
+#### `wasabi` => hold web scrapped data from _wasabisys_.
 
-surroding sequences of the insertions candidate under the same nomemclature.
-
-#### `phylogeny`
-
-contain assembly lists & output from candidate loci & taxonomy.
-
-#### `profile`
-
-hydrophobicity profiles.
-
-#### `synteny`
-
-output from collecting candidate loci. organized by assembly.
-
-#### `taxonomist`
-
-hold taxonomy data per species.
-
-#### `syncytinDB`
-
-holds all data related to syncytin annotations.
+#### `syncytinDB` => hold all data related to syncytin annotations.
 
 - `accessionN` => nucleotide accessions.
 
