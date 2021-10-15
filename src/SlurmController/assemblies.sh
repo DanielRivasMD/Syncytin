@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ${HOME}/Factorem/Syncytin/src/SlurmController/Syncytin_slurmConfig.sh
+source ${HOME}/Factorem/Syncytin/src/SlurmController/syncytinConfigSLURM.sh
 jobId=collector_HiC_assemblies
 
 ################################################################################

@@ -8,6 +8,6 @@ Control _SLURM_-managed cluster jobs.
 
 `genomeDiamond.sh` => search for _syncytin_ sequences in assemblies through **diamond** using **`bender`**.
 
-`slurmJobTemplate.sh` => template for _SLURM_ jobs.
+`jobTemplateSLURM.sh` => template for _SLURM_ jobs.
 
-`Syncytin_slurmConfig.sh` => _SLURM_ configuration at _Pawsey_, i.e., project ID, source & report forlders, assembly list.
+`syncytinConfigSLURM.sh` => _SLURM_ configuration at _Pawsey_, i.e., project ID, source & report forlders, assembly list.
