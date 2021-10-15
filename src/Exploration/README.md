@@ -4,9 +4,13 @@ Search for _syncitin_ sequences in assemblies.
 
 `collectList.py` => scrap _wasabisys_ to collect information on available data.
 
-`assemblies.sh` => collect **DNAzoo** assemblies from _wasabisys_ to _Pawsey_.
+`retrieveAssemblies.sh` => collect **DNAzoo** assemblies from _wasabisys_ to _Pawsey_.
 
-`curateAssemblyList.sh` =>
+`curateAssemblyList.sh` => select assemblies to explore.
+
+`insertionStats.sh` => collect general statistics on sequene similarity searches.
+
+`insertionStats.R` => plot general statistics on sequence similarity searches results.
 
 #### `blast`
 

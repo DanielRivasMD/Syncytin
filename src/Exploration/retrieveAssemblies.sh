@@ -2,6 +2,7 @@
 
 ################################################################################
 
+# TODO: update assemblies collect
 cd ${HOME}/Factorem/Syncytin/data/DNAzoo/
 
 while read name assembly annotation
