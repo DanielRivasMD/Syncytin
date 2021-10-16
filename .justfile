@@ -79,3 +79,10 @@ print:
   source ${HOME}/Factorem/Syncytin/src/Orthology/candidateSequenceRetrieve.sh
 
 ################################################################################
+
+# collect list from wasabi
+@ collectList:
+  source ${HOME}/Factorem/Syncytin/src/Exploration/collectList.sh
+
+################################################################################
+
