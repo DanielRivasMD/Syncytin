@@ -11,8 +11,8 @@ import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 # declarations
-projDir = '/users/drivas/Factorem/Syncytin'
-outDir = projDir + 'data/wasabi'
+projDir = '/Users/drivas/Factorem/Syncytin'
+outDir = projDir + '/' + 'data/wasabi'
 wasabi = 'https://dnazoo.s3.wasabisys.com/'
 dnaAddress = wasabi + 'index.html'
 
@@ -31,10 +31,13 @@ dnaHome = BeautifulSoup(browser.page_source, 'html.parser')
 dnaItems = dnaHome.findAll('a')
 
 # iterate on DNAzoo species
-for _, υ enumerate(dnaItems):
+for _, υ in enumerate(dnaItems):
+
+  # log
+  print(υ.text)
 
   # wait to go next link
-  time.sleep(300)
+  time.sleep(10)
 
   # match on indexed spp
   if re.match(ixRx, υ.get_attribute_list('href')[0]):
@@ -55,7 +58,7 @@ for _, υ enumerate(dnaItems):
 
     # prepare output file
     outFile = υ.text.replace('/', '')
-    with open(outDir + outFile + '.csv', 'w') as csvFile:
+    with open(outDir + '/' + outFile + '.csv', 'w') as csvFile:
       csvWriter = writer(csvFile)
 
       # write headers
