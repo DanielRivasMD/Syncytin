@@ -2,18 +2,45 @@
 
 ################################################################################
 
-# TODO: update assemblies collect
-cd ${HOME}/Factorem/Syncytin/data/DNAzoo/
+# config
+source ${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh
 
-while read name assembly annotation
-do
-  if [[ ! -f ${assembly} ]]
+################################################################################
+
+# download function
+function download() {
+  # go to download directory
+  cd $1
+  # download if not exist
+  if [[ ! -f $2 ]]
   then
-    wget https://dnazoo.s3.wasabisys.com/${name}/${assembly}
-    wget https://dnazoo.s3.wasabisys.com/${name}/${annotation}
+    wget $2
   fi
-done < ${HOME}/Factorem/Syncytin/data/phylogeny/CURATEDassembly.list # target HiC assemblies with available annotation
+  # rename
+  mv README.json $3.json
 
-cd - > /dev/null
+}
+
+################################################################################
+
+# record directory
+originalDir=$(pwd)
+
+# iterate on selected assemblies
+for spp in $( $( which exa) ${wasabi}/filter )
+do
+
+  while IFS=, read -r readmeLink assemblyLink annotationLink
+  do
+
+    download ${assembly} ${readmeLink} ${spp/.csv/}
+    download ${DNAzoo} ${assemblyLink}
+    download ${annotation} ${annotationLink}
+
+  done < ${wasabi}/filter/${spp}
+done
+
+# return to directory
+cd ${originalDir}
 
 ################################################################################

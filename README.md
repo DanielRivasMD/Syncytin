@@ -8,6 +8,8 @@ Computational study of _syncitin_ gene in vertebrates.
 
 #### `annoation` => **DNAzoo** assembly annotations.
 
+#### `assembly` => information on assemblies.
+
 #### `candidate` => collected candidate sequences from **DNAzoo** assemblies.
 
 #### `diamondOutput` => output from _diamond_ alignment. organized by assembly. also contains `stats`
@@ -24,7 +26,7 @@ Computational study of _syncitin_ gene in vertebrates.
 
 #### `taxonomist` => hold taxonomy data per species.
 
-#### `wasabi` => hold web scrapped data from _wasabisys_.
+#### `wasabi` => hold web scrapped data from _wasabisys_. contain raw scrapped data & filter for HiC assembly & annotation.
 
 #### `syncytinDB` => hold all data related to syncytin annotations.
 

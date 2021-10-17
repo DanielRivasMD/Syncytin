@@ -91,3 +91,9 @@ print:
   source ${HOME}/Factorem/Syncytin/src/Exploration/filterAssemblies.sh
 
 ################################################################################
+
+# retrieve assemblies
+@ retrieveAssemblies:
+  source ${HOME}/Factorem/Syncytin/src/Exploration/retrieveAssemblies.sh
+
+################################################################################
