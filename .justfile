@@ -86,3 +86,8 @@ print:
 
 ################################################################################
 
+# filter assemblies
+@ filterAssemblies:
+  source ${HOME}/Factorem/Syncytin/src/Exploration/filterAssemblies.sh
+
+################################################################################

@@ -6,6 +6,8 @@ Search for _syncitin_ sequences in assemblies.
 
 `collectList.sh` => control `collectList.py`.
 
+`filterAssemblies.sh` => filter scrapped assembly data.
+
 `retrieveAssemblies.sh` => collect **DNAzoo** assemblies from _wasabisys_ to _Pawsey_.
 
 `curateAssemblyList.sh` => select assemblies to explore.
