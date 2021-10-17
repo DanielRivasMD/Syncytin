@@ -20,6 +20,7 @@ do
     BEGIN{
       FS = ",";
       OFS = ","
+      RS = "\r\n"
     }
 
     {
