@@ -18,6 +18,6 @@ sbatch \
   --export sourceFolder=${sourceFolder},assemblyList=${assemblyList} \
   --array 1-$( awk 'END{print NR}' ${assemblyList} ) \
   --wrap \
-  '${sourceFolder}/src/Exploration/retrieveAssemblies.sh $( sed -n ""$SLURM_ARRAY_TASK_ID"p ${assemblyList} )'
+  '${sourceFolder}/src/Exploration/retrieveAssemblies.sh $( sed -n "$SLURM_ARRAY_TASK_ID"p ${assemblyList} )'
 
 ################################################################################

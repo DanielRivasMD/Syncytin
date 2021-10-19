@@ -11,6 +11,12 @@ source ${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh
 function download() {
   # go to download directory
   cd $1
+  # prevent readme collisions
+  if [[ ! -z "$3" ]]
+  then
+    mkdir $3
+    cd $3
+  fi
   # download if not exist
   if [[ ! -f $2 ]]
   then
@@ -19,7 +25,9 @@ function download() {
   # rename
   if [[ ! -z "$3" ]]
   then
-    mv README.json $3.json
+    mv README.json ../$3.json
+    cd ..
+    rmdir $3
   fi
 }
 
