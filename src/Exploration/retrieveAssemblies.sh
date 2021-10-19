@@ -18,7 +18,6 @@ function download() {
   fi
   # rename
   mv README.json $3.json
-
 }
 
 ################################################################################
@@ -26,19 +25,15 @@ function download() {
 # record directory
 originalDir=$(pwd)
 
-# iterate on selected assemblies
-for spp in $( $( which exa) ${wasabi}/filter )
+# read filtered assembly list
+while IFS=, read -r assemblySpp readmeLink assemblyLink annotationLink
 do
 
-  while IFS=, read -r readmeLink assemblyLink annotationLink
-  do
+  download ${assembly} ${readmeLink} ${assemblySpp} # README.json
+  download ${DNAzoo} ${assemblyLink}                # HiC.fasta.gz
+  download ${annotation} ${annotationLink}          # gff3.gz
 
-    download ${assembly} ${readmeLink} ${spp/.csv/}
-    download ${DNAzoo} ${assemblyLink}
-    download ${annotation} ${annotationLink}
-
-  done < ${wasabi}/filter/${spp}
-done
+done < ${wasabi}/filter/assemblyList.csv
 
 # return to directory
 cd ${originalDir}
