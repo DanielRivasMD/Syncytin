@@ -1,23 +1,15 @@
 #!/bin/bash
 
+################################################################################
+
 source ${HOME}/Factorem/Syncytin/src/SlurmController/syncytinConfigSLURM.sh
-jobId=collector_HiC_assemblies
 
 ################################################################################
 
-# MAGNUS
-sbatch \
-  --account ${projectId} \
-  --partition workq \
-  --job-name ${jobId} \
-  --output ${reportFolder}/${jobId}.out \
-  --error ${reportFolder}/${jobId}.err \
-  --time 4:0:0 \
-  --nodes 1 \
-  --ntasks 1 \
-  --export sourceFolder=${sourceFolder},assemblyList=${assemblyList} \
-  --array 1-$( awk 'END{print NR}' ${assemblyList} ) \
-  --wrap \
-  '${sourceFolder}/src/Exploration/retrieveAssemblies.sh $( sed -n "$SLURM_ARRAY_TASK_ID"p ${assemblyList} | cut -d "," -f 1,4,5,6 )'
+# iterate over assembly file
+while IFS=, read -r assemblySpp assemblyID annotationID readmeLink assemblyLink annotationLink
+do
+  source ${sourceFolder}/src/Exploration/retrieveAssemblies.sh "${assemblySpp},${readmeLink},${assemblyLink},${annotationLink}"
+done < ${assemblyList}
 
 ################################################################################
