@@ -79,6 +79,8 @@ print:
   source ${HOME}/Factorem/Syncytin/src/Orthology/candidateSequenceRetrieve.sh
 
 ################################################################################
+# local analysis protocols
+################################################################################
 
 # collect list from wasabi
 @ collectList:
@@ -89,11 +91,5 @@ print:
 # filter assemblies
 @ filterAssemblies:
   source ${HOME}/Factorem/Syncytin/src/Exploration/filterAssemblies.sh
-
-################################################################################
-
-# retrieve assemblies
-@ retrieveAssemblies:
-  source ${HOME}/Factorem/Syncytin/src/Exploration/retrieveAssemblies.sh
 
 ################################################################################

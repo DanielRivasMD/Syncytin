@@ -12,9 +12,12 @@ sbatch \
   --job-name ${jobId} \
   --output ${reportFolder}/${jobId}.out \
   --error ${reportFolder}/${jobId}.err \
-  --time 24:00:00 \
+  --time 4:0:0 \
   --nodes 1 \
   --ntasks 1 \
-  ${sourceFolder}/src/Exploration/retrieveAssemblies.sh
+  --export sourceFolder=${sourceFolder},assemblyList=${assemblyList} \
+  --array 1-$( awk 'END{print NR}' ${assemblyList} ) \
+  --wrap \
+  '${sourceFolder}/src/Exploration/retrieveAssemblies.sh $( sed -n ""$SLURM_ARRAY_TASK_ID"p ${assemblyList} )'
 
 ################################################################################
