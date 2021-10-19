@@ -27,14 +27,7 @@ do
 
     {
       if ( /README/ ) {
-        readmeID = $1;
         readmeLink = $2;
-      }
-
-      if ( /fasta_v2.functional.gff3.gz/ ) {
-        annotation++;
-        annotationID = $1;
-        annotationLink = $2;
       }
 
       if ( /HiC.fasta.gz/ ) {
@@ -42,11 +35,17 @@ do
         assemblyID = $1;
         assemblyLink = $2;
       }
+
+      if ( /fasta_v2.functional.gff3.gz/ ) {
+        annotation++;
+        annotationID = $1;
+        annotationLink = $2;
+      }
     }
 
     END{
       if ( annotation > 0 && assembly > 0 ) {
-        print assemblySpp, readmeLink, assemblyLink, annotationLink;
+        print assemblySpp, assemblyID, annotationID, readmeLink, assemblyLink, annotationLink;
       }
     }
   ' ${wasabi}/raw/${assembly} >> ${wasabi}/filter/assemblyList.csv

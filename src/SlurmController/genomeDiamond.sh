@@ -14,13 +14,13 @@ sbatch \
   --time 4:0:0 \
   --nodes 1 \
   --ntasks 16 \
-  --export sourceFolder=${sourceFolder},curatedAssembly=${curatedAssembly} \
-  --array 1-$( awk 'END{print NR}' ${curatedAssembly} ) \
+  --export sourceFolder=${sourceFolder},assemblyList=${assemblyList} \
+  --array 1-$( awk 'END{print NR}' ${assemblyList} ) \
   --wrap \
   'bender Assembly Search diamond \
   --configPath ${sourceFolder}/src/diamond/ \
   --configFile genomeDiamond.toml \
-  --species $( sed -n "$SLURM_ARRAY_TASK_ID"p "${curatedAssembly}" | cut -d " " -f1 ) \
-  --assembly $( sed -n "$SLURM_ARRAY_TASK_ID"p "${curatedAssembly}" | cut -d " " -f2 )'
+  --species $( sed -n "$SLURM_ARRAY_TASK_ID"p "${assemblyList}" | cut -d "," -f 1 ) \
+  --assembly $( sed -n "$SLURM_ARRAY_TASK_ID"p "${assemblyList}" | cut -d "," -f 2 )'
 
 ################################################################################e

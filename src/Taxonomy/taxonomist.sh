@@ -27,6 +27,6 @@ do
     grep -w $tx ${dir}/${id}_taxonomist.xml > ${dir}/${id}_${tx}.xml
   done
 
-done < ${phylogeny}/CURATEDassembly.list
+done < ${assemblyList}
 
 ################################################################################
