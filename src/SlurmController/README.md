@@ -2,7 +2,7 @@ Control _SLURM_-managed cluster jobs.
 
 ### Workflow
 
-`assemblies.sh` => collect **DNAzoo** assemblies from _wasabisys_ to _Pawsey_.
+`retrieveAssemblies.sh` => collect **DNAzoo** assemblies from _wasabisys_ to _Pawsey_.
 
 `genomeBlast.sh` => search for _syncytin_ sequences in assemblies through **BLAST** using **`bender`**.
 
