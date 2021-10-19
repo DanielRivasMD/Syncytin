@@ -5,6 +5,6 @@
 projectId=pawsey0263
 sourceFolder=${HOME}/Factorem/Syncytin
 reportFolder=${HOME}/Report/Syncytin
-curatedAssembly=${sourceFolder}/data/phylogeny/CURATEDassembly.list
+assemblyList=${sourceFolder}/data/wasabi/assemblyList.csv
 
 ################################################################################

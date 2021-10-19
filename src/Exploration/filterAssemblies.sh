@@ -7,16 +7,18 @@ source ${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh
 
 ################################################################################
 
-# # avoid appending
-# if [[ -f ${wasabi}/annotations.csv ]]
-# then
-#   rm ${wasabi}/annotations.csv
-# fi
+# avoid appending
+if [[ -f ${wasabi}/filter/assemblyList.csv ]]
+then
+  rm ${wasabi}/filter/assemblyList.csv
+fi
 
 # filter
 for assembly in $( $(which exa) ${wasabi}/raw )
 do
-  awk '
+  awk \
+    -v assemblySpp=${assembly/.csv/} \
+    '
     BEGIN{
       FS = ",";
       OFS = ","
@@ -44,10 +46,10 @@ do
 
     END{
       if ( annotation > 0 && assembly > 0 ) {
-        print readmeLink, assemblyLink, annotationLink;
+        print assemblySpp, readmeLink, assemblyLink, annotationLink;
       }
     }
-  ' ${wasabi}/raw/${assembly} > ${wasabi}/filter/${assembly/.csv/}
+  ' ${wasabi}/raw/${assembly} >> ${wasabi}/filter/assemblyList.csv
 done
 
 ################################################################################
