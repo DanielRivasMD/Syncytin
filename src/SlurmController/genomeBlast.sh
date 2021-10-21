@@ -1,16 +1,19 @@
 #!/bin/bash
 
+################################################################################
+
 source ${HOME}/Factorem/Syncytin/src/SlurmController/syncytinConfigSLURM.sh
-jobId=SyncytinBlast
 
 ################################################################################
 
+# magnus
 sbatch \
   --account ${projectId} \
+  --clusters magnus \
   --partition workq \
-  --job-name ${jobId} \
-  --output ${reportFolder}/${jobId}.out \
-  --error ${reportFolder}/${jobId}.err \
+  --job-name SyncytinBlast \
+  --output ${reportFolder}/%x_%j_%a.out \
+  --error ${reportFolder}/%x_%j_%a.err \
   --time 24:0:0 \
   --nodes 1 \
   --ntasks 1 \
@@ -18,7 +21,7 @@ sbatch \
   --array 1-$( awk 'END{print NR}' ${assemblyList} ) \
   --wrap \
   'bender Assembly Search blast \
-  --configPath ${sourceFolder}/src/blast/ \
+  --configPath ${sourceFolder}/src/Exploration/blast/ \
   --configFile genomeDiamond.toml \
   --species $( sed -n "$SLURM_ARRAY_TASK_ID"p "${assemblyList}" | cut -d "," -f 1 ) \
   --assembly $( sed -n "$SLURM_ARRAY_TASK_ID"p "${assemblyList}" | cut -d "," -f 2 )'

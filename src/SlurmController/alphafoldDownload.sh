@@ -1,16 +1,19 @@
 #!/bin/bash
 
+################################################################################
+
 source ${HOME}/Factorem/Syncytin/src/SlurmController/syncytinConfigSLURM.sh
-jobId=alphafold_download
 
 ################################################################################
 
+# magnus
 sbatch \
   --account ${projectId} \
+  --clusters magnus \
   --partition workq \
-  --job-name ${jobId} \
-  --output ${reportFolder}/${jobId}.out \
-  --error ${reportFolder}/${jobId}.err \
+  --job-name alphafoldDownload \
+  --output ${reportFolder}/%x_%j.out \
+  --error ${reportFolder}/%x_%j.err \
   --time 24:0:0 \
   --nodes 1 \
   --ntasks 4 \
