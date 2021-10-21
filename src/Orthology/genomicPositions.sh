@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 ################################################################################
 
@@ -7,20 +8,13 @@ source ${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh
 
 ################################################################################
 
-# check for Go executable
-if [[ ! -x ${excalibur}/genomicPositions ]]
-then
-  echo "Building Go executable..."
-  go build -o ${excalibur}/ ${orthology}/genomicPositions.go
-fi
-
 # filter alingment results
 echo "Filtering alignment results..."
 
 # iterate on diamond output items
-for align in $( $(which exa) ${diamond} );
+for align in $( $(which exa) ${diamond}/raw );
 do
-  ${excalibur}/genomicPositions ${diamond}/${align}/${align}.tsv
+  bender Assembly Positions -I ${diamond}/raw/${align} -O ${diamond}/filter/ -s ${align}.tsv
 done
 
 ################################################################################
