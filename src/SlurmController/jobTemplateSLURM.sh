@@ -1,24 +1,40 @@
 #!/bin/bash
 
+################################################################################
+
 source ${HOME}/Factorem/Syncytin/src/SlurmController/syncytinConfigSLURM.sh
-jobId=WRITE_SLURM_JOBID_HERE
 
 ################################################################################
 
-    # --clusters ${computingCluster} \
-slurmJobId=$( sbatch \
-    --account ${projectId} \
-    --job-name ${jobId} \
-    --output ${reportFolder}/${jobId}.out \
-    --error ${reportFolder}/${jobId}.err \
-    --time WRITE_TIME_HERE \
-    --nodes WRITE_NODES_HERE \
-    --ntasks WRITE_TASKS_HERE \
-    --array 1-${arNo} \
-    --export inputLs=${inputLs} \
-  ${sourceFolder}/WRITE_SCRIPT_PATH_HERE.sh )
-
-echo ${slurmJobId}
+# cluster
+sbatch \
+  --account ${projectId} \
+  --clusters "CLUSTER" \
+  --partition "PARTITION" \
+  --job-name "JOBNAME" \
+  --output ${reportFolder}/%x_%j_%a.out \
+  --error ${reportFolder}/%x_%j_%a.err \
+  --time "TIME" \
+  --nodes "NODES" \
+  --ntasks "TASKS" \
+  --export inputLs=${inputLs} \
+  --array 1-"NUMBER" \
+  --wrap \
+  'SCRIPT'
 
 ################################################################################
 
+# slurm variables
+# %x = job-name
+# %j = jobid
+# %a = arrayid
+
+# pawsey => cluster |> partition
+#   magnus |> workq
+#   topaz |> gpuq
+
+# script
+# source script.sh
+# wrap 'script'
+
+################################################################################
