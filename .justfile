@@ -138,5 +138,18 @@ Report:
 # filter assemblies
 @ filterAssemblies:
   source ${HOME}/Factorem/Syncytin/src/Exploration/filterAssemblies.sh
+################################################################################
+# orthology
+################################################################################
+
+# extract genomic loci coordinates
+@ genomicLoci:
+  # filter loci on each similarity alignment result
+  echo "Filtering genomic loci..."
+  source src/Orthology/genomicLoci.sh
+
+  # collect best loci in genomic neighborhood
+  echo "Collecting genomic loci..."
+  julia --project src/Orthology/genomicLoci.jl
 
 ################################################################################

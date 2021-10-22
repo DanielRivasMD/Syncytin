@@ -37,60 +37,56 @@ end
 
 # load syncytin groups
 synGroups = @chain begin
-  readdlm( string( projDir, "/data/syncytinDB/protein/CURATEDsyncytinGroups.csv", ',' ) )
+  readdlm( string( projDir, "/data/syncytinDB/protein/CURATEDsyncytinGroups.csv" ), ',' )
   DataFrame(:auto)
   rename!(["Id", "Description", "Group"])
 end
 
 ################################################################################
 
+# declare data frame
+lociDf = DataFrame()
+
 # load assembly results
-dDir = string( projDir, "/data/diamondOutput" )
-dirs = readdir(dDir)
+dDir = string( projDir, "/data/diamondOutput/filter" )
+spp = readdir(dDir)
 
 # iterate on diamond output items
-for ι ∈ eachindex(dirs)
-  dr = dirs[ι]
-  lr = readdir( string( dDir, "/", dr ) )
-  xr = contains.(lr, r"filtered")
-  if sum(xr) != 0
-    @debug lr[xr]
+for (ι, υ) ∈ enumerate(spp)
+  # load assembly data
+  assemblyAlign = @chain begin
+    readdlm( string( dDir, "/", υ ) )
+    DataFrame(:auto)
+    rename!(["Scaffold", "Id", "Identity", "start", "end", "evalue"])
+  end
 
-    # load assembly data
-    assemblyAlign = @chain begin
-      readdlm( string( dDir, "/", dr, "/", lr[xr][1] ) )
-      DataFrame(:auto)
-      rename!(["Scaffold", "Id", "Identity", "start", "end", "evalue"])
+  # append columns
+  @chain assemblyAlign begin
+    # add species
+    insertcols!(:Species => replace(υ, ".tsv" => ""))
+
+    # add syncytin group label
+    insertcols!(_, :Group => repeat([""], size(_, 1)))
+
+    # add phylogenetic group
+    _.Group = map(_.Id) do χ
+      findfirst(ζ -> χ == ζ, synGroups.Id) |> π -> getindex(synGroups.Group, π) |> π -> convert(String, π)
     end
+  end
 
-    # append columns
-    @chain assemblyAlign begin
-      # add species
-      insertcols!(:Species => replace(dr, "filtered.tsv" => ""))
+  bestPositions = bestPosition(assemblyAlign)
+  @debug bestPositions
 
-      # add syncytin group label
-      insertcols!(_, :Group => repeat([""], size(_, 1)))
-
-      # add phylogenetic group
-      _.Group = map(_.Id) do χ
-        findfirst(ζ -> χ == ζ, synGroups.Id) |> π -> getindex(synGroups.Group, π) |> π -> convert(String, π)
-      end
-    end
-
-    bestPositions = bestPosition(assemblyAlign)
-    @debug bestPositions
-
-    if ι == 1
-      global positionDf = bestPositions
-    else
-      positionDf = [positionDf; bestPositions]
-    end
+  if ι == 1
+    global lociDf = bestPositions
+  else
+    lociDf = [lociDf; bestPositions]
   end
 end
 
 ################################################################################
 
 # write csv
-writedf( string( projDir, "/data/phylogeny/positionDf.csv" ), positionDf, ',' )
+writedf( string( projDir, "/data/phylogeny/lociDf.csv" ), lociDf, ',' )
 
 ################################################################################
