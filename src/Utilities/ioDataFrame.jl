@@ -3,13 +3,16 @@
 # project
 projDir = "/Users/drivas/Factorem/Syncytin"
 
+# load project enviroment
+using Pkg
+if Pkg.project().path != string( projDir, "/Project.toml" )
+  Pkg.activate(projDir)
+end
+
 ################################################################################
 
 # load packages
 begin
-  using Pkg
-  Pkg.activate(projDir)
-
   using DelimitedFiles
   using DataFrames
 end;
