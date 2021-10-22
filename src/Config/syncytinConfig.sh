@@ -1,36 +1,42 @@
 #!/bin/bash
+set -euo pipefail
 
 ################################################################################
 
 # declarations
-projDir=${HOME}/Factorem/Syncytin
+projDir="${HOME}/Factorem/Syncytin"
 
 # executable
-excalibur=${projDir}/excalibur
+excalibur="${projDir}/excalibur"
 
 # source
-srcDir=${projDir}/src
+srcDir="${projDir}/src"
 
-orthology=${srcDir}/Orthology
-collector=${srcDir}/Collection
-exploration=${srcDir}/Exploration
+orthology="${srcDir}/Orthology"
+collector="${srcDir}/Collection"
+exploration="${srcDir}/Exploration"
 
 # data
-dataDir=${projDir}/data
+dataDir="${projDir}/data"
 
-alignment=${dataDir}/alignment
-annotation=${dataDir}/annotation
-assembly=${dataDir}/assembly
-candidate=${dataDir}/candidate
-diamond=${dataDir}/diamondOutput
-stats=${diamond}/stats
-DNAzoo=${dataDir}/DNAzoo
-phylogeny=${dataDir}/phylogeny
-wasabi=${dataDir}/wasabi
+alignment="${dataDir}/alignment"
+annotation="${dataDir}/annotation"
+assembly="${dataDir}/assembly"
+candidate="${dataDir}/candidate"
+diamond="${dataDir}/diamondOutput"
+DNAzoo="${dataDir}/DNAzoo"
+insertion="${dataDir}/insertion"
+phylogeny="${dataDir}/phylogeny"
+prediction="${dataDir}/prediction"
+profile="${dataDir}/profile"
+stats="${dataDir}/stats"
+synteny="${dataDir}/synteny"
+taxonomist="${dataDir}/taxonomist"
+wasabi="${dataDir}/wasabi"
 
-syncDB=${dataDir}/syncytinDB
-accNDir=${syncDB}/accessionN
-accPDir=${syncDB}/accessionP
-genBank=${syncDB}/genBank
+syncDB="${dataDir}/syncytinDB"
+accNDir="${syncDB}/accessionN"
+accPDir="${syncDB}/accessionP"
+genBank="${syncDB}/genBank"
 
 ################################################################################
