@@ -7,7 +7,7 @@ _default:
 
 # print justfile
 print:
-  bat justfile --language make
+  bat .justfile --language make
 
 ################################################################################
 # cluster deployment
@@ -36,8 +36,9 @@ Database:
 
   echo "Deploying data to Pawsey..."
   # data
-  rsync -azvhP --delete "${syncytin}/${wasabi}/filter/assemblyList.csv" "${pawseyID}:${syncytinRemote}/${wasabi}/filter/"  # assembly list
-  rsync -azvhP --delete "${syncytin}/${syncytinDB}" "${pawseyID}:${syncytinRemote}/data/"                                # syncytin data base
+  rsync -azvhP --delete "${syncytin}/${wasabi}/filter/assemblyList.csv" "${pawseyID}:${syncytinRemote}/${wasabi}/filter/" # assembly list
+  rsync -azvhP --delete "${syncytin}/${syncytinDB}" "${pawseyID}:${syncytinRemote}/data/"                                 # syncytin data base
+  rsync -zavhP --delete "${syncytin}/${phylogeny}/lociDf.csv" "${pawseyID}:${syncytinRemote}/${phylogeny}/"               # candidate loci
 
 ################################################################################
 
@@ -99,15 +100,34 @@ Report:
 # local analysis protocols
 ################################################################################
 
+################################################################################
+# collection
+################################################################################
+
+# collect taxonomy data
+@ taxonomist:
+  echo "TODO call taxonomist script"
+
+################################################################################
+
+# collect species descriptions
+@ assemblyStats:
+  source src/Collection/assemblyStats.sh
+
+################################################################################
+# exploration
+################################################################################
+
 # collect list from wasabi
 @ collectList:
-  source ${HOME}/Factorem/Syncytin/src/Exploration/collectList.sh
+  source src/Exploration/collectList.sh
 
 ################################################################################
 
 # filter assemblies
 @ filterAssemblies:
-  source ${HOME}/Factorem/Syncytin/src/Exploration/filterAssemblies.sh
+  source src/Exploration/filterAssemblies.sh
+
 ################################################################################
 # orthology
 ################################################################################

@@ -10,17 +10,21 @@ Computational study of _syncitin_ gene in vertebrates.
 
 #### `assembly` => information on assemblies.
 
-#### `candidate` => collected candidate sequences from **DNAzoo** assemblies.
+#### `candidate` => collected candidate syncytin sequences from **DNAzoo** assemblies.
 
-#### `diamondOutput` => output from _diamond_ alignment. organized by assembly. also contains `stats`
+#### `diamondOutput` => output from _diamond_ alignment. organized by assembly. contain raw alignment & filter.
 
 #### `DNAzoo` => hold assemblies from **DNAzoo**.
 
-#### `insertion` => surroding sequences of the insertions candidate under the same nomemclature.
+#### `insertion` => collected surrounding sequences of the candidate insertions under the same nomemclature.
 
 #### `phylogeny` => contain assembly lists & output from candidate loci & taxonomy.
 
+#### `prediction` => contain protein prediction data. contain training data & output.
+
 #### `profile` => hydrophobicity profiles.
+
+#### `stats` => collection of different statistics.
 
 #### `synteny` => output from collecting candidate loci. organized by assembly.
 
@@ -40,7 +44,7 @@ Computational study of _syncitin_ gene in vertebrates.
 
 - `protein` => protein library.
 
-### Workflow
+### Source
 
 - [Collection](src/Collection/README.md): collect _syncytin_ sequences library.
 - [Curation](src/Curation/README.md): cluster & curate _syncytin_ library.
@@ -50,10 +54,28 @@ Computational study of _syncitin_ gene in vertebrates.
 - [Phylogeny](src/Phylogeny/README.md): collect phylogenetic information & construct graphs.
 - [Alignment](src/Alignment/README.md): perform multiple sequence alignment of library & identified _syncytin_ sequences.
 - [Prediction](src/Prediction/README.md): calculate _syncytin_ sequences tridimensional structures.
+- [Taxonomy](src/Taxonomy/README.md):
 
 [SlurmController](src/SlurmController/README.md) => control all jobs at _SLURM_-managed cluster.
 
 [Utilities](src/Utilities/README.md) => provide functions.
+
+### just protocols
+
+contain routines to execute locally.
+
+- Collection:
+
+  - assemblyStats =>
+
+- Exploration:
+
+  - collectList =>
+  - filterAssemblies =>
+  -
+
+- axonomist:
+  - taxonomist =>
 
 TODO: retrieve syncytin candidate sequences
 TODO: MSA carnivore conserved insertions & surroding sequences

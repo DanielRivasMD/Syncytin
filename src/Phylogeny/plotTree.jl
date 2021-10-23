@@ -25,14 +25,14 @@ include( string( projDir, "/src/Utilities/ioDataFrame.jl" ) );
 ################################################################################
 
 # read position
-positionDf = readdf( string( projDir, "/data/phylogeny/positionDf.csv" ), ',' )
+lociDf = readdf( string( projDir, "/data/phylogeny/lociDf.csv" ), ',' )
 
 # read taxonomy
 taxonomyDf = readdf( string( projDir, "/data/phylogeny/taxonomyDf.csv" ), ',' )
 
 ################################################################################
 
-alignHits = freqtable(positionDf.Species)
+alignHits = freqtable(lociDf.Species)
 
 diamondHits = @chain begin
   taxonomyDf[:, [:Species, :Order]]

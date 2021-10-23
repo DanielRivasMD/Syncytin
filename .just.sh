@@ -4,8 +4,7 @@ set -euo pipefail
 #################################################################################
 
 # declarations
-home="/Users/drivas"
-syncytin="${home}/Factorem/Syncytin"
+syncytin="${HOME}/Factorem/Syncytin"
 
 #################################################################################
 
