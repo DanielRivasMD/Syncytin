@@ -41,23 +41,14 @@ Database:
 
 ################################################################################
 
-# GO tools
-################################################################################
 # create data folders on remote cluster
 Paths:
   #!/bin/bash
   set -euo pipefail
 
-# build protein accessions
-@ buildProteinAccession:
-  go build -o ${HOME}/Factorem/Syncytin/excalibur ${HOME}/Factorem/Syncytin/src/Collection/proteinAcc.go
   # declarations
   source .just.sh
 
-# run protein accessions
-@ runProteinAccession:
-  if [[ -x ${HOME}/Factorem/Syncytin/excalibur/proteinAcc ]]; then rm ${HOME}/Factorem/Syncytin/excalibur/proteinAcc; fi;
-  source ${HOME}/Factorem/Syncytin/src/Collection/proteinAcc.sh
   echo "Forging data directories at Pawsey..."
   # create directories
   ssh ${pawseyID} "if [[ ! -d ${syncytinRemote}/${alignment} ]]; then ssh ${pawseyID} mkdir ${syncytinRemote}/${alignment}; fi"
@@ -78,42 +69,21 @@ Paths:
   ssh ${pawseyID} "if [[ ! -d ${syncytinRemote}/${wasabi}/raw ]]; then ssh ${pawseyID} mkdir ${syncytinRemote}/${wasabi}/raw; fi"
   ssh ${pawseyID} "if [[ ! -d ${syncytinRemote}/${wasabi}/filter ]]; then ssh ${pawseyID} mkdir ${syncytinRemote}/${wasabi}/filter; fi"
 
-# build genomic positions
-@ buildGenomicPositions:
-  go build -o ${HOME}/Factorem/Syncytin/excalibur ${HOME}/Factorem/Syncytin/src/Orthology/genomicPositions.go
 ################################################################################
 
-# run genomic positions
-@ runGenomicPositions:
-  if [[ -x ${HOME}/Factorem/Syncytin/excalibur/genomicPositions ]]; then rm ${HOME}/Factorem/Syncytin/excalibur/genomicPositions; fi;
-  source ${HOME}/Factorem/Syncytin/src/Orthology/genomicPositions.sh
 # retrieve data from remote
 Diamond:
   #!/bin/bash
   set -euo pipefail
 
-# build synteny annotation
-@ buildSyntenyAnnotationRetrieve:
-  go build -o ${HOME}/Factorem/Syncytin/excalibur ${HOME}/Factorem/Syncytin/src/Orthology/syntenyAnnotationRetrieve.go
   # declarations
   source .just.sh
 
-# run synteny annotation
-@ runSyntenyAnnotationRetrieve:
-  if [[ -x ${HOME}/Factorem/Syncytin/excalibur/syntenyAnnotationRetrieve ]]; then rm ${HOME}/Factorem/Syncytin/excalibur/syntenyAnnotationRetrieve; fi
-  source ${HOME}/Factorem/Syncytin/src/Orthology/syntenyAnnotationRetrieve.sh
   echo "Retriving data..."
   rsync -azvhP "${pawseyID}:${syncytinRemote}/${diamondOutput}" "${syncytin}/data/"
 
-# build candidate sequence
-@ buildCandidateSequenceRetrieve:
-  go build -o ${HOME}/Factorem/Syncytin/excalibur ${HOME}/Factorem/Syncytin/src/Orthology/candidateSequenceRetrieve.go
 ################################################################################
 
-# run candidate sequence
-@ runCandidateSequenceRetrieve:
-  if [[ -x ${HOME}/Factorem/Syncytin/excalibur/candidateSequenceRetrieve ]]; then rm ${HOME}/Factorem/Syncytin/excalibur/candidateSequenceRetrieve; fi
-  source ${HOME}/Factorem/Syncytin/src/Orthology/candidateSequenceRetrieve.sh
 # retrieve reports from remote
 Report:
   #!/bin/bash
