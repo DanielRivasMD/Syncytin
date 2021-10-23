@@ -16,9 +16,8 @@ sbatch \
   --error ${reportFolder}/%x_%j_%a.err \
   --time 4:0:0 \
   --nodes 1 \
-  --ntasks 24 \
-  --export sourceFolder=${sourceFolder},assemblyList=${assemblyList} \
   --array 1-$( awk 'END{print NR}' ${assemblyList} ) \
-  ${sourceFolder}/src/Orthology/SyntenyAlignment.sh $( sed -n "$SLURM_ARRAY_TASK_ID"p "${assemblyList}" | cut -d "," -f 3 )
+  --export sourceFolder=${sourceFolder},assemblyList=${assemblyList} \
+  ${sourceFolder}/src/Orthology/syntenyAlignment.sh $( sed -n "$SLURM_ARRAY_TASK_ID"p "${assemblyList}" | cut -d "," -f 3 )
 
 ################################################################################

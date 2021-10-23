@@ -36,11 +36,12 @@ do
   # annotation
   bender assembly synteny \
     --inDir ${annotation} \
+    --outDir ${synteny} \
     --species ${align/.gz/} \
     --scaffold ${scaffold} \
     --start ${start} \
     --end ${end} \
-    --hood 100000
+    --hood 500000
 
 done < ${phylogeny}/${spp}
 
