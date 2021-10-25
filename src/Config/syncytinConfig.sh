@@ -1,5 +1,4 @@
 #!/bin/bash
-set -euo pipefail
 
 ################################################################################
 
@@ -38,5 +37,10 @@ syncDB="${dataDir}/syncytinDB"
 accNDir="${syncDB}/accessionN"
 accPDir="${syncDB}/accessionP"
 genBank="${syncDB}/genBank"
+
+################################################################################
+
+# assembly
+assemblyList="${wasabi}/filter/assemblyList.csv"
 
 ################################################################################

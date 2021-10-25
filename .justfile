@@ -57,6 +57,8 @@ Paths:
   ssh ${pawseyID} "if [[ ! -d ${syncytinRemote}/${assembly} ]]; then ssh ${pawseyID} mkdir ${syncytinRemote}/${assembly}; fi"
   ssh ${pawseyID} "if [[ ! -d ${syncytinRemote}/${candidate} ]]; then ssh ${pawseyID} mkdir ${syncytinRemote}/${candidate}; fi"
   ssh ${pawseyID} "if [[ ! -d ${syncytinRemote}/${diamondOutput} ]]; then ssh ${pawseyID} mkdir ${syncytinRemote}/${diamondOutput}; fi"
+  ssh ${pawseyID} "if [[ ! -d ${syncytinRemote}/${diamondOutput}/raw ]]; then ssh ${pawseyID} mkdir ${syncytinRemote}/${diamondOutput}/raw; fi"
+  ssh ${pawseyID} "if [[ ! -d ${syncytinRemote}/${diamondOutput}/filter ]]; then ssh ${pawseyID} mkdir ${syncytinRemote}/${diamondOutput}/filter; fi"
   ssh ${pawseyID} "if [[ ! -d ${syncytinRemote}/${DNAzoo} ]]; then ssh ${pawseyID} mkdir ${syncytinRemote}/${DNAzoo}; fi"
   ssh ${pawseyID} "if [[ ! -d ${syncytinRemote}/${insertion} ]]; then ssh ${pawseyID} mkdir ${syncytinRemote}/${insertion}; fi"
   ssh ${pawseyID} "if [[ ! -d ${syncytinRemote}/${phylogeny} ]]; then ssh ${pawseyID} mkdir ${syncytinRemote}/${phylogeny}; fi"
