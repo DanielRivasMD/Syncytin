@@ -8,23 +8,19 @@ source ${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh
 ################################################################################
 
 # taxonomy
-taxGroups=(kingdom phylum class order family genus)
+taxGroups=(kingdom phylum class superorder order suborder family genus species subspecies)
 
-while read id ass ann
+while IFS=, read -r assemblySpp assemblyID annotationID readmeLink assemblyLink annotationLink
 do
 
-  # create directory
-  dir=${taxonomist}/${id}
-  mkdir -p ${dir}
-
   # collect taxonomy
-  #echo ${id//_/ }
-  ncbi-taxonomist collect --names ${id//_/ } --xml > ${dir}/${id}_taxonomist.xml
+  echo ${assemblySpp}
+  ncbi-taxonomist collect --names ${assemblySpp//_/ } --xml > ${taxonomist}/${assemblySpp}.xml
 
   # decompose taxonomy
   for tx in "${taxGroups[@]}"
   do
-    grep -w $tx ${dir}/${id}_taxonomist.xml > ${dir}/${id}_${tx}.xml
+    grep -w -m 1 $tx ${taxonomist}/${assemblySpp}.xml > ${taxonomist}/${assemblySpp}_${tx}.xml
   done
 
 done < ${assemblyList}

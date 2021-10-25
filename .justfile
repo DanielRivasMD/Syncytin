@@ -108,7 +108,13 @@ Report:
 
 # collect taxonomy data
 @ taxonomist:
-  echo "TODO call taxonomist script"
+  # collect taxonomy
+  echo "Gathering taxonomic information..."
+  -source src/Taxonomy/taxonomist.sh
+
+  # parse files & write taxonomy data frame
+  echo "Collecting taxons..."
+  julia --project src/Taxonomy/taxonomist.jl
 
 ################################################################################
 

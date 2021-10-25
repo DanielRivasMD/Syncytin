@@ -25,10 +25,10 @@ include( string( projDir, "/src/Utilities/ioDataFrame.jl" ) );
 ################################################################################
 
 "construct taxonomy dataframe"
-function taxonomist(ζ::String; taxGroups::Vector{String} = ["Kingdom", "Phylum", "Class", "Order", "Family", "genus"])
+function taxonomist(ζ::String; taxGroups::Vector{String} = ["Kingdom", "Phylum", "Class", "Superorder", "Order", "Suborder", "Family", "genus", "species", "subspecies"])
 
   # define path
-  dir = string( projDir, "/data/taxonomist/", ζ )
+  dir = string( projDir, "/data/taxonomist/" )
 
   # create data frame
   outDf = DataFrame( :Species => ζ )
@@ -56,15 +56,18 @@ end
 
 ################################################################################
 
+# declare data frame
+taxonomyDf = DataFrame()
+
 # load assembly results
-dDir = string( projDir, "/data/diamondOutput" )
-dirs = readdir(dDir)
+dDir = string( projDir, "/data/diamondOutput/raw" )
+spp = readdir(dDir) .|> π -> replace(π, ".tsv" => "")
 
-for ι ∈ eachindex(dirs)
-  local sp = dirs[ι]
-
+# iterate on diamond output items
+for (ι, υ) ∈ enumerate(spp)
+  # collect taxonomy
   taxDf = nothing
-  taxDf = taxonomist(sp)
+  taxDf = taxonomist(υ)
   @debug taxDf
 
   if !isnothing(taxDf)
