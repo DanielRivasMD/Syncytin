@@ -19,6 +19,6 @@ sbatch \
   --nodes 1 \
   --export sourceFolder=${sourceFolder},assemblyList=${assemblyList} \
   --array 1-$( awk 'END{print NR}' ${assemblyList} ) \
-  ${sourceFolder}/src/Orthology/sequenceRetrieve.sh $( sed -n "$SLURM_ARRAY_TASK_ID"p "${assemblyList}" | cut -d "," -f 2 )
+  ${sourceFolder}/src/Orthology/sequenceRetrieve.sh
 
 ################################################################################

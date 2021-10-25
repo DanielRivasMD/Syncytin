@@ -8,20 +8,13 @@ source ${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh
 
 ################################################################################
 
-# capture argument
-if [[ $# -eq 0 ]]
-then
-  echo "Error: download directory must be provided as an input argument."
-  exit 1
-else
-  # argument
-  assembly=$1
-fi
+# define assembly
+assembly=$( sed -n "$SLURM_ARRAY_TASK_ID"p ${assemblyList} | cut -d "," -f 2 )
 
 ################################################################################
 
 # collect species name
-spp=$( awk -v assembly=$assembly 'BEGIN{FS = ","} {if ( $2 == assembly ) print $1}' "${wasabi}/filter/assemblyList.csv" )
+spp=$( awk -v assembly=$assembly 'BEGIN{FS = ","} {if ( $2 == assembly ) print $1}' ${wasabi}/filter/assemblyList.csv )
 
 # write candidate loci
 awk -v spp=$spp 'BEGIN{FS = ","} {if ($8 == spp) print $1, $2, $6}' ${phylogeny}/lociDf.csv > ${phylogeny}/${spp}
