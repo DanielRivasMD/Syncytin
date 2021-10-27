@@ -3,22 +3,22 @@
 ################################################################################
 
 # config
-source ${HOME}/Factorem/Syncytin/src/SlurmController/syncytinConfigSLURM.sh
+source "${HOME}/Factorem/Syncytin/src/SlurmController/syncytinConfigSLURM.sh"
 
 ################################################################################
 
 # cluster
 sbatch \
-  --account ${projectId} \
+  --account "${projectId}" \
   --clusters "CLUSTER" \
   --partition "PARTITION" \
   --job-name "JOBNAME" \
-  --output ${reportFolder}/%x_%j_%a.out \
-  --error ${reportFolder}/%x_%j_%a.err \
+  --output "${reportFolder}/%x_%j_%a.out" \
+  --error "${reportFolder}/%x_%j_%a.err" \
   --time "TIME" \
   --nodes "NODES" \
   --ntasks "TASKS" \
-  --export inputLs=${inputLs} \
+  --export inputLs="${inputLs}" \
   --array 1-"NUMBER" \
   --wrap \
   'SCRIPT'

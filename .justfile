@@ -19,9 +19,9 @@ Source:
   set -euo pipefail
 
   # declarations
-  source .just.sh
+  source ".just.sh"
 
-  echo "Deploying source to Pawsey..."
+  echo 'Deploying source to Pawsey...'
   rsync -azvhP --delete "${syncytin}/src" "${pawseyID}:${syncytinRemote}/"
 
 ################################################################################
@@ -32,9 +32,9 @@ Database:
   set -euo pipefail
 
   # declarations
-  source .just.sh
+  source ".just.sh"
 
-  echo "Deploying data to Pawsey..."
+  echo 'Deploying data to Pawsey...'
   # data
   rsync -azvhP --delete "${syncytin}/${wasabi}/filter/assemblyList.csv" "${pawseyID}:${syncytinRemote}/${wasabi}/filter/" # assembly list
   rsync -azvhP --delete "${syncytin}/${syncytinDB}" "${pawseyID}:${syncytinRemote}/data/"                                 # syncytin data base
@@ -48,9 +48,9 @@ Paths:
   set -euo pipefail
 
   # declarations
-  source .just.sh
+  source ".just.sh"
 
-  echo "Forging data directories at Pawsey..."
+  echo 'Forging data directories at Pawsey...'
   # create directories
   ssh ${pawseyID} "if [[ ! -d ${syncytinRemote}/${alignment} ]]; then ssh ${pawseyID} mkdir ${syncytinRemote}/${alignment}; fi"
   ssh ${pawseyID} "if [[ ! -d ${syncytinRemote}/${annotation} ]]; then ssh ${pawseyID} mkdir ${syncytinRemote}/${annotation}; fi"
@@ -80,10 +80,13 @@ Diamond:
   set -euo pipefail
 
   # declarations
-  source .just.sh
+  source ".just.sh"
 
-  echo "Retriving data..."
-  rsync -azvhP "${pawseyID}:${syncytinRemote}/${diamondOutput}" "${syncytin}/data/"
+  echo 'Retriving data...'
+  rsync -azvhP "${pawseyID}:${syncytinRemote}/${diamondOutput}" "${syncytin}/data/" # diamond output
+  rsync -azvhP "${pawseyID}:${syncytinRemote}/${candidate}" "${syncytin}/data/"     # syncytin hit sequence
+  rsync -azvhP "${pawseyID}:${syncytinRemote}/${insertion}" "${syncytin}/data/"     # potential insertion sequence
+  rsync -azvhP "${pawseyID}:${syncytinRemote}/${synteny}" "${syncytin}/data/"       # synteny anchors
 
 ################################################################################
 
@@ -93,9 +96,9 @@ Report:
   set -euo pipefail
 
   # declarations
-  source .just.sh
+  source ".just.sh"
 
-  echo "Retriving reports..."
+  echo 'Retriving reports...'
   rsync -azvhP --delete "${pawseyID}:${reportRemote}/" "${syncytin}/report/"
 
 ################################################################################
@@ -106,14 +109,18 @@ Report:
 # collection
 ################################################################################
 
+################################################################################
+# taxonomy
+################################################################################
+
 # collect taxonomy data
 @ taxonomist:
   # collect taxonomy
-  echo "Gathering taxonomic information..."
+  echo 'Gathering taxonomic information...'
   -source src/Taxonomy/taxonomist.sh
 
   # parse files & write taxonomy data frame
-  echo "Collecting taxons..."
+  echo 'Collecting taxons...'
   julia --project src/Taxonomy/taxonomist.jl
 
 ################################################################################
@@ -143,11 +150,11 @@ Report:
 # extract genomic loci coordinates
 @ genomicLoci:
   # filter loci on each similarity alignment result
-  echo "Filtering genomic loci..."
+  echo 'Filtering genomic loci...'
   source src/Orthology/genomicLoci.sh
 
   # collect best loci in genomic neighborhood
-  echo "Collecting genomic loci..."
+  echo 'Collecting genomic loci...'
   julia --project src/Orthology/genomicLoci.jl
 
 ################################################################################

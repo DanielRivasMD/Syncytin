@@ -1,9 +1,10 @@
 #!/bin/bash
+set -euo pipefail
 
 ################################################################################
 
 # config
-source ${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh
+source "${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh"
 
 ################################################################################
 
@@ -15,14 +16,14 @@ do
 
   # collect taxonomy
   echo ${assemblySpp}
-  ncbi-taxonomist collect --names ${assemblySpp//_/ } --xml > ${taxonomist}/${assemblySpp}.xml
+  ncbi-taxonomist collect --names "${assemblySpp//_/ }" --xml > "${taxonomist}/${assemblySpp}.xml"
 
   # decompose taxonomy
   for tx in "${taxGroups[@]}"
   do
-    grep -w -m 1 $tx ${taxonomist}/${assemblySpp}.xml > ${taxonomist}/${assemblySpp}_${tx}.xml
+    grep -w -m 1 "${tx}" "${taxonomist}/${assemblySpp}.xml" > "${taxonomist}/${assemblySpp}_${tx}.xml"
   done
 
-done < ${assemblyList}
+done < "${assemblyList}"
 
 ################################################################################

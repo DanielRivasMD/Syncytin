@@ -1,18 +1,19 @@
 #!/bin/bash
+set -euo pipefail
 
 ################################################################################
 
 # config
-source ${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh
+source "${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh"
 
 ################################################################################
 
-cd ${diamond}
+cd "${diamond}"
 
 ################################################################################
 
 # create stats file
-echo "Alignment,Count" > ${stats}/diamond.csv
+echo 'Alignment,Count' > "${stats}/diamond.csv"
 
 ################################################################################
 
@@ -26,9 +27,9 @@ filtered=$( $(which fd) filtered | wc | awk '{print $1}' )
 noHits=$( $(which fd) --size=0B tsv | wc | awk '{print $1}' )
 
 # print
-echo $filtered | awk '{print "Filtered," $0}' >> ${stats}/diamond.csv
-echo $(( $total - ($filtered + $noHits) )) | awk '{print "NoFiltered," $0}' >> ${stats}/diamond.csv
-echo $noHits | awk '{print "NoHits," $0}' >> ${stats}/diamond.csv
+echo "${filtered}" | awk '{print "Filtered," $0}' >> "${stats}/diamond.csv"
+echo $(( "${total}" - ("${filtered}" + "${noHits}") )) | awk '{print "NoFiltered," $0}' >> "${stats}/diamond.csv"
+echo "${noHits}" | awk '{print "NoHits," $0}' >> "${stats}/diamond.csv"
 
 ################################################################################
 

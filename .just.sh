@@ -1,5 +1,4 @@
 #!/bin/bash
-set -euo pipefail
 
 #################################################################################
 
@@ -25,9 +24,11 @@ insertion="data/insertion"
 phylogeny="data/phylogeny"
 prediction="data/prediction"
 profile="data/profile"
-syncytinDB="data/syncytinDB"
+stats="data/stats"
 synteny="data/synteny"
 taxonomist="data/taxonomist"
 wasabi="data/wasabi"
+
+syncytinDB="data/syncytinDB"
 
 #################################################################################

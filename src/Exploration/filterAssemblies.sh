@@ -1,23 +1,24 @@
 #!/bin/bash
+set -euo pipefail
 
 ################################################################################
 
 # config
-source ${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh
+source "${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh"
 
 ################################################################################
 
 # avoid appending
-if [[ -f ${wasabi}/filter/assemblyList.csv ]]
+if [[ -f "${wasabi}/filter/assemblyList.csv" ]]
 then
-  rm ${wasabi}/filter/assemblyList.csv
+  rm "${wasabi}/filter/assemblyList.csv"
 fi
 
 # filter
-for assembly in $( $(which exa) ${wasabi}/raw )
+for assembly in $( $(which exa) "${wasabi}/raw" )
 do
   awk \
-    -v assemblySpp=${assembly/.csv/} \
+    -v assemblySpp="${assembly/.csv/}" \
     '
     BEGIN{
       FS = ",";

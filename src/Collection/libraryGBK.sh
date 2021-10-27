@@ -1,9 +1,10 @@
 #!/bin/bash
+set -euo pipefail
 
 ################################################################################
 
 # download protein accessions
-echo "Download protein accessions..."
+echo 'Download protein accessions...'
 
 cd ${syncDB}/genBank
 

@@ -1,19 +1,20 @@
 #!/bin/bash
+set -euo pipefail
 
 ################################################################################
 
 # config
-source ${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh
+source "${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh"
 
 ################################################################################
 
 # nucleotide
-echo "Colleting nucleotide accessions..."
-source ${collector}/libraryN.sh
+echo 'Colleting nucleotide accessions...'
+source "${collector}/libraryN.sh"
 
 # genbank
-echo "Colleting GenBank records..."
-source ${collector}/libraryGBK.sh
+echo 'Colleting GenBank records...'
+source "${collector}/libraryGBK.sh"
 
 ################################################################################
 
@@ -21,18 +22,17 @@ source ${collector}/libraryGBK.sh
 # check for Go executable
 if [[ ! -x ${excalibur}/proteinAcc ]]
 then
-  echo "Building Go executable..."
+  echo 'Building Go executable...'
   go build -o ${excalibur}/ ${collector}/proteinAcc.go
 fi
 
 # extract protein accessions
-echo "Writting protein accessions..."
+echo 'Writting protein accessions...'
 
 for art in $( $(which exa) ${accNDir} );
 do
   if [[ -f ${accPDir}/${art} ]]
   then
-    echo "Cleaning ${art}"
     rm ${accPDir}/${art}
   fi
   while read genRecord
@@ -44,7 +44,7 @@ done
 ################################################################################
 
 # protein
-echo "Colleting protein accessions..."
+echo 'Colleting protein accessions...'
 source ${collector}/libraryP.sh
 
 ################################################################################
