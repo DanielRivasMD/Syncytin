@@ -28,8 +28,9 @@ include( string( projDir, "/src/Utilities/ioDataFrame.jl" ) );
 "return best position (highest identity percentage) on alignment"
 function bestPosition(df::DataFrame)
   #  TODO: alternatively, find minimum e-value
-  return combine(groupby(df, [:Scaffold, :start, :Group])) do χ
-    χ[argmax(χ.Identity), :]
+  #  TODO: round start & end positions
+  return combine(groupby(df, [:QueryAccession, :QueryStart, :QueryEnd])) do χ
+    χ[argmax(χ.SequenceIdentity), :]
   end
 end
 
@@ -57,19 +58,19 @@ for (ι, υ) ∈ enumerate(spp)
   assemblyAlign = @chain begin
     readdlm( string( dDir, "/", υ ) )
     DataFrame(:auto)
-    rename!(["Scaffold", "Id", "Identity", "start", "end", "evalue"])
+    rename!(["QueryAccession", "TargetAccession", "SequenceIdentity", "Length", "Mismatches", "GapOpenings", "QueryStart", "QueryEnd", "TargetStart", "TargetEnd", "EValue", "BitScore"])
   end
 
   # append columns
   @chain assemblyAlign begin
-    # add species
-    insertcols!(:Species => replace(υ, ".tsv" => ""))
-
     # add syncytin group label
     insertcols!(_, :Group => repeat([""], size(_, 1)))
 
+    # add species
+    insertcols!(:Species => replace(υ, ".tsv" => ""))
+
     # add phylogenetic group
-    _.Group = map(_.Id) do χ
+    _.Group = map(_.TargetAccession) do χ
       findfirst(ζ -> χ == ζ, synGroups.Id) |> π -> getindex(synGroups.Group, π) |> π -> convert(String, π)
     end
   end

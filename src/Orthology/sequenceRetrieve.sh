@@ -18,7 +18,7 @@ assembly=$( sed -n "$SLURM_ARRAY_TASK_ID"p "${assemblyList}" | cut -d "," -f 2 )
 spp=$( awk -v assembly="${assembly}" 'BEGIN{FS = ","} {if ( $2 == assembly ) print $1}' "${wasabi}/filter/assemblyList.csv" )
 
 # write candidate loci
-awk -v spp="${spp}" 'BEGIN{FS = ","} {if ($8 == spp) print $1, $2, $6}' "${phylogeny}/lociDf.csv" > "${phylogeny}/${spp}"
+awk -v spp="${spp}" 'BEGIN{FS = ","} {if ($14 == spp) print $1, $2, $3}' "${phylogeny}/lociDf.csv" > "${phylogeny}/${spp}"
 
 # decompress assembly & keep compressed
 gzip --decompress --stdout "${DNAzoo}/${assembly}" > "${DNAzoo}/${assembly/.gz/}"
