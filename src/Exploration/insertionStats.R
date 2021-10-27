@@ -12,7 +12,7 @@ require(tidyverse)
 ################################################################################
 
 # load diamond stats
-ctfile <- paste0( projDir, '/data/diamondOutput/stats/diamond.csv' )
+ctfile <- paste0( projDir, '/data/stats/diamond.csv' )
 counts <- read_csv(ctfile)
 
 ################################################################################

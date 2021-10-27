@@ -144,6 +144,13 @@ Report:
   source src/Exploration/filterAssemblies.sh
 
 ################################################################################
+
+# insertion stats
+@ insertionStats:
+  source src/Exploration/insertionStats.sh
+  R --slave --vanilla < src/Exploration/insertionStats.R
+
+################################################################################
 # orthology
 ################################################################################
 
