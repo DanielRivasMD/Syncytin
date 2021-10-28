@@ -1,7 +1,11 @@
 ################################################################################
 
-# project
-projDir = "/Users/drivas/Factorem/Syncytin"
+# declarations
+begin
+  include( "/Users/drivas/Factorem/Syncytin/src/Config/syncytinConfig.jl" )
+end;
+
+################################################################################
 
 # load project enviroment
 using Pkg
@@ -14,23 +18,16 @@ end
 # load packages
 begin
   import Chain: @chain
-  using DelimitedFiles
+
+  using CSV
   using DataFrames
-  using FASTX
 end;
-
-################################################################################
-
-# variables
-begin
-  candidateDir = string( projDir, "/data/candidate" )
-end
 
 ################################################################################
 
 # load modules
 begin
-  include( string( projDir, "/src/Utilities/ioDataFrame.jl" ) )
+  include( string( utilDir, "/ioDataFrame.jl" ) )
 end;
 
 ################################################################################
@@ -38,12 +35,11 @@ end;
 # load data
 begin
   # load taxonomy
-  taxonomyDf = readdf( string( projDir, "/data/phylogeny/taxonomyDf.csv" ), ',')
+  taxonomyDf = CSV.read( string( phylogenyDir, "/taxonomyDf.csv" ), DataFrame )
 
   # load list
   assemblyList = @chain begin
-    readdlm( string( projDir, "/data/wasabi/filter/assemblyList.csv" ), ',' )
-    DataFrame(:auto)
+    CSV.read( string( wasabiDir, "/filter/assemblyList.csv" ), DataFrame, header = false )
     rename!(["assemblySpp", "assemblyID", "annotationID", "readmeLink", "assemblyLink", "annotationLink"])
   end
 end;
@@ -59,6 +55,8 @@ carnivoraList = @chain taxonomyDf begin
   assemblyList[_, :]
 end
 
+################################################################################
+
 # collect indexes on directory
 ix = @chain begin
   replace.(carnivoraList.assemblyID, ".fasta.gz" => "")
@@ -66,43 +64,18 @@ ix = @chain begin
   findall.(χ -> !isnothing(χ), _)
 end
 
+################################################################################
+
 candidateAr = candidateCollect(ix, candidateDir)
 
 ################################################################################
 
-""
-function candidateCollect(ix, candidateDir)
-  # syncytin candidate sequences
-  candidates = readdir(candidateDir)
+filter(:assemblySpp => χ -> _ == χ, carnivoraList)
 
-  # declare empty array
-  candidateOutAr = Array{FASTX.FASTA.Record}(undef, 1)
-
-  # count locally
-  let ct = 0
-    for ι ∈ ix
-      for ο ∈ ι
-
-        # open reader
-        reader = FASTA.Reader(open( string( candidateDir, "/", candidates[ο] ), "r"))
-
-        # extract sequences from reader
-        for ρ ∈ reader
-          ct += 1
-          if ct == 1
-            candidateOutAr[1] = ρ
-          else
-            push!(candidateOutAr, ρ)
-          end
-        end
-
-        # close reader
-        close(reader)
-      end
-    end
+@chain begin
+  map(candidateAr) do χ
+    FASTX.description(χ) |> π -> split(π, " ") |> π -> getindex(π, 1)
   end
-
-  return candidateOutAr
 end
 
 ################################################################################

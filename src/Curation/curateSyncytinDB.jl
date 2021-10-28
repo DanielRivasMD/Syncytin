@@ -1,22 +1,33 @@
 ################################################################################
 
-# project
-projDir = "/Users/drivas/Factorem/Syncytin"
+# declarations
+begin
+  include( "/Users/drivas/Factorem/Syncytin/src/Config/syncytinConfig.jl" )
+end;
+
+################################################################################
+
+# load project enviroment
+using Pkg
+if Pkg.project().path != string( projDir, "/Project.toml" )
+  Pkg.activate(projDir)
+end
 
 ################################################################################
 
 # load packages
 begin
-  using Pkg
-  Pkg.activate(projDir)
-
   using DelimitedFiles
 end;
 
 ################################################################################
 
-# load functions
-include( string( projDir, "/src/Utilities/syncytinDB.jl" ));
+# load modules
+begin
+  include( string( utilDir, "/arrayOperations.jl" ))
+  include( string( utilDir, "/ioDataFrame.jl" ))
+  include( string( utilDir, "/fastaOperations.jl" ))
+end;
 
 ################################################################################
 
@@ -170,12 +181,12 @@ groupAnnoation = String[
 ################################################################################
 
 # load protein database
-synAr = syncytinReader( string( collectionDB, "/protein/syncytinLibrary.fasta" ) )
+syncytinAr = fastaReader( string( syncytinDBDir, "/protein/syncytinLibrary.fasta" ) )
 
 ################################################################################
 
 # declare filter criteria & specific sequences to exclude
-selectIxs = @pipe synAr |> findall(x ->
+selectIxs = @pipe syncytinAr |> findall(x ->
   FASTA.seqlen(x) >= 400 && (
     contains(FASTX.description(x), "syncytin") ||
     contains(FASTX.description(x), "envelope") ||
@@ -191,7 +202,7 @@ selectIxs = @pipe synAr |> findall(x ->
     !isequal(FASTX.description(x), "envelope polyprotein [Human immunodeficiency virus 1]")
   ), _)
 
-selectRecords = getindex(synAr, selectIxs)
+selectRecords = getindex(syncytinAr, selectIxs)
 
 ################################################################################
 
@@ -206,7 +217,7 @@ selectRecords = selectRecords |> purgeSequences
 ################################################################################
 
 # write curated indexes
-writedlm( string( collectionDB, "/protein/CURATEDindexes.csv" ), selectIxs[selectIx] )
+writedlm( string( syncytinDBDir, "/protein/CURATEDindexes.csv" ), selectIxs[selectIx] )
 
 ################################################################################
 
@@ -214,11 +225,11 @@ writedlm( string( collectionDB, "/protein/CURATEDindexes.csv" ), selectIxs[selec
 syncytinGroups = [sequenceId sequenceDs groupAnnoation][selectIx, :]
 
 # write curated group annoation
-writedlm( string( collectionDB, "/protein/CURATEDsyncytinGroups.csv" ), syncytinGroups, ',' )
+writedlm( string( syncytinDBDir, "/protein/CURATEDsyncytinGroups.csv" ), syncytinGroups, ',' )
 
 ################################################################################
 
 # write curated fasta library
-syncytinWriter( string( collectionDB, "/protein/CURATEDsyncytinLibrary.fasta" ), selectRecords )
+fastaWriter( string( syncytinDBDir, "/protein/CURATEDsyncytinLibrary.fasta" ), selectRecords )
 
 ################################################################################

@@ -1,7 +1,11 @@
 ################################################################################
 
-# project
-projDir = "/Users/drivas/Factorem/Syncytin"
+# declarations
+begin
+  include( "/Users/drivas/Factorem/Syncytin/src/Config/syncytinConfig.jl" )
+end;
+
+################################################################################
 
 # load project enviroment
 using Pkg
@@ -14,24 +18,28 @@ end
 # load packages
 begin
   import Chain: @chain
-  using StatsPlots
+
+  using CSV
   using DataFrames
   using FreqTables
   using RCall
+  using StatsPlots
 end;
 
 ################################################################################
 
 # load modules
-include( string( projDir, "/src/Utilities/ioDataFrame.jl" ) );
+begin
+  include( string( utilDir, "/ioDataFrame.jl" ) )
+end;
 
 ################################################################################
 
 # read coordinates
-lociDf = readdf( string( projDir, "/data/phylogeny/lociDf.csv" ), ',' )
+lociDf = CSV.read( string( phylogenyDir, "/lociDf.csv" ), DataFrame )
 
 # read taxonomy
-taxonomyDf = readdf( string( projDir, "/data/phylogeny/taxonomyDf.csv" ), ',' )
+taxonomyDf = CSV.read( string( phylogenyDir, "/taxonomyDf.csv" ), DataFrame )
 
 ################################################################################
 

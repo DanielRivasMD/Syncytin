@@ -1,7 +1,11 @@
 ################################################################################
 
-# project
-projDir = "/Users/drivas/Factorem/Syncytin"
+# declarations
+begin
+  include( "/Users/drivas/Factorem/Syncytin/src/Config/syncytinConfig.jl" )
+end;
+
+################################################################################
 
 # load project enviroment
 using Pkg
@@ -14,25 +18,15 @@ end
 # load packages
 begin
   import Chain: @chain
-  using DelimitedFiles
-  using DataFrames
 end;
 
 ################################################################################
 
 # load modules
-include( string( projDir, "/src/Utilities/ioDataFrame.jl" ) );
-
-################################################################################
-
-"return best position (highest identity percentage) on alignment"
-function bestPosition(df::DataFrame)
-  #  TODO: alternatively, find minimum e-value
-  #  TODO: round start & end positions
-  return combine(groupby(df, [:QueryAccession, :QueryStart, :QueryEnd])) do χ
-    χ[argmax(χ.SequenceIdentity), :]
-  end
-end
+begin
+  include( string( utilDir, "/ioDataFrame.jl" ) )
+  include( string( utilDir, "/evolutionaryCalculation.jl" ) )
+end;
 
 ################################################################################
 

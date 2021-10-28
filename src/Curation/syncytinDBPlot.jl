@@ -23,26 +23,26 @@ include( string( projDir, "/src/Utilities/syncytinDB.jl" ) );
 ################################################################################
 
 # calculate distance & hierarchical clustering
-levFile =  string( collectionDB, "/protein/levenshteinDistance.tsv" )
+levFile =  string( syncytinDBDir, "/protein/levenshteinDistance.tsv" )
 if isfile(levFile)
   levAr = readdlm(levFile)
 else
   # load syncytin library
-  synAr = syncytinReader( string( collectionDB, "/protein/syncytinLibrary.fasta" ) )
-  levAr = levenshteinDist(synAr);
+  syncytinAr = fastaReader( string( syncytinDBDir, "/protein/syncytinLibrary.fasta" ) )
+  levAr = levenshteinDist(syncytinAr);
   writedlm(levFile, levAr, '\t')
 end
 
 ################################################################################
 
 # load syncytin groups
-sgDf = CSV.read( string( collectionDB, "/protein/CURATEDsyncytinGroups.csv" ), DataFrame, header = ["ID", "Description", "Group"] )
+sgDf = CSV.read( string( syncytinDBDir, "/protein/CURATEDsyncytinGroups.csv" ), DataFrame, header = ["ID", "Description", "Group"] )
 synGroups = ((sgDf.Group |> freqtable).dicts .|> keys)[1] |> π -> convert.(String, π)
 
 ################################################################################
 
 # subset indexes
-ι = convert.(Int64, readdlm( string( collectionDB, "/protein/CURATEDindexes.csv" ) ))[:, 1]
+ι = convert.(Int64, readdlm( string( syncytinDBDir, "/protein/CURATEDindexes.csv" ) ))[:, 1]
 
 figName = string( projDir, "/arch/manuscripts/Figures/CURATEDhclustProt.jpg" )
 rlevAr = levAr[ι, ι]

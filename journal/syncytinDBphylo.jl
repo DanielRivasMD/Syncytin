@@ -3,13 +3,17 @@
 # project
 projDir = "/Users/drivas/Factorem/Syncytin"
 
+# load project enviroment
+using Pkg
+if Pkg.project().path != string( projDir, "/Project.toml" )
+  Pkg.activate(projDir)
+end
+
 ################################################################################
 
 # load packages
 begin
-  using Pkg
-  Pkg.activate(projDir)
-
+  using CSV
   using DelimitedFiles
 end
 
@@ -30,16 +34,16 @@ for d in [:N, :P]
   # load syncytin library
 
   # read sequences from file
-  synAr = Symbol("synAr", d)
-  @eval $synAr = syncytinReader( synDB = string( projDir, "/data/syncytinDB/", db[ad], "/", "syncytinLibrary.fasta") )
+  syncytinAr = Symbol("syncytinAr", d)
+  @eval $syncytinAr = fastaReader( syncytinDB = string( projDir, "/data/syncytinDB/", db[ad], "/", "syncytinLibrary.fasta") )
 
   # group syncytin sequences
   syngDf = Symbol("syngDf", d)
-  @eval $syngDf = syncytinGroupReader( synG = string( projDir, "/data/syncytinDB/", db[ad], "/", "syncytinGroups.csv") )
+  @eval $syngDf = CSV.read( synG = string( projDir, "/data/syncytinDB/", db[ad], "/", "syncytinGroups.csv"), DataFrame, header = false )
 
   # plot sequence length
   lenPlot = Symbol("lenPlot", d)
-  @eval $lenPlot = synLenPlot($synAr, $syngDf)
+  @eval $lenPlot = syncytinLenPlot($syncytinAr, $syngDf)
 
   # calculate distance & hierarchical clustering
   levAr = Symbol("levAr", d)
@@ -47,21 +51,21 @@ for d in [:N, :P]
   @eval if isfile($levFile)
     $levAr = DelimitedFiles.readdlm($levFile)
   else
-    $levAr = levenshteinDist($synAr);
+    $levAr = levenshteinDist($syncytinAr);
     DelimitedFiles.writedlm($levFile, $levAr, '\t')
   end
 
   # plot levenshtein distance & hierarchical clustering
   levPlot = Symbol("levPlot", d)
-  @eval $levPlot = synLevHCPlot($levAr, $syngDf, $synAr)
+  @eval $levPlot = syncytinLevHPlot($levAr, $syngDf, $syncytinAr)
 
   # plot trimmed sequence length
   lenPlotTrim = Symbol("lenPlotTrim", d)
-  @eval $lenPlotTrim = synLenPlot($synAr, $syngDf, trim = true)
+  @eval $lenPlotTrim = syncytinLenPlot($syncytinAr, $syngDf, trim = true)
 
   # recalculate without unassigned sequences
   levPlotTrim = Symbol("levPlotTrim", d)
-  @eval $levPlotTrim = synLevHCPlot($levAr, $syngDf, $synAr, trim = true)
+  @eval $levPlotTrim = syncytinLevHPlot($levAr, $syngDf, $syncytinAr, trim = true)
 
 end
 

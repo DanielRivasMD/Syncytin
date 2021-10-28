@@ -85,21 +85,21 @@ end;
 ################################################################################
 
 # load protein database
-synAr = syncytinReader( string( projDir, "/data/syncytinDB/protein/CURATEDsyncytinLibrary.fasta" ) )
+syncytinAr = fastaReader( string( projDir, "/data/syncytinDB/protein/CURATEDsyncytinLibrary.fasta" ) )
 
 ################################################################################
 
 # construct plot
 R"pdf( paste0( $projDir, '/arch/plots/hydrophobicity.pdf' ) )"
 
-for ι in 1:length(synAr)
+for ι in 1:length(syncytinAr)
 
   # calculate values
-  score = calculateHydropathy(synAr[ι], hydro)
+  score = calculateHydropathy(syncytinAr[ι], hydro)
   toPlot = windowSlide(score)
 
   # plot
-  plotHydropathyR(toPlot, string( (synAr[ι] |> FASTX.identifier), " - ", (synAr[ι] |> FASTX.description) ))
+  plotHydropathyR(toPlot, string( (syncytinAr[ι] |> FASTX.identifier), " - ", (syncytinAr[ι] |> FASTX.description) ))
 
 end
 
