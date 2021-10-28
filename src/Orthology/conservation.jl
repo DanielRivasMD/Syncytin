@@ -27,6 +27,7 @@ end;
 
 # load modules
 begin
+  include( string( utilDir, "/evolutionaryCalculation.jl" ) )
   include( string( utilDir, "/ioDataFrame.jl" ) )
 end;
 
@@ -35,7 +36,10 @@ end;
 # load data
 begin
   # load taxonomy
-  taxonomyDf = CSV.read( string( phylogenyDir, "/taxonomyDf.csv" ), DataFrame )
+  taxonomyDf = @chain begin
+    CSV.read( string( phylogenyDir, "/taxonomyDf.csv" ), DataFrame )
+    coalesce.("")
+  end
 
   # load list
   assemblyList = @chain begin
@@ -46,27 +50,13 @@ end;
 
 ################################################################################
 
+# TODO: rewrite as metaprogramming
 # select `Carnivora`
-carnivoraList = @chain taxonomyDf begin
-  filter(:Order => χ -> χ == "Carnivora", _)
-  map(χ -> χ .== assemblyList.assemblySpp, _.Species)
-  sum
-  convert(BitVector, _)
-  assemblyList[_, :]
+carnivoraAr = @chain "Carnivora" begin
+  extractTaxon(taxonomyDf, assemblyList)
+  selectIxs(candidateDir)
+  candidateCollect(candidateDir)
 end
-
-################################################################################
-
-# collect indexes on directory
-ix = @chain begin
-  replace.(carnivoraList.assemblyID, ".fasta.gz" => "")
-  map(χ -> match.(Regex(χ), readdir(candidateDir)), _)
-  findall.(χ -> !isnothing(χ), _)
-end
-
-################################################################################
-
-candidateAr = candidateCollect(ix, candidateDir)
 
 ################################################################################
 

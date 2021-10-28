@@ -74,3 +74,27 @@ function bestPosition(df::DataFrame)
 end
 
 ################################################################################
+
+"extract subset of assemblies for a taxon"
+function extractTaxon(taxon, taxDf, list, level = :Order)
+  @chain taxDf begin
+    filter(level => χ -> χ == taxon, _)
+    map(χ -> χ .== list.assemblySpp, _.Species)
+    sum
+    convert(BitVector, _)
+    list[_, :]
+  end
+end
+
+################################################################################
+
+"select file indexes from directory"
+function selectIxs(list, dir)
+  @chain begin
+    replace.(list.assemblyID, ".fasta.gz" => "")
+    map(χ -> match.(Regex(χ), readdir(dir)), _)
+    findall.(χ -> !isnothing(χ), _)
+  end
+end
+
+################################################################################
