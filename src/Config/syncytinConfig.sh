@@ -14,6 +14,12 @@ srcDir="${projDir}/src"
 orthology="${srcDir}/Orthology"
 collector="${srcDir}/Collection"
 exploration="${srcDir}/Exploration"
+################################################################################
+
+# list
+listDir="${projDir}/list"
+
+################################################################################
 
 # data
 dataDir="${projDir}/data"
@@ -41,6 +47,6 @@ genBank="${syncDB}/genBank"
 ################################################################################
 
 # assembly
-assemblyList="${wasabi}/filter/assemblyList.csv"
+assemblyList="${listDir}/assemblyList.csv"
 
 ################################################################################

@@ -1,0 +1,17 @@
+File,Link,Species
+GRCh38.p13,https://www.ncbi.nlm.nih.gov/assembly/GCF_000001405.39,Homo_sapiens
+GRCm39,https://www.ncbi.nlm.nih.gov/assembly/GCF_000001635.27,Mus_musculus
+Rrattus_CSIRO_v1,https://www.ncbi.nlm.nih.gov/assembly/GCF_011064425.1,Rattus_rattus
+ROS_Cfam_1.0,https://www.ncbi.nlm.nih.gov/assembly/GCF_014441545.1,Canis_lupus_familiaris
+Felis_catus_9.0,https://www.ncbi.nlm.nih.gov/assembly/GCA_000181335.5,Felis_sylvestris_catus
+ARS-UCD1.2,https://www.ncbi.nlm.nih.gov/assembly/GCF_002263795.1,Bos_taurus
+EquCab3.0,https://www.ncbi.nlm.nih.gov/assembly/GCF_002863925.1,Equus_caballus
+
+Kamilah_GGO_v0,https://www.ncbi.nlm.nih.gov/assembly/GCF_008122165.1,Gorilla_gorilla_gorilla
+Clint_PTRv2,https://www.ncbi.nlm.nih.gov/assembly/GCF_002880755.1,Pan_troglodytes
+Mmul_10,https://www.ncbi.nlm.nih.gov/assembly/GCF_003339765.1,Macaca_mulatta
+ARS-UI_Ramb_v2.0,https://www.ncbi.nlm.nih.gov/assembly/GCF_016772045.1,Ovis_aries
+DauMad_v1_BIUU,https://www.ncbi.nlm.nih.gov/assembly/GCA_004027145.1,Daubentonia_madagascariensis
+ASM300989v1,https://www.ncbi.nlm.nih.gov/assembly/GCF_003009895.1#/st,Hyaena_hyaena
+mOrnAna1.pri.v4,https://www.ncbi.nlm.nih.gov/assembly/GCF_004115215.2,Ornithorhynchus_anatinus
+mTacAcu1.pri,https://www.ncbi.nlm.nih.gov/assembly/GCF_015852505.1,Tachyglossus_aculeatus

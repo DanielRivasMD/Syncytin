@@ -15,7 +15,7 @@ assembly=$( sed -n "$SLURM_ARRAY_TASK_ID"p "${assemblyList}" | cut -d "," -f 2 )
 ################################################################################
 
 # collect species name
-spp=$( awk -v assembly="${assembly}" 'BEGIN{FS = ","} {if ( $2 == assembly ) print $1}' "${wasabi}/filter/assemblyList.csv" )
+spp=$( awk -v assembly="${assembly}" 'BEGIN{FS = ","} {if ( $2 == assembly ) print $1}' "${listDir}/assemblyList.csv" )
 
 # write candidate loci
 awk -v spp="${spp}" 'BEGIN{FS = ","} {if ($14 == spp) print $1, $2, $3}' "${phylogeny}/lociDf.csv" > "${phylogeny}/${spp}"

@@ -16,7 +16,9 @@ Computational study of _syncitin_ gene in vertebrates.
 
 #### `DNAzoo` => hold assemblies from **DNAzoo**.
 
-#### `insertion` => collected surrounding sequences of the candidate insertions under the same nomemclature.
+#### `insertion` => collected surrounding sequences of the candidate insertions under the same nomenclature.
+
+#### `ncbiAssembly` => contain assemblies from NCBI.
 
 #### `phylogeny` => contain assembly lists & output from candidate loci & taxonomy.
 
@@ -60,22 +62,9 @@ Computational study of _syncitin_ gene in vertebrates.
 
 [Utilities](src/Utilities/README.md) => provide functions.
 
-### just protocols
+### List
 
-contain routines to execute locally.
-
-- Collection:
-
-  - assemblyStats =>
-
-- Exploration:
-
-  - collectList =>
-  - filterAssemblies =>
-  -
-
-- axonomist:
-  - taxonomist =>
+Contain version controlled data files as lists.
 
 TODO: retrieve syncytin candidate sequences
 TODO: MSA carnivore conserved insertions & surroding sequences

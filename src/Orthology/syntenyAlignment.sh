@@ -14,7 +14,7 @@ align=$( sed -n "$SLURM_ARRAY_TASK_ID"p "${assemblyList}" | cut -d "," -f 3 )
 ################################################################################
 
 # collect species name
-spp=$( awk -v align="${align}" 'BEGIN{FS = ","} {if ( $3 == align ) print $1}' "${wasabi}/filter/assemblyList.csv" )
+spp=$( awk -v align="${align}" 'BEGIN{FS = ","} {if ( $3 == align ) print $1}' "${listDir}/assemblyList.csv" )
 
 # write candidate loci
 awk -v spp="${spp}" 'BEGIN{FS = ","} {if ($14 == spp) print $1, $2, $3}' "${phylogeny}/lociDf.csv" > "${phylogeny}/${spp}"

@@ -36,9 +36,10 @@ Database:
 
   echo 'Deploying data to Pawsey...'
   # data
-  rsync -azvhP --delete "${syncytin}/${wasabi}/filter/assemblyList.csv" "${pawseyID}:${syncytinRemote}/${wasabi}/filter/" # assembly list
-  rsync -azvhP --delete "${syncytin}/${syncytinDB}" "${pawseyID}:${syncytinRemote}/data/"                                 # syncytin data base
-  rsync -zavhP --delete "${syncytin}/${phylogeny}/lociDf.csv" "${pawseyID}:${syncytinRemote}/${phylogeny}/"               # candidate loci
+  rsync -azvhP --delete "${syncytin}/${listDir}/assemblyList.csv" "${pawseyID}:${syncytinRemote}/${listDir}/" # assembly list
+  rsync -azvhP --delete "${syncytin}/${syncytinDB}" "${pawseyID}:${syncytinRemote}/data/"                     # syncytin data base
+  rsync -zavhP --delete "${syncytin}/${phylogeny}/lociDf.csv" "${pawseyID}:${syncytinRemote}/${phylogeny}/"   # candidate loci
+  rsync -zavhP --delete "${syncytin}/${ncbi}/" "${pawseyID}:${syncytinRemote}/${ncbi}/"                       # candidate loci
 
 ################################################################################
 
@@ -52,6 +53,7 @@ Paths:
 
   echo 'Forging data directories at Pawsey...'
   # create directories
+  ssh ${pawseyID} "if [[ ! -d ${syncytinRemote}/${listDir} ]]; then ssh ${pawseyID} mkdir ${syncytinRemote}/${listDir}; fi"
   ssh ${pawseyID} "if [[ ! -d ${syncytinRemote}/${alignment} ]]; then ssh ${pawseyID} mkdir ${syncytinRemote}/${alignment}; fi"
   ssh ${pawseyID} "if [[ ! -d ${syncytinRemote}/${annotation} ]]; then ssh ${pawseyID} mkdir ${syncytinRemote}/${annotation}; fi"
   ssh ${pawseyID} "if [[ ! -d ${syncytinRemote}/${assembly} ]]; then ssh ${pawseyID} mkdir ${syncytinRemote}/${assembly}; fi"
@@ -61,6 +63,7 @@ Paths:
   ssh ${pawseyID} "if [[ ! -d ${syncytinRemote}/${diamondOutput}/filter ]]; then ssh ${pawseyID} mkdir ${syncytinRemote}/${diamondOutput}/filter; fi"
   ssh ${pawseyID} "if [[ ! -d ${syncytinRemote}/${DNAzoo} ]]; then ssh ${pawseyID} mkdir ${syncytinRemote}/${DNAzoo}; fi"
   ssh ${pawseyID} "if [[ ! -d ${syncytinRemote}/${insertion} ]]; then ssh ${pawseyID} mkdir ${syncytinRemote}/${insertion}; fi"
+  ssh ${pawseyID} "if [[ ! -d ${syncytinRemote}/${ncbiAssembly} ]]; then ssh ${pawseyID} mkdir ${syncytinRemote}/${ncbiAssembly}; fi"
   ssh ${pawseyID} "if [[ ! -d ${syncytinRemote}/${phylogeny} ]]; then ssh ${pawseyID} mkdir ${syncytinRemote}/${phylogeny}; fi"
   ssh ${pawseyID} "if [[ ! -d ${syncytinRemote}/${prediction} ]]; then ssh ${pawseyID} mkdir ${syncytinRemote}/${prediction}; fi"
   ssh ${pawseyID} "if [[ ! -d ${syncytinRemote}/${prediction}/training ]]; then ssh ${pawseyID} mkdir ${syncytinRemote}/${prediction}/training; fi"

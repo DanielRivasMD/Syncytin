@@ -9,9 +9,9 @@ source "${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh"
 ################################################################################
 
 # avoid appending
-if [[ -f "${wasabi}/filter/assemblyList.csv" ]]
+if [[ -f "${listDir}/assemblyList.csv" ]]
 then
-  rm "${wasabi}/filter/assemblyList.csv"
+  rm "${listDir}/assemblyList.csv"
 fi
 
 # filter
@@ -49,7 +49,7 @@ do
         print assemblySpp, assemblyID, annotationID, readmeLink, assemblyLink, annotationLink;
       }
     }
-  ' ${wasabi}/raw/${assembly} >> ${wasabi}/filter/assemblyList.csv
+  ' ${wasabi}/raw/${assembly} >> ${listDir}/assemblyList.csv
 done
 
 ################################################################################
