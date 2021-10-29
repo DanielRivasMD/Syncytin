@@ -15,7 +15,7 @@ then
 fi
 
 # filter
-for assembly in $( $(which exa) "${wasabi}/raw" )
+for assembly in $( $(which exa) "${wasabiDir}/raw" )
 do
   awk \
     -v assemblySpp="${assembly/.csv/}" \
@@ -49,7 +49,7 @@ do
         print assemblySpp, assemblyID, annotationID, readmeLink, assemblyLink, annotationLink;
       }
     }
-  ' ${wasabi}/raw/${assembly} >> ${listDir}/assemblyList.csv
+  ' "${wasabiDir}/raw/${assembly}" >> "${listDir}/assemblyList.csv"
 done
 
 ################################################################################

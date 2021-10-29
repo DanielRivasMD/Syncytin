@@ -10,41 +10,41 @@ source "${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh"
 
 # nucleotide
 echo 'Colleting nucleotide accessions...'
-source "${collector}/libraryN.sh"
+source "${collectionDir}/libraryN.sh"
 
 # genbank
 echo 'Colleting GenBank records...'
-source "${collector}/libraryGBK.sh"
+source "${collectionDir}/libraryGBK.sh"
 
 ################################################################################
 
 # TODO: update executable call
 # check for Go executable
-if [[ ! -x ${excalibur}/proteinAcc ]]
+if [[ ! -x "${excalibur}/proteinAcc" ]]
 then
   echo 'Building Go executable...'
-  go build -o ${excalibur}/ ${collector}/proteinAcc.go
+  go build -o "${excalibur}/" "${collectionDir}/proteinAcc.go"
 fi
 
 # extract protein accessions
 echo 'Writting protein accessions...'
 
-for art in $( $(which exa) ${accNDir} );
+for art in $( $(which exa) "${accNDir}" );
 do
-  if [[ -f ${accPDir}/${art} ]]
+  if [[ -f "${accPDir}/${art}" ]]
   then
-    rm ${accPDir}/${art}
+    rm "${accPDir}/${art}"
   fi
   while read genRecord
   do
-    ${excalibur}/proteinAcc ${genBank}/${genRecord}.gbk ${accPDir}/${art}
-  done < ${accNDir}/${art}
+    "${excalibur}/proteinAcc" "${genBankDir}/${genRecord}.gbk" "${accPDir}/${art}"
+  done < "${accNDir}/${art}"
 done
 
 ################################################################################
 
 # protein
 echo 'Colleting protein accessions...'
-source ${collector}/libraryP.sh
+source "${collectionDir}/libraryP.sh"
 
 ################################################################################

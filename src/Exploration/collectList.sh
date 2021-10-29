@@ -4,10 +4,10 @@ set -euo pipefail
 ################################################################################
 
 # config
-source ${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh
+source "${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh"
 
 ################################################################################
 
-python3 ${exploration}/collectList.py
+python3 "${explorationDir}/collectList.py"
 
 ################################################################################

@@ -6,12 +6,13 @@ set -euo pipefail
 # download protein accessions
 echo 'Download protein accessions...'
 
-cd ${syncDB}/genBank
+cd "${databaseDir}/genBank"
 
+# use ncbi download
 ncbi-acc-download \
   --verbose \
   --format genbank \
-  $(cat ${accNDir}/*)
+  $(cat "${accNDir}/"*)
 
 cd - > /dev/null
 

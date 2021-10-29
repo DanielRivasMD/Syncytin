@@ -5,15 +5,15 @@
 # declarations
 projDir="${HOME}/Factorem/Syncytin"
 
-# executable
-excalibur="${projDir}/excalibur"
+################################################################################
 
 # source
 srcDir="${projDir}/src"
 
-orthology="${srcDir}/Orthology"
-collector="${srcDir}/Collection"
-exploration="${srcDir}/Exploration"
+orthologyDir="${srcDir}/Orthology"
+collectorDir="${srcDir}/Collection"
+explorationDir="${srcDir}/Exploration"
+
 ################################################################################
 
 # list
@@ -24,25 +24,26 @@ listDir="${projDir}/list"
 # data
 dataDir="${projDir}/data"
 
-alignment="${dataDir}/alignment"
-annotation="${dataDir}/annotation"
-assembly="${dataDir}/assembly"
-candidate="${dataDir}/candidate"
-diamond="${dataDir}/diamondOutput"
-DNAzoo="${dataDir}/DNAzoo"
-insertion="${dataDir}/insertion"
-phylogeny="${dataDir}/phylogeny"
-prediction="${dataDir}/prediction"
-profile="${dataDir}/profile"
-stats="${dataDir}/stats"
-synteny="${dataDir}/synteny"
-taxonomist="${dataDir}/taxonomist"
-wasabi="${dataDir}/wasabi"
+alignmentDir="${dataDir}/alignmentMultipleSequence"
+annotationDir="${dataDir}/annotationSource"
+assemblyDir="${dataDir}/assemblyREADME"
+candidateDir="${dataDir}/candidateSyncytinExtraction"
+diamondDir="${dataDir}/diamondOutput"
+DNAzooDir="${dataDir}/DNAzooSource"
+insertionDir="${dataDir}/insertionSequenceExtraction"
+ncbiDir="${dataDir}/ncbiAssemblyAnnotationSource"
+phylogenyDir="${dataDir}/phylogenyTimeTree"
+predictionDir="${dataDir}/predictionAlphaFold"
+profileDir="${dataDir}/profileProtein"
+statsDir="${dataDir}/statsMiscellaneous"
+syntenyDir="${dataDir}/syntenyAnnotationExtraction"
+taxonomistDir="${dataDir}/taxonomistIDExtraction"
+wasabiDir="${dataDir}/wasabiScrappedSource"
 
-syncDB="${dataDir}/syncytinDB"
-accNDir="${syncDB}/accessionN"
-accPDir="${syncDB}/accessionP"
-genBank="${syncDB}/genBank"
+databaseDir="${dataDir}/syncytinDataBase"
+accNDir="${databaseDir}/accessionN"
+accPDir="${databaseDir}/accessionP"
+genBankDir="${databaseDir}/genBank"
 
 ################################################################################
 

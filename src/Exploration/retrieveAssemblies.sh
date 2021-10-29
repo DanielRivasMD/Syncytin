@@ -4,7 +4,7 @@ set -euo pipefail
 ################################################################################
 
 # config
-source ${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh
+source "${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh"
 
 ################################################################################
 
@@ -37,7 +37,7 @@ function download() {
 # check for command line argument
 if [[ $# -eq 0 ]]
 then
-  echo "Error: download directory must be provided as an input argument."
+  echo 'Error: download directory must be provided as an input argument.'
   exit 1
 fi
 
@@ -49,12 +49,12 @@ originalDir=$(pwd)
 # read filtered assembly list
 while IFS=, read -r assemblySpp readmeLink assemblyLink annotationLink
 do
-  download ${assembly} ${readmeLink} ${assemblySpp} # README.json
-  download ${DNAzoo} ${assemblyLink} ""             # HiC.fasta.gz
-  download ${annotation} ${annotationLink} ""       # gff3.gz
+  download "${assemblyDir}" "${readmeLink}" "${assemblySpp}"  # README.json
+  download "${DNAzooDir}" "${assemblyLink}" ""                # HiC.fasta.gz
+  download "${annotationDir}" "${annotationLink}" ""          # gff3.gz
 done <<< $1
 
 # return to directory
-cd ${originalDir}
+cd "${originalDir}"
 
 ################################################################################

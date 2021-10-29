@@ -9,9 +9,9 @@ source "${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh"
 ################################################################################
 
 # iterate on diamond output items
-for align in $( $(which exa) "${diamond}/raw" )
+for align in $( $(which exa) "${diamondDir}/raw" )
 do
-  bender assembly loci --inDir "${diamond}/raw" --outDir "${diamond}/filter" --species "${align}"
+  bender assembly loci --inDir "${diamondDir}/raw" --outDir "${diamondDir}/filter" --species "${align}"
 done
 
 ################################################################################

@@ -18,10 +18,10 @@ assembly=$( sed -n "$SLURM_ARRAY_TASK_ID"p "${assemblyList}" | cut -d "," -f 2 )
 spp=$( awk -v assembly="${assembly}" 'BEGIN{FS = ","} {if ( $2 == assembly ) print $1}' "${listDir}/assemblyList.csv" )
 
 # write candidate loci
-awk -v spp="${spp}" 'BEGIN{FS = ","} {if ($14 == spp) print $1, $2, $3}' "${phylogeny}/lociDf.csv" > "${phylogeny}/${spp}"
+awk -v spp="${spp}" 'BEGIN{FS = ","} {if ($14 == spp) print $1, $2, $3}' "${phylogenyDir}/lociDf.csv" > "${phylogenyDir}/${spp}"
 
 # decompress assembly & keep compressed
-gzip --decompress --stdout "${DNAzoo}/${assembly}" > "${DNAzoo}/${assembly/.gz/}"
+gzip --decompress --stdout "${DNAzooDir}/${assembly}" > "${DNAzooDir}/${assembly/.gz/}"
 
 # collect sequences around candidate loci
 while read scaffold start end
@@ -29,8 +29,8 @@ do
 
   # candidate
   bender assembly sequence \
-    --inDir "${DNAzoo}" \
-    --outDir "${candidate}" \
+    --inDir "${DNAzooDir}" \
+    --outDir "${candidateDir}" \
     --assembly "${assembly/.gz/}" \
     --species "${species}" \
     --scaffold "${scaffold}" \
@@ -40,8 +40,8 @@ do
 
   # insertion
   bender assembly sequence \
-    --inDir "${DNAzoo}" \
-    --outDir "${insertion}" \
+    --inDir "${DNAzooDir}" \
+    --outDir "${insertionDir}" \
     --assembly "${assembly/.gz/}" \
     --species "${species}" \
     --scaffold "${scaffold}" \
@@ -49,12 +49,12 @@ do
     --end "${end}" \
     --hood 25000
 
-done < "${phylogeny}/${spp}"
+done < "${phylogenyDir}/${spp}"
 
 # remove decompressed assembly
-rm "${DNAzoo}/${assembly/.gz/}"
+rm "${DNAzooDir}/${assembly/.gz/}"
 
 # remove candidate loci
-rm "${phylogeny}/${spp}"
+rm "${phylogenyDir}/${spp}"
 
 ################################################################################

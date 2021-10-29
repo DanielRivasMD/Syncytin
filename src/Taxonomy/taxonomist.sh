@@ -16,12 +16,12 @@ do
 
   # collect taxonomy
   echo ${assemblySpp}
-  ncbi-taxonomist collect --names "${assemblySpp//_/ }" --xml > "${taxonomist}/${assemblySpp}.xml"
+  ncbi-taxonomist collect --names "${assemblySpp//_/ }" --xml > "${taxonomistDir}/${assemblySpp}.xml"
 
   # decompose taxonomy
   for tx in "${taxGroups[@]}"
   do
-    grep -w -m 1 "${tx}" "${taxonomist}/${assemblySpp}.xml" > "${taxonomist}/${assemblySpp}_${tx}.xml"
+    grep -w -m 1 "${tx}" "${taxonomistDir}/${assemblySpp}.xml" > "${taxonomistDir}/${assemblySpp}_${tx}.xml"
   done
 
 done < "${assemblyList}"

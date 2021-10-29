@@ -5,12 +5,13 @@ set -euo pipefail
 
 cd ${projDir}
 
+# use ncbi download
 ncbi-acc-download \
   --verbose \
   --molecule protein \
   --format fasta \
-  --out ${syncDB}/protein/syncytinLibrary.fasta \
-  $(cat ${accPDir}/*)
+  --out "${databaseDir}/protein/syncytinLibrary.fasta" \
+  $(cat "${accPDir}/"*)
 
 cd - > /dev/null
 
