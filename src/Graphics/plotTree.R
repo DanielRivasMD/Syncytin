@@ -22,7 +22,7 @@ trfile <- paste0( projDir, '/data/phylogeny/assemblyTree.nwk' )
 synt <- read.tree(trfile)
 
 # load alignment hits
-dmfile <- paste0( projDir, '/data/phylogeny/diamondHits.csv' )
+dmfile <- paste0( projDir, '/data/stats/diamondHits.csv' )
 diamondHits <- read_csv(dmfile)
 
 ################################################################################
@@ -36,11 +36,11 @@ diamondHits %<>% mutate(hits = na_if(hits, 0))
 gr <- list()
 
 # collect taxomonic names
-tb <- diamondHits %$% table(Order)
+tb <- diamondHits %$% table(Suborder)
 
 # collect names
 getNames <- function(d, n) {
-  return(d$Species[which(d$Order == n)])
+  return(d$Species[which(d$Suborder == n)])
 }
 
 # iteratate over groups
@@ -54,7 +54,7 @@ syntree <- groupOTU(synt, gr)
 ################################################################################
 
 # open io
-pdf( paste0( projDir, '/arch/plots/plotTreeFan.pdf' ) )
+tiff( paste0( projDir, '/arch/plots/plotTreeFan.tiff' ), width = 4, height = 4, units = 'in', res = 300 )
 
 # create tree plot
 t0 <- ggtree(
@@ -82,7 +82,7 @@ t2 <- t1 +
     mapping = aes(
       y = Species,
       x = hits,
-      fill = Order,
+      fill = SubSuborder,
     ),
     stat = 'identity',
     orientation = 'y',
@@ -98,7 +98,9 @@ dev.off()
 ################################################################################
 
 # open io
-pdf( paste0( projDir, '/arch/plots/plotTree.pdf' ) )
+# tiff( paste0( projDir, '/arch/plots/plotTree.tiff' ), width = 4, height = 4, units = 'in', res = 300 )
+# pdf( paste0( projDir, '/arch/plots/plotTree.pdf' ) )
+png( paste0( projDir, '/arch/plots/plotTree.png' ), res = 300 )
 
 # create tree plot
 t0 <- ggtree(
@@ -126,7 +128,7 @@ t2 <- t1 +
     mapping = aes(
       y = Species,
       x = hits,
-      fill = Order,
+      fill = Suborder,
     ),
     stat = 'identity',
     orientation = 'y',
@@ -339,7 +341,7 @@ pg <- ggtree(tree2, aes(color=trait), continuous = TRUE, size=3) +
 # moreColors <- colorRampPalette(brewer.pal(8, "Set2"))(noColors)
 #
 # # plot
-# ggplot(data = toPlotDf, aes(x = Species, y = hits, fill = Order)) +
+# ggplot(data = toPlotDf, aes(x = Species, y = hits, fill = Suborder)) +
 #   geom_bar(stat = "identity", position = position_dodge()) +
 #   scale_fill_manual(values = moreColors) +
 #   theme_classic() +

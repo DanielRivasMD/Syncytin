@@ -46,7 +46,7 @@ taxonomyDf = CSV.read( string( phylogenyDir, "/taxonomyDf.csv" ), DataFrame )
 alignHits = freqtable(lociDf.Species)
 
 diamondHits = @chain begin
-  taxonomyDf[:, [:Species, :Order]]
+  taxonomyDf[:, [:Species, :Suborder]]
   insertcols!(:hits => 0)
 end
 
@@ -60,7 +60,7 @@ end
 ################################################################################
 
 # write csv
-writedf( string( projDir, "/data/phylogeny/diamondHits.csv" ), diamondHits, ',' )
+writedf( string( projDir, "/data/stats/diamondHits.csv" ), diamondHits, ',' )
 
 # ################################################################################
 #
