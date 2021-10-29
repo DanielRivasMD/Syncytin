@@ -75,7 +75,19 @@ end
 
 ################################################################################
 
-"extract subset of assemblies for a taxon"
+"extract subset of assemblies for a taxon & parser binominal nomenclature"
+function extractTaxon(taxon, taxDf, level)
+  @chain taxDf begin
+    filter(level => χ -> χ == taxon, _)
+    replace.(_.Species, "_" => " ")
+    split.(" ")
+    map(χ -> vcat(getindex(χ, [1, 2]), χ), _)
+  end
+end
+
+################################################################################
+
+"extract subset of assemblies for a taxon & match against list"
 function extractTaxon(taxon, taxDf, list, level = :Order)
   @chain taxDf begin
     filter(level => χ -> χ == taxon, _)

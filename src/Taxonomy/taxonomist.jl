@@ -1,7 +1,11 @@
 ################################################################################
 
-# project
-projDir = "/Users/drivas/Factorem/Syncytin"
+# declarations
+begin
+  include( "/Users/drivas/Factorem/Syncytin/src/Config/syncytinConfig.jl" )
+end;
+
+################################################################################
 
 # load project enviroment
 using Pkg
@@ -20,7 +24,10 @@ end;
 ################################################################################
 
 # load modules
-include( string( projDir, "/src/Utilities/ioDataFrame.jl" ) );
+begin
+  include( string( utilDir, "/evolutionaryCalculation.jl" ) )
+  include( string( utilDir, "/ioDataFrame.jl" ) )
+end;
 
 ################################################################################
 
@@ -81,7 +88,40 @@ end
 
 ################################################################################
 
-# write csv
+# write csv complete dataframe
 writedf( string( projDir, "/data/phylogeny/taxonomyDf.csv" ), taxonomyDf, ',')
+
+################################################################################
+
+# trim subspecies but keep full nomenclature
+taxonomyBinominal = @chain taxonomyDf.Species begin
+  replace.("_" => " ")
+  split.(" ")
+  map(χ -> vcat(getindex(χ, [1, 2]), χ), _)
+end
+
+# write csv species binominal
+writedlm( string( projDir, "/data/phylogeny/taxonomyBinominal.csv" ), taxonomyBinominal, ',' )
+
+################################################################################
+
+# parse superorder
+for τ ∈ ["Euarchontoglires", "Afrotheria", "Xenarthra"]
+  writedlm( string( phylogenyDir, "/", τ, "Binominal.csv" ), extractTaxon(τ, taxonomyDf, :Superorder), ',' )
+end
+
+################################################################################
+
+# parse order
+for τ ∈ ["Carnivora", "Rodentia", "Chiroptera", "Perissodactyla", "Artiodactyla", "Pholidota", "Primates"]
+  writedlm( string( phylogenyDir, "/", τ, "Binominal.csv" ), extractTaxon(τ, taxonomyDf, :Order), ',' )
+end
+
+################################################################################
+
+# parse suborder
+for τ ∈ ["Ruminantia"]
+  writedlm( string( phylogenyDir, "/", τ, "Binominal.csv" ), extractTaxon(τ, taxonomyDf, :Suborder), ',' )
+end
 
 ################################################################################
