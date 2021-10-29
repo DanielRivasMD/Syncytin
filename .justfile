@@ -112,22 +112,6 @@ Report:
 # collection
 ################################################################################
 
-################################################################################
-# taxonomy
-################################################################################
-
-# collect taxonomy data
-@ taxonomist:
-  # collect taxonomy
-  echo 'Gathering taxonomic information...'
-  -source src/Taxonomy/taxonomist.sh
-
-  # parse files & write taxonomy data frame
-  echo 'Collecting taxons...'
-  julia --project src/Taxonomy/taxonomist.jl
-
-################################################################################
-
 # collect species descriptions
 @ assemblyStats:
   source src/Collection/assemblyStats.sh
@@ -166,5 +150,27 @@ Report:
   # collect best loci in genomic neighborhood
   echo 'Collecting genomic loci...'
   julia --project src/Orthology/genomicLoci.jl
+
+################################################################################
+# taxonomy
+################################################################################
+
+# parse binominal files for time tree
+@ binominalParse:
+  #
+  echo 'Parsing files...'
+  source src/Taxonomy/binominalParse.sh
+
+################################################################################
+
+# collect taxonomy data
+@ taxonomist:
+  # collect taxonomy
+  echo 'Gathering taxonomic information...'
+  -source src/Taxonomy/taxonomist.sh
+
+  # parse files & write taxonomy data frame
+  echo 'Collecting taxons...'
+  julia --project src/Taxonomy/taxonomist.jl
 
 ################################################################################
