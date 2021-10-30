@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+# set -euo pipefail
 
 ################################################################################
 
@@ -13,9 +13,8 @@ taxGroups=(kingdom phylum class superorder order suborder family genus species s
 
 while IFS=, read -r assemblySpp assemblyID annotationID readmeLink assemblyLink annotationLink
 do
-
-  # collect taxonomy
   echo ${assemblySpp}
+  # collect taxonomy
   ncbi-taxonomist collect --names "${assemblySpp//_/ }" --xml > "${taxonomistDir}/${assemblySpp}.xml"
 
   # decompose taxonomy
@@ -25,5 +24,25 @@ do
   done
 
 done < "${assemblyList}"
+
+################################################################################
+# patch binominal nomenclature
+################################################################################
+
+# chinchilla hybrid, donkey, wild dog, golden hamster, rock hyrax
+patchAr=("Chinchilla_lanigera" "Equus_asinus" "Lycaon_pictus" "Mesocricetus_auratus" "Procavia_capensis")
+
+for assemblySpp in "${patchAr[@]}"
+do
+  echo ${assemblySpp}
+  # collect taxonomy
+  ncbi-taxonomist collect --names "${assemblySpp//_/ }" --xml > "${taxonomistDir}/${assemblySpp}.xml"
+
+  # decompose taxonomy
+  for tx in "${taxGroups[@]}"
+  do
+    grep -w -m 1 "${tx}" "${taxonomistDir}/${assemblySpp}.xml" > "${taxonomistDir}/${assemblySpp}_${tx}.xml"
+  done
+done
 
 ################################################################################

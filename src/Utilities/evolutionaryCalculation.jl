@@ -30,6 +30,35 @@ end;
 
 ################################################################################
 
+"construct taxonomy dataframe"
+function taxonomist(ζ::String; taxGroups::Vector{String} = ["Kingdom", "Phylum", "Class", "Superorder", "Order", "Suborder", "Family", "genus", "species", "subspecies"])
+
+  # create data frame
+  outDf = DataFrame( :Species => ζ )
+
+  # iterate on taxonomic groups
+  for τ ∈ taxGroups
+    @debug τ
+
+    # parse XML files
+    xfile = string( taxonomistDir, "/", ζ, "_", τ, ".xml" )
+    try
+      @eval txFile = parse_file( $xfile )
+      for γ ∈ child_elements( LightXML.root(txFile) )
+        if name(γ) == "name"
+          insertcols!(outDf, Symbol(τ) => content(γ))
+        end
+      end
+    catch ε
+      @warn "File was not parsed. Rerturning empty DataFrame" exception = (ε, catch_backtrace())
+      insertcols!(outDf, Symbol(τ) => "")
+    end
+  end
+  return outDf
+end
+
+################################################################################
+
 "calculate levenshtein distances"
 function levenshteinDist(fastaAr::Vector{FASTX.FASTA.Record})
 
@@ -76,19 +105,17 @@ end
 ################################################################################
 
 "extract subset of assemblies for a taxon & parser binominal nomenclature"
-function extractTaxon(taxon, taxDf, level)
+function extractTaxon(taxon::String, taxDf::DataFrame, level::Symbol)
   @chain taxDf begin
     filter(level => χ -> χ == taxon, _)
-    replace.(_.Species, "_" => " ")
-    split.(" ")
-    map(χ -> vcat(getindex(χ, [1, 2]), χ), _)
+    select([:species, :Species])
   end
 end
 
 ################################################################################
 
 "extract subset of assemblies for a taxon & match against list"
-function extractTaxon(taxon, taxDf, list, level = :Order)
+function extractTaxon(taxon::String, taxDf::DataFrame, list::String; level::Symbol = :Order)
   @chain taxDf begin
     filter(level => χ -> χ == taxon, _)
     map(χ -> χ .== list.assemblySpp, _.Species)

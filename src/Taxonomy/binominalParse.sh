@@ -12,7 +12,7 @@ source "${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh"
 for b in $( $(which exa) "${phylogenyDir}/"*Binominal.csv )
 do
   echo "${b/*\//}"
-  awk 'BEGIN{FS = ","} {print $1, $2}' "${b}" > "${b/.csv/.txt}"
+  awk 'BEGIN{FS = ","} { if ( NR > 1 ) {print $1}}' "${b}" > "${b/.csv/.txt}"
 done
 
 ################################################################################

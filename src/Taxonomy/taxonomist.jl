@@ -17,6 +17,8 @@ end
 
 # load packages
 begin
+  import Chain: @chain
+
   using DataFrames
   using LightXML
 end;
@@ -31,43 +33,11 @@ end;
 
 ################################################################################
 
-"construct taxonomy dataframe"
-function taxonomist(ζ::String; taxGroups::Vector{String} = ["Kingdom", "Phylum", "Class", "Superorder", "Order", "Suborder", "Family", "genus", "species", "subspecies"])
-
-  # define path
-  dir = string( projDir, "/data/taxonomist/" )
-
-  # create data frame
-  outDf = DataFrame( :Species => ζ )
-
-  # iterate on taxonomic groups
-  for τ ∈ taxGroups
-    @debug τ
-
-    # parse XML files
-    xfile = string(dir, "/", ζ, "_", τ, ".xml")
-    try
-      @eval txFile = parse_file( $xfile )
-      for γ ∈ child_elements( LightXML.root(txFile) )
-        if name(γ) == "name"
-          insertcols!(outDf, Symbol(τ) => content(γ))
-        end
-      end
-    catch ε
-      @warn "File was not parsed. Rerturning empty DataFrame" exception = (ε, catch_backtrace())
-      insertcols!(outDf, Symbol(τ) => "")
-    end
-  end
-  return outDf
-end
-
-################################################################################
-
 # declare data frame
 taxonomyDf = DataFrame()
 
 # load assembly results
-dDir = string( projDir, "/data/diamondOutput/raw" )
+dDir = string( diamondDir, "/raw" )
 spp = readdir(dDir) .|> π -> replace(π, ".tsv" => "")
 
 # iterate on diamond output items
@@ -87,41 +57,66 @@ for (ι, υ) ∈ enumerate(spp)
 end
 
 ################################################################################
+# patch binominal nomenclature
+################################################################################
+
+# homotypic synonim
+taxonomyDf[(taxonomyDf.Species .== "Aonyx_cinereus"), :species] .= "Amblonyx cinereus"
+
+# deprecated name
+taxonomyDf[(taxonomyDf.Species .== "Equues_quagga"), :species] .= "Equus burchellii"
+
+# dingo ecotypes
+taxonomyDf[(taxonomyDf.Species .== "Canis_lupus_dingo_alpine_ecotype"), Not(:Species)] .= taxonomyDf[(taxonomyDf.Species .== "Canis_lupus_dingo"), Not(:Species)]
+taxonomyDf[(taxonomyDf.Species .== "Canis_lupus_dingo_desert_ecotype"), Not(:Species)] .= taxonomyDf[(taxonomyDf.Species .== "Canis_lupus_dingo"), Not(:Species)]
+
+# dog breeds
+taxonomyDf[(taxonomyDf.Species .== "Canis_lupus_familiaris_Basenji"), Not(:Species)] .= taxonomyDf[(taxonomyDf.Species .== "Canis_lupus_familiaris"), Not(:Species)]
+taxonomyDf[(taxonomyDf.Species .== "Canis_lupus_familiaris_German_Shepherd"), Not(:Species)] .= taxonomyDf[(taxonomyDf.Species .== "Canis_lupus_familiaris"), Not(:Species)]
+
+# golden hamster
+taxDf = taxonomist("Mesocricetus_auratus")
+taxonomyDf[(taxonomyDf.Species .== "Mesocricetus_auratus__MesAur1.0"), Not(:Species)] .= taxDf[(taxDf.Species .== "Mesocricetus_auratus"), Not(:Species)]
+taxonomyDf[(taxonomyDf.Species .== "Mesocricetus_auratus__golden_hamster_wtdbg2.shortReadsPolished"), Not(:Species)] .= taxDf[(taxDf.Species .== "Mesocricetus_auratus"), Not(:Species)]
+
+# chinchilla hybrid, wild dog, donkey, rock hyrax
+patchAr = ["Chinchilla_lanigera", "Equus_asinus", "Lycaon_pictus", "Procavia_capensis"]
+defectiveAr = ["Chinchilla_x", "Equus_asinus__ASM303372v1", "Lycaon_pictus__sis2-181106", "Procavia_capensis__Pcap_2.0"]
+
+for ι ∈ eachindex(patchAr)
+  taxDf = taxonomist(patchAr[ι])
+  taxonomyDf[(taxonomyDf.Species .== defectiveAr[ι]), Not(:Species)] .= taxDf[(taxDf.Species .== patchAr[ι]), Not(:Species)]
+end
+
+################################################################################
 
 # write csv complete dataframe
-writedf( string( projDir, "/data/phylogeny/taxonomyDf.csv" ), taxonomyDf, ',')
+writedf( string( phylogenyDir, "/taxonomyDf.csv" ), taxonomyDf, ',')
 
 ################################################################################
 
 # trim subspecies but keep full nomenclature
-taxonomyBinominal = @chain taxonomyDf.Species begin
-  replace.("_" => " ")
-  split.(" ")
-  map(χ -> vcat(getindex(χ, [1, 2]), χ), _)
-end
-
-# write csv species binominal
-writedlm( string( projDir, "/data/phylogeny/taxonomyBinominal.csv" ), taxonomyBinominal, ',' )
+writedf( string( phylogenyDir, "/taxonomyBinominal.csv" ), taxonomyDf[:, [:species, :Species]], ',' )
 
 ################################################################################
 
 # parse superorder
 for τ ∈ ["Euarchontoglires", "Afrotheria", "Xenarthra"]
-  writedlm( string( phylogenyDir, "/", τ, "Binominal.csv" ), extractTaxon(τ, taxonomyDf, :Superorder), ',' )
+  writedf( string( phylogenyDir, "/", τ, "Binominal.csv" ), extractTaxon(τ, taxonomyDf, :Superorder), ',' )
 end
 
 ################################################################################
 
 # parse order
 for τ ∈ ["Carnivora", "Rodentia", "Chiroptera", "Perissodactyla", "Artiodactyla", "Pholidota", "Primates"]
-  writedlm( string( phylogenyDir, "/", τ, "Binominal.csv" ), extractTaxon(τ, taxonomyDf, :Order), ',' )
+  writedf( string( phylogenyDir, "/", τ, "Binominal.csv" ), extractTaxon(τ, taxonomyDf, :Order), ',' )
 end
 
 ################################################################################
 
 # parse suborder
 for τ ∈ ["Ruminantia"]
-  writedlm( string( phylogenyDir, "/", τ, "Binominal.csv" ), extractTaxon(τ, taxonomyDf, :Suborder), ',' )
+  writedf( string( phylogenyDir, "/", τ, "Binominal.csv" ), extractTaxon(τ, taxonomyDf, :Suborder), ',' )
 end
 
 ################################################################################
