@@ -61,7 +61,7 @@ Paths:
   if [[ ! -d "${listDir/${projDir}/${projRemote}}" ]]; then mkdir "${listDir/${projDir}/${projRemote}}"; fi
   if [[ ! -d "${alignmentDir/${projDir}/${projRemote}}" ]]; then mkdir "${alignmentDir/${projDir}/${projRemote}}"; fi
   if [[ ! -d "${annotationDir/${projDir}/${projRemote}}" ]]; then mkdir "${annotationDir/${projDir}/${projRemote}}"; fi
-  if [[ ! -d "${assemblyDir/${projDir}/${projRemote}}" ]]; then mkdir "${assemblyDir/${projDir}/${projRemote}}"; fi
+  if [[ ! -d "${assemblyReadmeDir/${projDir}/${projRemote}}" ]]; then mkdir "${assemblyReadmeDir/${projDir}/${projRemote}}"; fi
   if [[ ! -d "${candidateDir/${projDir}/${projRemote}}" ]]; then mkdir "${candidateDir/${projDir}/${projRemote}}"; fi
   if [[ ! -d "${diamondDir/${projDir}/${projRemote}}" ]]; then mkdir "${diamondDir/${projDir}/${projRemote}}"; fi
   if [[ ! -d "${diamondDir/${projDir}/${projRemote}}/raw" ]]; then mkdir "${diamondDir/${projDir}/${projRemote}}/raw"; fi

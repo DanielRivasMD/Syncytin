@@ -45,7 +45,7 @@ begin
 
   # load list
   assemblyDf = @chain begin
-    CSV.read( assemblyList, DataFrame, header = false )
+    CSV.read( DNAzooList, DataFrame, header = false )
     rename!(["assemblySpp", "assemblyID", "annotationID", "readmeLink", "assemblyLink", "annotationLink"])
   end
 end;

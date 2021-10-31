@@ -19,7 +19,7 @@ begin
 
   alignmentDir = string( dataDir, "/alignmentMultipleSequence" )
   annotationDir = string( dataDir, "/annotationSource" )
-  assemblyDir = string( dataDir, "/assemblyREADME" )
+  assemblyReadmeDir = string( dataDir, "/assemblyREADME" )
   candidateDir = string( dataDir, "/candidateSyncytinExtraction" )
   diamondDir = string( dataDir, "/diamondOutput" )
   DNAzooDir = string( dataDir, "/DNAzooSource" )
@@ -46,7 +46,7 @@ begin
   ################################################################################
 
   # assembly
-  assemblyList = string( listDir, "/assemblyList.csv" )
+  DNAzooList = string( listDir, "/DNAzooList.csv" )
   ncbiList = string( listDir, "/ncbiList.csv" )
 
   ################################################################################

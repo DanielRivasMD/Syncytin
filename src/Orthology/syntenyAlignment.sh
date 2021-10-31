@@ -9,18 +9,16 @@ source "${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh"
 ################################################################################
 
 # define annotation
-annotation=$( sed -n "$SLURM_ARRAY_TASK_ID"p "${assemblyList}" | cut -d "," -f 3 )
+species=$( sed -n "$SLURM_ARRAY_TASK_ID"p "${DNAzooList}" | cut -d "," -f 1 )
+annotation=$( sed -n "$SLURM_ARRAY_TASK_ID"p "${DNAzooList}" | cut -d "," -f 3 )
 
 ################################################################################
 
-# collect species name
-spp=$( awk -v annotation="${annotation}" 'BEGIN{FS = ","} {if ( $3 == annotation ) print $1}' "${listDir}/assemblyList.csv" )
-
 # write candidate loci
-awk -v spp="${spp}" 'BEGIN{FS = ","} {if ($14 == spp) print $1, $2, $3}' "${phylogenyDir}/lociDf.csv" > "${phylogenyDir}/${spp}"
+awk -v spp="${species}" 'BEGIN{FS = ","} {if ($14 == spp) print $1, $2, $3}' "${phylogenyDir}/lociDf.csv" > "${dataDir}/tmp/${spp}"
 
 # decompress assembly & keep compressed
-gzip --decompress --stdout "${annotationDir}/${annotation}" > "${annotationDir}/${annotation/.gz/}"
+gzip --decompress --stdout "${annotationDir}/${annotation}" > "${dataDir}/tmp/${annotation/.gz/}"
 
 # collect annotations around candidate loci
 while read scaffold start end
@@ -28,7 +26,7 @@ do
 
   # annotation
   bender assembly synteny \
-    --inDir "${annotationDir}" \
+    --inDir "${dataDir}/tmp" \
     --outDir "${syntenyDir}" \
     --species "${annotation/.gz/}" \
     --scaffold "${scaffold}" \
@@ -36,13 +34,13 @@ do
     --end "${end}" \
     --hood 500000
 
-done < "${phylogenyDir}/${spp}"
+done < "${dataDir}/tmp/${spp}"
 
 # remove decompressed annotation
-rm "${annotationDir}/${annotation/.gz/}"
+rm "${dataDir}/tmp/${annotation/.gz/}"
 
 # remove candidate loci
-rm "${phylogenyDir}/${spp}"
+rm "${dataDir}/tmp/${spp}"
 
 ################################################################################
 

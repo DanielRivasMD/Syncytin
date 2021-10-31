@@ -8,7 +8,7 @@ sourceFolder="${HOME}/Factorem/Syncytin"
 reportFolder="${HOME}/Report/Syncytin"
 
 # assembly list
-assemblyList="${sourceFolder}/list/assemblyList.csv"
+DNAzooList="${sourceFolder}/list/DNAzooList.csv"
 ncbiList="${sourceFolder}/list/ncbiList.csv"
 
 # assembly directory

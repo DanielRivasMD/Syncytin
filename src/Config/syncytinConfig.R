@@ -15,7 +15,7 @@ dataDir <- paste0( projDir, '/data' )
 
 alignmentDir <- paste0( dataDir, '/alignmentMultipleSequence' )
 annotationDir <- paste0( dataDir, '/annotationSource' )
-assemblyDir <- paste0( dataDir, '/assemblyREADME' )
+assemblyReadmeDir <- paste0( dataDir, '/assemblyREADME' )
 candidateDir <- paste0( dataDir, '/candidateSyncytinExtraction' )
 diamondDir <- paste0( dataDir, '/diamondOutput' )
 DNAzooDir <- paste0( dataDir, '/DNAzooSource' )
@@ -42,7 +42,7 @@ listDir <- paste0( projDir, '/list')
 ################################################################################
 
 # assembly
-assemblyList <- paste0( listDir, '/assemblyList.csv')
+DNAzooList <- paste0( listDir, '/DNAzooList.csv')
 ncbiList <- paste0( listDir, '/ncbiList.csv')
 
 ################################################################################

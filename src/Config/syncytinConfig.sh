@@ -21,7 +21,7 @@ dataDir="${projDir}/data"
 
 alignmentDir="${dataDir}/alignmentMultipleSequence"
 annotationDir="${dataDir}/annotationSource"
-assemblyDir="${dataDir}/assemblyREADME"
+assemblyReadmeDir="${dataDir}/assemblyREADME"
 candidateDir="${dataDir}/candidateSyncytinExtraction"
 diamondDir="${dataDir}/diamondOutput"
 DNAzooDir="${dataDir}/DNAzooSource"
@@ -48,7 +48,7 @@ listDir="${projDir}/list"
 ################################################################################
 
 # assembly
-assemblyList="${listDir}/assemblyList.csv"
+DNAzooList="${listDir}/DNAzooList.csv"
 ncbiList="${listDir}/ncbiList.csv"
 
 ################################################################################

@@ -49,7 +49,7 @@ originalDir=$(pwd)
 # read filtered assembly list
 while IFS=, read -r assemblySpp readmeLink assemblyLink annotationLink
 do
-  download "${assemblyDir}" "${readmeLink}" "${assemblySpp}"  # README.json
+  download "${assemblyReadmeDir}" "${readmeLink}" "${assemblySpp}"  # README.json
   download "${DNAzooDir}" "${assemblyLink}" ""                # HiC.fasta.gz
   download "${annotationDir}" "${annotationLink}" ""          # gff3.gz
 done <<< $1

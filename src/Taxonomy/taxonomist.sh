@@ -23,7 +23,7 @@ do
     grep -w -m 1 "${tx}" "${taxonomistDir}/${assemblySpp}.xml" > "${taxonomistDir}/${assemblySpp}_${tx}.xml"
   done
 
-done < "${assemblyList}"
+done < "${DNAzooList}"
 
 ################################################################################
 # patch binominal nomenclature
