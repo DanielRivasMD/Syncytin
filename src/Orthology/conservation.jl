@@ -43,7 +43,7 @@ begin
 
   # load list
   assemblyList = @chain begin
-    CSV.read( string( wasabiDir, "/filter/assemblyList.csv" ), DataFrame, header = false )
+    CSV.read( assemblyList, DataFrame, header = false )
     rename!(["assemblySpp", "assemblyID", "annotationID", "readmeLink", "assemblyLink", "annotationLink"])
   end
 end;

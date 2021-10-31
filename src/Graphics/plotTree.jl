@@ -60,7 +60,7 @@ end
 ################################################################################
 
 # write csv
-writedf( string( projDir, "/data/stats/diamondHits.csv" ), diamondHits, ',' )
+writedf( string( statsDir, "/diamondHits.csv" ), diamondHits, ',' )
 
 # ################################################################################
 #

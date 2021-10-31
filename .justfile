@@ -24,6 +24,8 @@ Source:
 
   echo 'Deploying source to Pawsey...'
   rsync -azvhP --delete "${projDir}/src" "${pawseyID}:${projRemote}/"
+  rsync -azvhP --delete "${projDir}/.just.sh" "${pawseyID}:${projRemote}/"
+  rsync -azvhP --delete "${projDir}/.justfile" "${pawseyID}:${projRemote}/"
 
 ################################################################################
 
@@ -38,10 +40,10 @@ Database:
 
   echo 'Deploying data to Pawsey...'
   # data
-  rsync -azvhP --delete "${projDir}/${listDir}/assemblyList.csv" "${pawseyID}:${projRemote}/${listDir}/" # assembly list
-  rsync -azvhP --delete "${projDir}/${databaseDir}" "${pawseyID}:${projRemote}/data/"                     # syncytin data base
-  rsync -zavhP --delete "${projDir}/${phylogenyDir}/lociDf.csv" "${pawseyID}:${projRemote}/${phylogenyDir}/"   # candidate loci
-  rsync -zavhP --delete "${projDir}/${ncbi}/" "${pawseyID}:${projRemote}/${ncbi}/"                       # candidate loci
+  rsync -azvhP --delete "${listDir}/" "${pawseyID}:${listDir/${projDir}/${projRemote}}/"            # assembly list
+  rsync -azvhP --delete "${databaseDir}/" "${pawseyID}:${databaseDir/${projDir}/${projRemote}}/"    # syncytin database
+  rsync -zavhP --delete "${phylogenyDir}/" "${pawseyID}:${phylogenyDir/${projDir}/${projRemote}}/"  # candidate loci
+  rsync -zavhP --delete "${ncbiDir}/" "${pawseyID}:${ncbiDir/${projDir}/${projRemote}}/"            # ncbi assemblies
 
 ################################################################################
 
@@ -56,27 +58,27 @@ Paths:
 
   echo 'Forging data directories at Pawsey...'
   # create directories
-  ssh ${pawseyID} "if [[ ! -d ${projRemote}/${listDir} ]]; then ssh ${pawseyID} mkdir ${projRemote}/${listDir}; fi"
-  ssh ${pawseyID} "if [[ ! -d ${projRemote}/${alignmentDir} ]]; then ssh ${pawseyID} mkdir ${projRemote}/${alignmentDir}; fi"
-  ssh ${pawseyID} "if [[ ! -d ${projRemote}/${annotationDir} ]]; then ssh ${pawseyID} mkdir ${projRemote}/${annotationDir}; fi"
-  ssh ${pawseyID} "if [[ ! -d ${projRemote}/${assemblyDir} ]]; then ssh ${pawseyID} mkdir ${projRemote}/${assemblyDir}; fi"
-  ssh ${pawseyID} "if [[ ! -d ${projRemote}/${candidateDir} ]]; then ssh ${pawseyID} mkdir ${projRemote}/${candidateDir}; fi"
-  ssh ${pawseyID} "if [[ ! -d ${projRemote}/${diamondDir} ]]; then ssh ${pawseyID} mkdir ${projRemote}/${diamondDir}; fi"
-  ssh ${pawseyID} "if [[ ! -d ${projRemote}/${diamondDir}/raw ]]; then ssh ${pawseyID} mkdir ${projRemote}/${diamondDir}/raw; fi"
-  ssh ${pawseyID} "if [[ ! -d ${projRemote}/${diamondDir}/filter ]]; then ssh ${pawseyID} mkdir ${projRemote}/${diamondDir}/filter; fi"
-  ssh ${pawseyID} "if [[ ! -d ${projRemote}/${DNAzooDir} ]]; then ssh ${pawseyID} mkdir ${projRemote}/${DNAzooDir}; fi"
-  ssh ${pawseyID} "if [[ ! -d ${projRemote}/${insertionDir} ]]; then ssh ${pawseyID} mkdir ${projRemote}/${insertionDir}; fi"
-  ssh ${pawseyID} "if [[ ! -d ${projRemote}/${ncbiAssemblyDir} ]]; then ssh ${pawseyID} mkdir ${projRemote}/${ncbiAssemblyDir}; fi"
-  ssh ${pawseyID} "if [[ ! -d ${projRemote}/${phylogenyDir} ]]; then ssh ${pawseyID} mkdir ${projRemote}/${phylogenyDir}; fi"
-  ssh ${pawseyID} "if [[ ! -d ${projRemote}/${predictionDir} ]]; then ssh ${pawseyID} mkdir ${projRemote}/${predictionDir}; fi"
-  ssh ${pawseyID} "if [[ ! -d ${projRemote}/${predictionDir}/training ]]; then ssh ${pawseyID} mkdir ${projRemote}/${predictionDir}/training; fi"
-  ssh ${pawseyID} "if [[ ! -d ${projRemote}/${profileDir} ]]; then ssh ${pawseyID} mkdir ${projRemote}/${profileDir}; fi"
-  ssh ${pawseyID} "if [[ ! -d ${projRemote}/${databaseDir} ]]; then ssh ${pawseyID} mkdir ${projRemote}/${databaseDir}; fi"
-  ssh ${pawseyID} "if [[ ! -d ${projRemote}/${syntenyDir} ]]; then ssh ${pawseyID} mkdir ${projRemote}/${syntenyDir}; fi"
-  ssh ${pawseyID} "if [[ ! -d ${projRemote}/${taxonomistDir} ]]; then ssh ${pawseyID} mkdir ${projRemote}/${taxonomistDir}; fi"
-  ssh ${pawseyID} "if [[ ! -d ${projRemote}/${wasabiDir} ]]; then ssh ${pawseyID} mkdir ${projRemote}/${wasabiDir}; fi"
-  ssh ${pawseyID} "if [[ ! -d ${projRemote}/${wasabiDir}/raw ]]; then ssh ${pawseyID} mkdir ${projRemote}/${wasabiDir}/raw; fi"
-  ssh ${pawseyID} "if [[ ! -d ${projRemote}/${wasabiDir}/filter ]]; then ssh ${pawseyID} mkdir ${projRemote}/${wasabiDir}/filter; fi"
+  if [[ ! -d "${listDir/${projDir}/${projRemote}}" ]]; then mkdir "${listDir/${projDir}/${projRemote}}"; fi
+  if [[ ! -d "${alignmentDir/${projDir}/${projRemote}}" ]]; then mkdir "${alignmentDir/${projDir}/${projRemote}}"; fi
+  if [[ ! -d "${annotationDir/${projDir}/${projRemote}}" ]]; then mkdir "${annotationDir/${projDir}/${projRemote}}"; fi
+  if [[ ! -d "${assemblyDir/${projDir}/${projRemote}}" ]]; then mkdir "${assemblyDir/${projDir}/${projRemote}}"; fi
+  if [[ ! -d "${candidateDir/${projDir}/${projRemote}}" ]]; then mkdir "${candidateDir/${projDir}/${projRemote}}"; fi
+  if [[ ! -d "${diamondDir/${projDir}/${projRemote}}" ]]; then mkdir "${diamondDir/${projDir}/${projRemote}}"; fi
+  if [[ ! -d "${diamondDir/${projDir}/${projRemote}}/raw" ]]; then mkdir "${diamondDir/${projDir}/${projRemote}}/raw"; fi
+  if [[ ! -d "${diamondDir/${projDir}/${projRemote}}/filter" ]]; then mkdir "${diamondDir/${projDir}/${projRemote}}/filter"; fi
+  if [[ ! -d "${DNAzooDir/${projDir}/${projRemote}}" ]]; then mkdir "${DNAzooDir/${projDir}/${projRemote}}"; fi
+  if [[ ! -d "${insertionDir/${projDir}/${projRemote}}" ]]; then mkdir "${insertionDir/${projDir}/${projRemote}}"; fi
+  if [[ ! -d "${ncbiDir/${projDir}/${projRemote}}" ]]; then mkdir "${ncbiDir/${projDir}/${projRemote}}"; fi
+  if [[ ! -d "${phylogenyDir/${projDir}/${projRemote}}" ]]; then mkdir "${phylogenyDir/${projDir}/${projRemote}}"; fi
+  if [[ ! -d "${predictionDir/${projDir}/${projRemote}}" ]]; then mkdir "${predictionDir/${projDir}/${projRemote}}"; fi
+  if [[ ! -d "${predictionDir/${projDir}/${projRemote}}/training" ]]; then mkdir "${predictionDir/${projDir}/${projRemote}}/training"; fi
+  if [[ ! -d "${profileDir/${projDir}/${projRemote}}" ]]; then mkdir "${profileDir/${projDir}/${projRemote}}"; fi
+  if [[ ! -d "${databaseDir/${projDir}/${projRemote}}" ]]; then mkdir "${databaseDir/${projDir}/${projRemote}}"; fi
+  if [[ ! -d "${syntenyDir/${projDir}/${projRemote}}" ]]; then mkdir "${syntenyDir/${projDir}/${projRemote}}"; fi
+  if [[ ! -d "${taxonomistDir/${projDir}/${projRemote}}" ]]; then mkdir "${taxonomistDir/${projDir}/${projRemote}}"; fi
+  if [[ ! -d "${wasabiDir/${projDir}/${projRemote}}" ]]; then mkdir "${wasabiDir/${projDir}/${projRemote}}"; fi
+  if [[ ! -d "${wasabiDir/${projDir}/${projRemote}}/raw" ]]; then mkdir "${wasabiDir/${projDir}/${projRemote}}/raw"; fi
+  if [[ ! -d "${wasabiDir/${projDir}/${projRemote}}/filter" ]]; then mkdir "${wasabiDir/${projDir}/${projRemote}}/filter"; fi
 
 ################################################################################
 
@@ -90,10 +92,10 @@ Diamond:
   source "src/Config/syncytinConfig.sh"
 
   echo 'Retriving data...'
-  rsync -azvhP "${pawseyID}:${projRemote}/${diamondDir}" "${projDir}/data/"   # diamond output
-  rsync -azvhP "${pawseyID}:${projRemote}/${candidateDir}" "${projDir}/data/" # syncytin hit sequence
-  rsync -azvhP "${pawseyID}:${projRemote}/${insertionDir}" "${projDir}/data/" # potential insertion sequence
-  rsync -azvhP "${pawseyID}:${projRemote}/${syntenyDir}" "${projDir}/data/"   # synteny anchors
+  rsync -azvhP "${pawseyID}:${diamondDir/${projDir}/${projRemote}}/" "${diamondDir}/"     # diamond output
+  rsync -azvhP "${pawseyID}:${candidateDir/${projDir}/${projRemote}}/" "${candidateDir}/" # syncytin hit sequence
+  rsync -azvhP "${pawseyID}:${insertionDir/${projDir}/${projRemote}}/" "${insertionDir}/" # potential insertion sequence
+  rsync -azvhP "${pawseyID}:${syntenyDir/${projDir}/${projRemote}}/" "${syntenyDir}/"     # synteny anchors
 
 ################################################################################
 

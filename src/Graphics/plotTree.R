@@ -1,7 +1,7 @@
 ################################################################################
 
-# project
-projDir <- '/Users/drivas/Factorem/Syncytin'
+# declarations
+source('/Users/drivas/Factorem/Syncytin/src/Config/syncytinConfig.R')
 
 ################################################################################
 
@@ -18,11 +18,11 @@ require(ggnewscale)
 ################################################################################
 
 # load tree file
-trfile <- paste0( projDir, '/data/phylogeny/assemblyTree.nwk' )
-synt <- read.tree(trfile)
+trfile <- paste0( phylogenyDir, '/taxonomyBinominal.nwk' )
+syncytinTree <- read.tree(trfile)
 
 # load alignment hits
-dmfile <- paste0( projDir, '/data/stats/diamondHits.csv' )
+dmfile <- paste0( statsDir, '/diamondHits.csv' )
 diamondHits <- read_csv(dmfile)
 
 ################################################################################
@@ -49,7 +49,7 @@ for ( ι in seq_along(tb) ) {
 }
 
 # group by taxonomic unit
-syntree <- groupOTU(synt, gr)
+syntree <- groupOTU(syncytinTree, gr)
 
 ################################################################################
 
@@ -82,7 +82,7 @@ t2 <- t1 +
     mapping = aes(
       y = Species,
       x = hits,
-      fill = SubSuborder,
+      fill = Suborder,
     ),
     stat = 'identity',
     orientation = 'y',
