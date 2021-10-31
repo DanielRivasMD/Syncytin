@@ -1,8 +1,7 @@
 ################################################################################
 
-inDir       = "/scratch/pawsey0263/drivas/Factorem/Syncytin/data/DNAzoo"
 library     = "CURATEDsyncytinLibrary.fasta"
-libraryDir  = "/scratch/pawsey0263/drivas/Factorem/Syncytin/data/syncytinDB/protein"
+libraryDir  = "/scratch/pawsey0263/drivas/Factorem/Syncytin/data/syncytinDataBase/protein"
 outDir      = "/scratch/pawsey0263/drivas/Factorem/Syncytin/data/diamondOutput"
 
 ################################################################################

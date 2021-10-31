@@ -1,0 +1,15 @@
+Homo_sapiens,GCF_000001405.39_GRCh38.p13_genomic.fna.gz,GCF_000001405.39_GRCh38.p13_genomic.gff.gz,https://www.ncbi.nlm.nih.gov/assembly/GCF_000001405.39
+Mus_musculus,GCF_000001635.27_GRCm39_genomic.fna.gz,GCF_000001635.27_GRCm39_genomic.gff.gz,https://www.ncbi.nlm.nih.gov/assembly/GCF_000001635.27
+Rattus_rattus,GCF_011064425.1_Rrattus_CSIRO_v1_genomic.fna.gz,GCF_011064425.1_Rrattus_CSIRO_v1_genomic.gff.gz,https://www.ncbi.nlm.nih.gov/assembly/GCF_011064425.1
+Canis_lupus_familiaris,GCF_014441545.1_ROS_Cfam_1.0_genomic.fna.gz,GCF_014441545.1_ROS_Cfam_1.0_genomic.gff.gz,https://www.ncbi.nlm.nih.gov/assembly/GCF_014441545.1
+Felis_sylvestris_catus,GCA_000181335.5_Felis_catus_9.0_genomic.fna.gz,GCA_000181335.5_Felis_catus_9.0_genomic.gbff.gz,https://www.ncbi.nlm.nih.gov/assembly/GCA_000181335.5
+Bos_taurus,GCF_002263795.1_ARS-UCD1.2_genomic.fna.gz,GCF_002263795.1_ARS-UCD1.2_genomic.gff.gz,https://www.ncbi.nlm.nih.gov/assembly/GCF_002263795.1
+Equus_caballus,GCF_002863925.1_EquCab3.0_genomic.fna.gz,GCF_002863925.1_EquCab3.0_genomic.gff.gz,https://www.ncbi.nlm.nih.gov/assembly/GCF_002863925.1
+Gorilla_gorilla_gorilla,GCF_008122165.1_Kamilah_GGO_v0_genomic.fna.gz,GCF_008122165.1_Kamilah_GGO_v0_genomic.gff.gz,https://www.ncbi.nlm.nih.gov/assembly/GCF_008122165.1
+Pan_troglodytes,GCF_002880755.1_Clint_PTRv2_genomic.fna.gz,GCF_002880755.1_Clint_PTRv2_genomic.gff.gz,https://www.ncbi.nlm.nih.gov/assembly/GCF_002880755.1
+Macaca_mulatta,GCF_003339765.1_Mmul_10_genomic.fna.gz,GCF_003339765.1_Mmul_10_genomic.gff.gz,https://www.ncbi.nlm.nih.gov/assembly/GCF_003339765.1
+Ovis_aries,GCF_016772045.1_ARS-UI_Ramb_v2.0_genomic.fna.gz,GCF_016772045.1_ARS-UI_Ramb_v2.0_genomic.gff.gz,https://www.ncbi.nlm.nih.gov/assembly/GCF_016772045.1
+Daubentonia_madagascariensis,GCA_004027145.1_DauMad_v1_BIUU_genomic.fna.gz,GCA_004027145.1_DauMad_v1_BIUU_genomic.gbff.gz,https://www.ncbi.nlm.nih.gov/assembly/GCA_004027145.1
+Hyaena_hyaena,GCF_003009895.1_ASM300989v1_genomic.fna.gz,GCF_003009895.1_ASM300989v1_genomic.gff.gz,https://www.ncbi.nlm.nih.gov/assembly/GCF_003009895.1
+Ornithorhynchus_anatinus,GCF_004115215.2_mOrnAna1.pri.v4_genomic.fna.gz,GCF_004115215.2_mOrnAna1.pri.v4_genomic.gff.gz,https://www.ncbi.nlm.nih.gov/assembly/GCF_004115215.2
+Tachyglossus_aculeatus,GCF_015852505.1_mTacAcu1.pri_genomic.fna.gz,GCF_015852505.1_mTacAcu1.pri_genomic.gff.gz,https://www.ncbi.nlm.nih.gov/assembly/GCF_015852505.1
