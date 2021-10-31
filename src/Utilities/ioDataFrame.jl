@@ -49,36 +49,32 @@ end
 ################################################################################
 
 "read `fasta` file to array"
-function fastaReader(fasta::String)
+function fastaReader(ζ::String)
 
   # declare empty array
-  outAr = Array{FASTX.FASTA.Record}(undef, 1)
+  Ω = Array{FASTX.FASTA.Record}(undef, 0)
 
-  let ν = 0
-    reader = FASTA.Reader(open(fasta, "r"))
+  # open reader
+  ω = FASTA.Reader(open(ζ, "r"))
 
-    # extract sequences from reader
-    for record ∈ reader
-      ν += 1
-      if ν == 1
-        outAr[1] = record
-      else
-        push!(outAr, record)
-      end
-    end
-    close(reader)
+  # extract sequences from reader
+  for record ∈ ω
+    push!(Ω, record)
   end
 
-  return outAr
+  # close reader
+  close(ω)
+
+  return Ω
 end
 
 ################################################################################
 
 "write `fasta` file from array"
-function fastaWriter(fasta::String, fastaAr::Vector{FASTX.FASTA.Record})
+function fastaWriter(ζ::String, fastaAr::Vector{FASTX.FASTA.Record})
 
   # loop over array
-  open(FASTA.Writer, fasta) do ω
+  open(FASTA.Writer, ζ) do ω
     for ρ ∈ fastaAr
       write(ω, FASTA.Record(FASTX.identifier(ρ), FASTX.description(ρ), FASTX.sequence(ρ)))
     end
@@ -93,33 +89,26 @@ function candidateCollect(ix, candidateDir)
   candidates = readdir(candidateDir)
 
   # declare empty array
-  candidateOutAr = Array{FASTX.FASTA.Record}(undef, 1)
+  Ω = Array{FASTX.FASTA.Record}(undef, 0)
 
   # count locally
-  let ν = 0
-    for ι ∈ ix
-      for ο ∈ ι
+  for ι ∈ ix
+    for ο ∈ ι
 
-        # open reader
-        reader = FASTA.Reader(open( string( candidateDir, "/", candidates[ο] ), "r"))
+      # open reader
+      ω = FASTA.Reader(open( string( candidateDir, "/", candidates[ο] ), "r"))
 
-        # extract sequences from reader
-        for ρ ∈ reader
-          ν += 1
-          if ν == 1
-            candidateOutAr[1] = ρ
-          else
-            push!(candidateOutAr, ρ)
-          end
-        end
-
-        # close reader
-        close(reader)
+      # extract sequences from reader
+      for ρ ∈ ω
+        push!(Ω, ρ)
       end
+
+      # close reader
+      close(ω)
     end
   end
 
-  return candidateOutAr
+  return Ω
 end
 
 ################################################################################

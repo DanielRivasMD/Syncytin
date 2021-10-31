@@ -64,8 +64,8 @@ for (ι, υ) ∈ enumerate(spp)
     insertcols!(:Species => replace(υ, ".tsv" => ""))
 
     # add phylogenetic group
-    _.Group = map(_.TargetAccession) do χ
-      findfirst(ζ -> χ == ζ, synGroups.Id) |> π -> getindex(synGroups.Group, π) |> π -> convert(String, π)
+    _.Group = map(_.TargetAccession) do μ
+      findfirst(χ -> μ == χ, synGroups.Id) |> π -> getindex(synGroups.Group, π) |> π -> convert(String, π)
     end
   end
 

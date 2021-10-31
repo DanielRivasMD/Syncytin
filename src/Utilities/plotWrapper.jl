@@ -47,7 +47,7 @@ function syncytinLenPlot(fastaAr::Vector{FASTX.FASTA.Record}, groupDf::DataFrame
   end
 
   # prepare canvas
-  ψ = StatsPlots.plot(
+  φ = StatsPlots.plot(
     xlims = (0, size(lenAr, 1) + 1),
     ylims = (0, maximum(lenAr)),
     xlabel = "Syncytin sequence",
@@ -68,7 +68,7 @@ function syncytinLenPlot(fastaAr::Vector{FASTX.FASTA.Record}, groupDf::DataFrame
     end
   end
 
-  ψ
+  φ
 end
 
 "plot distances & clustering"
@@ -97,7 +97,7 @@ function syncytinLevHPlot(levAr::Matrix{Float64}, groupDf::DataFrame, fastaAr::V
 
   # layout
   λ = @layout [[a; b{0.1h}] c{0.1w}; d{0.8w} e{0.05w} f]
-  ψ = StatsPlots.plot(
+  φ = StatsPlots.plot(
 
     # top dendrogram
     StatsPlots.plot(syncytinHC, ylims = (0, 30), xticks = false),
@@ -121,7 +121,7 @@ function syncytinLevHPlot(levAr::Matrix{Float64}, groupDf::DataFrame, fastaAr::V
     dpi = 300,
   )
 
-  ψ
+  φ
 end
 
 ################################################################################

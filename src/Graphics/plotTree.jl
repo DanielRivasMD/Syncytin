@@ -35,11 +35,17 @@ end;
 
 ################################################################################
 
-# read coordinates
-lociDf = CSV.read( string( phylogenyDir, "/lociDf.csv" ), DataFrame )
+# load data
+begin
+  # load taxonomy
+  taxonomyDf = @chain begin
+    CSV.read( string( phylogenyDir, "/taxonomyDf.csv" ), DataFrame )
+    coalesce.("")
+  end
 
-# read taxonomy
-taxonomyDf = CSV.read( string( phylogenyDir, "/taxonomyDf.csv" ), DataFrame )
+  # load coordinates
+  lociDf = CSV.read( string( phylogenyDir, "/lociDf.csv" ), DataFrame )
+end;
 
 ################################################################################
 

@@ -17,6 +17,8 @@ end
 
 # load packages
 begin
+  using DataFrames
+
   using BioSequences
   using Clustering
   using FASTX
@@ -59,12 +61,16 @@ end
 
 ################################################################################
 
+""
+
+################################################################################
+
 "calculate levenshtein distances"
 function levenshteinDist(fastaAr::Vector{FASTX.FASTA.Record})
 
   # construct array
   fastaLen = length(fastaAr)
-  outLevAr = zeros(Float64, fastaLen, fastaLen)
+  Ω = zeros(Float64, fastaLen, fastaLen)
 
   for ι ∈ eachindex(fastaLen)
     seq1 = FASTX.sequence(fastaAr[ι])
@@ -73,22 +79,46 @@ function levenshteinDist(fastaAr::Vector{FASTX.FASTA.Record})
       if ( ι == ο ) continue end
 
       # use memoization
-      if outLevAr[ο, ι] != 0
-        outLevAr[ι, ο] = outLevAr[ο, ι]
+      if Ω[ο, ι] != 0
+        Ω[ι, ο] = Ω[ο, ι]
       else
         seq2 = FASTX.sequence(fastaAr[ο])
-        outLevAr[ι, ο] = BioSequences.sequencelevenshtein_distance(seq1, seq2) / maximum([length(seq1), length(seq2)]) * 100
+        Ω[ι, ο] = BioSequences.sequencelevenshtein_distance(seq1, seq2) / maximum([length(seq1), length(seq2)]) * 100
      end
 
     end
   end
 
-  return outLevAr
+  return Ω
 end
 
 "build hierarchical clustering"
 function levHClust(levAr::Matrix{Float64})
   return Clustering.hclust(levAr, linkage = :average, branchorder = :optimal)
+end
+
+################################################################################
+
+"construct compossed matrix"
+function fuseMatrix(α, β)
+  # check arrays
+  if size(α, 1) != size(α, 2) @error "Matrix is not square" end
+  if size(α) != size(β) @error "Input arrays are not the same size and cannot be combined" end
+
+  Ω = Array{Int64, 2}(undef, size(α))
+  for ι ∈ 1:size(α, 1)
+    for ο ∈ 1:size(α, 2)
+      # omit diagonal
+      if ( ι == ο ) Ω[ι, ο] = 0 end
+
+      # upper triangle
+      if ( ι < ο ) Ω[ι, ο] = α[ι, ο] end
+
+      # lower triangle
+      if ( ι > ο ) Ω[ι, ο] = β[ι, ο] end
+    end
+  end
+  return Ω
 end
 
 ################################################################################
@@ -115,7 +145,7 @@ end
 ################################################################################
 
 "extract subset of assemblies for a taxon & match against list"
-function extractTaxon(taxon::String, taxDf::DataFrame, list::String; level::Symbol = :Order)
+function extractTaxon(taxon::String, taxDf::DataFrame, list::DataFrame, level::Symbol = :Order)
   @chain taxDf begin
     filter(level => χ -> χ == taxon, _)
     map(χ -> χ .== list.assemblySpp, _.Species)
