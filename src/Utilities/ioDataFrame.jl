@@ -52,7 +52,7 @@ end
 function fastaReader(ζ::String)
 
   # declare empty array
-  Ω = Array{FASTX.FASTA.Record}(undef, 0)
+  Ω = Vector{FASTX.FASTA.Record}(undef, 0)
 
   # open reader
   ω = FASTA.Reader(open(ζ, "r"))
@@ -89,7 +89,7 @@ function candidateCollect(ix, candidateDir)
   candidates = readdir(candidateDir)
 
   # declare empty array
-  Ω = Array{FASTX.FASTA.Record}(undef, 0)
+  Ω = Vector{FASTX.FASTA.Record}(undef, 0)
 
   # count locally
   for ι ∈ ix

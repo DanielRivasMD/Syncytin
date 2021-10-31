@@ -61,10 +61,6 @@ end
 
 ################################################################################
 
-""
-
-################################################################################
-
 "calculate levenshtein distances"
 function levenshteinDist(fastaAr::Vector{FASTX.FASTA.Record})
 
@@ -72,9 +68,9 @@ function levenshteinDist(fastaAr::Vector{FASTX.FASTA.Record})
   fastaLen = length(fastaAr)
   Ω = zeros(Float64, fastaLen, fastaLen)
 
-  for ι ∈ eachindex(fastaLen)
+  for ι ∈ 1:fastaLen
     seq1 = FASTX.sequence(fastaAr[ι])
-    for ο ∈ eachindex(fastaLen)
+    for ο ∈ 1:fastaLen
       # omit diagonal
       if ( ι == ο ) continue end
 
@@ -105,7 +101,7 @@ function fuseMatrix(α, β)
   if size(α, 1) != size(α, 2) @error "Matrix is not square" end
   if size(α) != size(β) @error "Input arrays are not the same size and cannot be combined" end
 
-  Ω = Array{Int64, 2}(undef, size(α))
+  Ω = Matrix{Int64}(undef, size(α))
   for ι ∈ 1:size(α, 1)
     for ο ∈ 1:size(α, 2)
       # omit diagonal

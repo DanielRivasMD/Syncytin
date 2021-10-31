@@ -25,7 +25,7 @@ include( string( projDir, "/src/Utilities/syncytinDB.jl" ) );
 "retrive hydropathy value for aminoacid residue"
 function calculateHydropathy(record, hydro)
   # contrusct empty score vector
-  score = Array{Float64, 1}(undef, 0)
+  score = Vector{Float64}(undef, 0)
   # collect aminoacid values
   for aa in record |> FASTX.sequence
     push!(score, findfirst(χ -> χ == aa, hydro.OneLetterCode) |> π -> hydro[π, :HydropathyScore])
@@ -36,7 +36,7 @@ end
 "slide window with weight to determine local hydrophobicity profile"
 function windowSlide(score, bin = 9, weight = repeat([1.], 9))
   # contruct vector
-  sliced = Array{Float64, 1}(undef, 0)
+  sliced = Vector{Float64}(undef, 0)
   # iterate on vector
   for ι ∈ 1:length(score)
     # do not overshoot vector boundries

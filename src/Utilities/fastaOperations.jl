@@ -66,3 +66,19 @@ function tagGroup(fastaAr::Vector{FASTX.FASTA.Record}, groupDf::DataFrame)
 end
 
 ################################################################################
+
+"translate array safely"
+function translateRecord(fastaAr::Vector{FASTX.FASTA.Record})
+  Ω = Vector{FASTX.FASTA.Record}(undef, 0)
+  for υ ∈ fastaAr
+    rseq = begin
+      dseq = FASTX.sequence(υ)
+      Υ = length(dseq) % 3
+      BioSequences.translate(dseq[1:end - Υ])
+    end
+    push!(Ω, FASTA.Record(FASTX.identifier(υ), FASTX.description(υ), rseq))
+  end
+  return Ω
+end
+
+################################################################################
