@@ -148,12 +148,28 @@ end
 function extractTaxon(taxon::String, taxDf::DataFrame, list::DataFrame, level::Symbol = :Order)
   @chain taxDf begin
     filter(level => χ -> χ == taxon, _)
-    map(χ -> χ .== list.assemblySpp, _.Species)
-    sum
-    convert(BitVector, _)
+    map(χ -> findall(χ .== list.assemblySpp), _.Species)
+    sum.(_)
     list[_, :]
   end
 end
+
+################################################################################
+
+"extract subset of assemblies given sort & match against list"
+function extractTaxon(sort::Vector{String}, taxDf::DataFrame, list::DataFrame)
+  @chain taxDf begin
+    map(χ -> findall(χ .== _.Species), sort)
+    sum.(_)
+    filter(χ -> χ > 0, _)
+    taxDf[_, :]
+    map(χ -> findall(χ .== list.assemblySpp), _.Species)
+    sum.(_)
+    filter(χ -> χ > 0, _)
+    list[_, :]
+  end
+end
+
 
 ################################################################################
 

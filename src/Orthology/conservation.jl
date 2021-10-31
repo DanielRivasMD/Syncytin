@@ -21,6 +21,7 @@ begin
 
   using CSV
   using DataFrames
+  using RCall
 end;
 
 ################################################################################
@@ -42,7 +43,7 @@ begin
   end
 
   # load list
-  assemblyList = @chain begin
+  assemblyDf = @chain begin
     CSV.read( assemblyList, DataFrame, header = false )
     rename!(["assemblySpp", "assemblyID", "annotationID", "readmeLink", "assemblyLink", "annotationLink"])
   end
@@ -50,10 +51,21 @@ end;
 
 ################################################################################
 
+# collect carnivora tree
+R"
+require(treeio)
+carnivoraTree <- read.tree( paste0( $phylogenyDir, '/CarnivoraBinominal.nwk' ) )
+carnivoraSort <- carnivoraTree$tip.label
+"
+
+@rget carnivoraSort
+
+################################################################################
+
 # TODO: rewrite as metaprogramming
 # select `Carnivora`
-carnivoraAr = @chain "Carnivora" begin
-  extractTaxon(taxonomyDf, assemblyList)
+carnivoraAr = @chain carnivoraSort begin
+  extractTaxon(taxonomyDf, assemblyDf)
   selectIxs(candidateDir)
   candidateCollect(candidateDir)
 end
