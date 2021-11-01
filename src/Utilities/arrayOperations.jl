@@ -67,3 +67,15 @@ function trimmer!(unAr::Vector, trimVc::BitVector)
 end
 
 ################################################################################
+
+"window slider"
+function slide(η, θ, ξ)
+  return (η + ξ) |> π -> (π / θ) |> floor |> π -> (π * θ)
+end
+
+"window slider with overlap"
+function slide(η, θ, ξ::Vector)
+  return (slide(η, θ, ξ[1]), slide(η, θ, ξ[2]))
+end
+
+################################################################################

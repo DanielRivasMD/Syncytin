@@ -36,7 +36,7 @@ end;
 function taxonomist(ζ::String; taxGroups::Vector{String} = ["Kingdom", "Phylum", "Class", "Superorder", "Order", "Suborder", "Family", "genus", "species", "subspecies"])
 
   # create data frame
-  outDf = DataFrame( :Species => ζ )
+  Ω = DataFrame( :Species => ζ )
 
   # iterate on taxonomic groups
   for τ ∈ taxGroups
@@ -48,15 +48,15 @@ function taxonomist(ζ::String; taxGroups::Vector{String} = ["Kingdom", "Phylum"
       @eval txFile = parse_file( $xfile )
       for γ ∈ child_elements( LightXML.root(txFile) )
         if name(γ) == "name"
-          insertcols!(outDf, Symbol(τ) => content(γ))
+          insertcols!(Ω, Symbol(τ) => content(γ))
         end
       end
     catch ε
       @warn "File was not parsed. Rerturning empty DataFrame" exception = (ε, catch_backtrace())
-      insertcols!(outDf, Symbol(τ) => "")
+      insertcols!(Ω, Symbol(τ) => "")
     end
   end
-  return outDf
+  return Ω
 end
 
 ################################################################################
@@ -120,12 +120,49 @@ end
 ################################################################################
 
 "return best position (highest identity percentage) on alignment"
-function bestPosition(df::DataFrame)
-  #  TODO: alternatively, find minimum e-value
-  #  TODO: round start & end positions
-  return combine(groupby(df, [:QueryAccession, :QueryStart, :QueryEnd])) do χ
-    χ[argmax(χ.SequenceIdentity), :]
+function bestPosition(Δ::DataFrame)
+  return combine(groupby(Δ, [:QueryAccession])) do δ
+    purgeClose(DataFrame(δ))
   end
+
+end
+
+################################################################################
+
+"purge close positions"
+function purgeClose(Δ::DataFrame)
+  # declare output
+  Ω = DataFrame(QueryAccession = String[], TargetAccession = String[], SequenceIdentity = Float64[], Length = Int64[], Mismatches = Int64[], GapOpenings = Int64[], QueryStart = Int64[], QueryEnd = Int64[], TargetStart = Int64[], TargetEnd = Int64[], EValue = Float64[], BitScore = Float64[], Group = String[], Species = String[])
+
+  # declare symbols
+  edges = [:Start, :End]
+
+  # round coordinates
+  for ß ∈ edges
+    Δ[:, Symbol(:Round, ß)] = map(Δ[:, Symbol(:Query, ß)]) do μ slide(μ, 100, [0, 50]) end
+  end
+
+  # exhaust data
+  while size(Δ, 1) != 0
+
+    for ß ∈ edges
+      Δ[:, Symbol(:Eq, ß)] .= 1
+
+      Δ[Not(argmax(Δ.SequenceIdentity)), Symbol(:Eq, ß)] .= sum.(map(Δ[Not(argmax(Δ.SequenceIdentity)), Symbol(:Round, ß)]) do μ
+        μ .== Δ[(argmax(Δ.SequenceIdentity)), Symbol(:Round, ß)]
+      end)
+
+      Δ[Δ[:, Symbol(:Eq, ß)] .> 0, Symbol(:Eq, ß)] .= 1
+    end
+
+    Δ[:, :Eq] .= Δ[:, Symbol(:Eq, edges[1])] .+ Δ[:, Symbol(:Eq, edges[2])]
+
+    push!(Ω, Δ[Δ[:, :Eq] .== 2, :] |> π -> π[argmax(π.SequenceIdentity), Cols(Not(r"Round|Eq"))])
+
+    Δ = Δ[Δ[:, :Eq] .< 2, :]
+  end
+
+  return Ω
 end
 
 ################################################################################

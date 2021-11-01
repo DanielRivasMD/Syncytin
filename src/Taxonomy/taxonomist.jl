@@ -47,12 +47,9 @@ for (ι, υ) ∈ enumerate(spp)
   taxDf = taxonomist(υ)
   @debug taxDf
 
-  if !isnothing(taxDf)
-    if ι == 1
-      global taxonomyDf = taxDf
-    else
-      taxonomyDf = [taxonomyDf; taxDf]
-    end
+  # append rows
+  for ρ ∈ eachrow(taxDf)
+    push!(taxonomyDf, ρ)
   end
 end
 

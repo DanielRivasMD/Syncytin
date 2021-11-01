@@ -18,12 +18,17 @@ end
 # load packages
 begin
   import Chain: @chain
+
+  using CSV
+  using DataFrames
+  using DelimitedFiles
 end;
 
 ################################################################################
 
 # load modules
 begin
+  include( string( utilDir, "/arrayOperations.jl" ) )
   include( string( utilDir, "/ioDataFrame.jl" ) )
   include( string( utilDir, "/evolutionaryCalculation.jl" ) )
 end;
@@ -31,23 +36,22 @@ end;
 ################################################################################
 
 # load syncytin groups
-synGroups = @chain begin
-  readdlm( string( projDir, "/data/syncytinDB/protein/CURATEDsyncytinGroups.csv" ), ',' )
-  DataFrame(:auto)
+syncytinGroups = @chain begin
+  CSV.read( string( databaseDir, "/protein/CURATEDsyncytinGroups.csv" ), DataFrame, header = false )
   rename!(["Id", "Description", "Group"])
 end
 
 ################################################################################
 
 # declare data frame
-lociDf = DataFrame()
+lociDf = DataFrame(QueryAccession = String[], TargetAccession = String[], SequenceIdentity = Float64[], Length = Int64[], Mismatches = Int64[], GapOpenings = Int64[], QueryStart = Int64[], QueryEnd = Int64[], TargetStart = Int64[], TargetEnd = Int64[], EValue = Float64[], BitScore = Float64[], Group = String[], Species = String[])
 
 # load assembly results
-dDir = string( projDir, "/data/diamondOutput/filter" )
+dDir = string( diamondDir, "/filter" )
 spp = readdir(dDir)
 
 # iterate on diamond output items
-for (ι, υ) ∈ enumerate(spp)
+for υ ∈ spp
   # load assembly data
   assemblyAlign = @chain begin
     readdlm( string( dDir, "/", υ ) )
@@ -65,23 +69,21 @@ for (ι, υ) ∈ enumerate(spp)
 
     # add phylogenetic group
     _.Group = map(_.TargetAccession) do μ
-      findfirst(χ -> μ == χ, synGroups.Id) |> π -> getindex(synGroups.Group, π) |> π -> convert(String, π)
+      findfirst(χ -> μ == χ, syncytinGroups.Id) |> π -> getindex(syncytinGroups.Group, π) |> π -> convert(String, π)
     end
   end
 
   bestPositions = bestPosition(assemblyAlign)
   @debug bestPositions
 
-  if ι == 1
-    global lociDf = bestPositions
-  else
-    lociDf = [lociDf; bestPositions]
+  for ρ ∈ eachrow(bestPositions)
+    push!(lociDf, ρ)
   end
 end
 
 ################################################################################
 
 # write csv
-writedf( string( projDir, "/data/phylogeny/lociDf.csv" ), lociDf, ',' )
+writedf( string( phylogenyDir, "/lociDf.csv" ), lociDf, ',' )
 
 ################################################################################
