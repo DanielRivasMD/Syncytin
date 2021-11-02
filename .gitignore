@@ -1,5 +1,6 @@
 # archive
 arch/plots
+arch/plan
 
 # journal cache & output
 journal/jl_*
