@@ -15,7 +15,7 @@ annotation=$( sed -n "$SLURM_ARRAY_TASK_ID"p "${DNAzooList}" | cut -d "," -f 3 )
 ################################################################################
 
 # write candidate loci
-awk -v spp="${species}" 'BEGIN{FS = ","} {if ($14 == spp) print $1, $2, $3}' "${phylogenyDir}/lociDf.csv" > "${dataDir}/tmp/${spp}"
+awk -v spp="${species}" 'BEGIN{FS = ","} {if ($14 == spp) print $1, $7, $8}' "${phylogenyDir}/lociDf.csv" > "${dataDir}/tmp/${species}"
 
 # decompress assembly & keep compressed
 gzip --decompress --stdout "${annotationDir}/${annotation}" > "${dataDir}/tmp/${annotation/.gz/}"
@@ -34,13 +34,13 @@ do
     --end "${end}" \
     --hood 500000
 
-done < "${dataDir}/tmp/${spp}"
+done < "${dataDir}/tmp/${species}"
 
 # remove decompressed annotation
 rm "${dataDir}/tmp/${annotation/.gz/}"
 
 # remove candidate loci
-rm "${dataDir}/tmp/${spp}"
+rm "${dataDir}/tmp/${species}"
 
 ################################################################################
 

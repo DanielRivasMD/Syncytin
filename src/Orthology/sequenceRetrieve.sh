@@ -15,7 +15,7 @@ assembly=$( sed -n "$SLURM_ARRAY_TASK_ID"p "${DNAzooList}" | cut -d "," -f 2 )
 ################################################################################
 
 # write candidate loci
-awk -v spp="${species}" 'BEGIN{FS = ","} {if ($14 == spp) print $1, $2, $3}' "${phylogenyDir}/lociDf.csv" > "${dataDir}/tmp/${spp}"
+awk -v spp="${species}" 'BEGIN{FS = ","} {if ($14 == spp) print $1, $7, $8}' "${phylogenyDir}/lociDf.csv" > "${dataDir}/tmp/${species}"
 
 # decompress assembly & keep compressed
 gzip --decompress --stdout "${DNAzooDir}/${assembly}" > "${dataDir}/tmp/${assembly/.gz/}"
@@ -46,12 +46,12 @@ do
     --end "${end}" \
     --hood 25000
 
-done < "${dataDir}/tmp/${spp}"
+done < "${dataDir}/tmp/${species}"
 
 # remove decompressed assembly
 rm "${dataDir}/tmp/${assembly/.gz/}"
 
 # remove candidate loci
-rm "${dataDir}/tmp/${spp}"
+rm "${dataDir}/tmp/${species}"
 
 ################################################################################
