@@ -92,20 +92,18 @@ function candidateCollect(ix, candidateDir)
   Ω = Vector{FASTX.FASTA.Record}(undef, 0)
 
   # count locally
-  for ι ∈ ix
-    for ο ∈ ι
+  for ι ∈ ix, ο ∈ ι
 
-      # open reader
-      ω = FASTA.Reader(open( string( candidateDir, "/", candidates[ο] ), "r"))
+    # open reader
+    ω = FASTA.Reader(open( string( candidateDir, "/", candidates[ο] ), "r"))
 
-      # extract sequences from reader
-      for ρ ∈ ω
-        push!(Ω, ρ)
-      end
-
-      # close reader
-      close(ω)
+    # extract sequences from reader
+    for ρ ∈ ω
+      push!(Ω, ρ)
     end
+
+    # close reader
+    close(ω)
   end
 
   return Ω

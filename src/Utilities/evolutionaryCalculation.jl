@@ -102,17 +102,15 @@ function fuseMatrix(α, β)
   if size(α) != size(β) @error "Input arrays are not the same size and cannot be combined" end
 
   Ω = Matrix{Int64}(undef, size(α))
-  for ι ∈ 1:size(α, 1)
-    for ο ∈ 1:size(α, 2)
-      # omit diagonal
-      if ( ι == ο ) Ω[ι, ο] = 0 end
+  for ι ∈ 1:size(α, 1), ο ∈ 1:size(α, 2)
+    # omit diagonal
+    if ( ι == ο ) Ω[ι, ο] = 0 end
 
-      # upper triangle
-      if ( ι < ο ) Ω[ι, ο] = α[ι, ο] end
+    # upper triangle
+    if ( ι < ο ) Ω[ι, ο] = α[ι, ο] end
 
-      # lower triangle
-      if ( ι > ο ) Ω[ι, ο] = β[ι, ο] end
-    end
+    # lower triangle
+    if ( ι > ο ) Ω[ι, ο] = β[ι, ο] end
   end
   return Ω
 end
@@ -124,7 +122,6 @@ function bestPosition(Δ::DataFrame)
   return combine(groupby(Δ, [:QueryAccession])) do δ
     purgeClose(DataFrame(δ))
   end
-
 end
 
 ################################################################################
