@@ -17,6 +17,7 @@ end
 
 # load packages
 begin
+  using BioSequences
   using FASTX
 end;
 
@@ -71,8 +72,15 @@ end
 function translateRecord(fastaAr::Vector{FASTX.FASTA.Record})
   Ω = Vector{FASTX.FASTA.Record}(undef, 0)
   for υ ∈ fastaAr
+    δ = split(FASTX.description(υ), " ")
     rseq = begin
-      dseq = FASTX.sequence(υ)
+      dseq = if δ[end] == "+"
+        FASTX.sequence(υ)
+      elseif δ[end] == "-"
+        BioSequences.reverse_complement(FASTX.sequence(υ))
+      else
+        @error "Strand was not defined as expected" δ[end]
+      end
       Υ = length(dseq) % 3
       BioSequences.translate(dseq[1:end - Υ])
     end
