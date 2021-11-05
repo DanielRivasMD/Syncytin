@@ -60,6 +60,9 @@ end
 # homotypic synonim
 taxonomyDf[(taxonomyDf.Species .== "Aonyx_cinereus"), :species] .= "Amblonyx cinereus"
 
+# homotypic synonim
+taxonomyDf[(taxonomyDf.Species .== "Phataginus_tricuspis"), :species] .= "Manis tricuspis"
+
 # deprecated name
 taxonomyDf[(taxonomyDf.Species .== "Equues_quagga"), :species] .= "Equus burchellii"
 
@@ -92,28 +95,30 @@ writedf( string( phylogenyDir, "/taxonomyDf.csv" ), taxonomyDf, ',')
 
 ################################################################################
 
+# declare binominal columns
+binominalCols = [:species, :Species]
+
+################################################################################
+
 # trim subspecies but keep full nomenclature
-writedf( string( phylogenyDir, "/taxonomyBinominal.csv" ), taxonomyDf[:, [:species, :Species]], ',' )
+writedf( string( phylogenyDir, "/taxonomyBinominal.csv" ), taxonomyDf[:, binominalCols], ',' )
 
 ################################################################################
 
-# parse superorder
-for τ ∈ ["Euarchontoglires", "Afrotheria", "Xenarthra"]
-  writedf( string( phylogenyDir, "/", τ, "Binominal.csv" ), extractTaxon(τ, taxonomyDf, :Superorder), ',' )
-end
+# declare taxons to extract
+taxons = Dict(
+  :Superorder => ["Euarchontoglires", "Afrotheria", "Xenarthra"],
+  :Order => ["Carnivora", "Rodentia", "Chiroptera", "Perissodactyla", "Artiodactyla", "Pholidota", "Primates"],
+  :Suborder => ["Ruminantia"],
+  :Family => ["Ursidae"],
+)
 
 ################################################################################
 
-# parse order
-for τ ∈ ["Carnivora", "Rodentia", "Chiroptera", "Perissodactyla", "Artiodactyla", "Pholidota", "Primates"]
-  writedf( string( phylogenyDir, "/", τ, "Binominal.csv" ), extractTaxon(τ, taxonomyDf, :Order), ',' )
-end
-
-################################################################################
-
-# parse suborder
-for τ ∈ ["Ruminantia"]
-  writedf( string( phylogenyDir, "/", τ, "Binominal.csv" ), extractTaxon(τ, taxonomyDf, :Suborder), ',' )
+for (κ, υ) ∈ taxons
+  for τ ∈ υ
+    writedf( string( phylogenyDir, "/", τ, "Binominal.csv" ), filter(κ => χ -> χ == τ, taxonomyDf) |> π -> select(π, binominalCols), ',' )
+  end
 end
 
 ################################################################################

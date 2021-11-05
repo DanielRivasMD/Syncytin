@@ -167,16 +167,6 @@ end
 
 ################################################################################
 
-"extract subset of assemblies for a taxon & parser binominal nomenclature"
-function extractTaxon(taxon::String, taxDf::DataFrame, level::Symbol)
-  @chain taxDf begin
-    filter(level => χ -> χ == taxon, _)
-    select([:species, :Species])
-  end
-end
-
-################################################################################
-
 "extract subset of assemblies for a taxon & match against list"
 function extractTaxon(taxon::String, taxDf::DataFrame, list::DataFrame, level::Symbol = :Order)
   @chain taxDf begin
