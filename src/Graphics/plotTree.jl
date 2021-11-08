@@ -49,13 +49,16 @@ end;
 
 ################################################################################
 
+# collect hits per sample
 alignHits = freqtable(lociDf.Species)
 
+# build empty table
 diamondHits = @chain begin
-  taxonomyDf[:, [:Species, :Suborder]]
+  taxonomyDf[:, [:Species, :species, :subspecies, :Superorder, :Order, :Suborder, :Family]]
   insertcols!(:hits => 0)
 end
 
+# record hits
 for ρ ∈ eachrow(diamondHits)
   ixDc = alignHits.dicts[1]
   if haskey(ixDc, ρ.Species)
@@ -68,10 +71,10 @@ end
 # write csv
 writedf( string( statsDir, "/diamondHits.csv" ), diamondHits, ',' )
 
-# ################################################################################
-#
-# @rput diamondHits
-#
-# R"source( paste0( $projDir, '/src/Phylogeny/plotTree.R' ) )"
-#
-# ################################################################################
+################################################################################
+
+@rput diamondHits
+
+R"source( paste0( $projDir, '/src/Phylogeny/plotTree.R' ) )"
+
+################################################################################

@@ -14,6 +14,7 @@ require(ggtreeExtra)
 require(ggstar)
 require(treeio)
 require(ggnewscale)
+require(TreeTools)
 
 ################################################################################
 
@@ -27,6 +28,31 @@ diamondHits <- read_csv(dmfile)
 
 ################################################################################
 
+# patch collapsed species
+
+# mescricetus
+mesocricetusIx <- 295
+mesocricetusTree <- BalancedTree(2)
+mesocricetusTree$tip.label <- c('Mesocricetus_auratus__MesAur1.0', 'Mesocricetus_auratus__golden_hamster_wtdbg2.shortReadsPolished')
+syncytinTree <- bind.tree(syncytinTree, mesocricetusTree, mesocricetusIx) %>% DropTip(., 'Mesocricetus_auratus')
+
+# canis
+canisIx <- 193
+canisTree <- bind.tree(BalancedTree(2), BalancedTree(2)) %>% bind.tree(., BalancedTree(2))
+canisTree$tip.label <- c('Canis_lupus_dingo', 'Canis_lupus_dingo_alpine_ecotype', 'Canis_lupus_dingo_desert_ecotype', 'Canis_lupus_familiaris', 'Canis_lupus_familiaris_Basenji', 'Canis_lupus_familiaris_German_Shepherd')
+syncytinTree <- bind.tree(syncytinTree, canisTree, canisIx) %>% DropTip(., 'Canis_lupus')
+
+
+
+# diamondHits$species %in% (syncytinTree %>% TipLabels %>% str_replace(., '_', ' '))
+
+# # parse species names
+# syncytinTree$tip.label %<>% str_replace(., '_', ' ')
+
+# TODO: repatch names to fit with newick file
+
+################################################################################
+
 # replace no hits
 diamondHits %<>% mutate(hits = na_if(hits, 0))
 
@@ -36,17 +62,20 @@ diamondHits %<>% mutate(hits = na_if(hits, 0))
 gr <- list()
 
 # collect taxomonic names
-tb <- diamondHits %$% table(Suborder)
+tb <- diamondHits %$% table(Order)
 
 # collect names
-getNames <- function(d, n) {
-  return(d$Species[which(d$Suborder == n)])
+getNames <- function(δ, τ) {
+  return(δ$species[which(δ$Order == τ)])
 }
 
 # iteratate over groups
 for ( ι in seq_along(tb) ) {
   gr[[ι]] <- getNames(diamondHits, names(tb)[ι])
 }
+
+# set names
+names(gr) <- names(tb)
 
 # group by taxonomic unit
 syntree <- groupOTU(syncytinTree, gr)
@@ -57,32 +86,36 @@ syntree <- groupOTU(syncytinTree, gr)
 tiff( paste0( projDir, '/arch/plots/plotTreeFan.tiff' ), width = 4, height = 4, units = 'in', res = 300 )
 
 # create tree plot
-t0 <- ggtree(
+φ <- ggtree(
     syntree,
     aes(
       color = group
     ),
-    layout = 'fan'
-  )
+    layout = 'fan',
+  ) +
+  # theme(legend.position = 'none') +
+  # scale_color_manual(values = seq_along(gr))
+
+  # scale_color_manual(values = sample(seq_along(colors())))
+
+  # , length(tb)), labels = names(tb))
 
 # add tip labels
-t1 <- t0 +
   geom_tiplab(
     aes(
       label = label
     ),
-    size = 1.5,
-  )
+    size = 4.5,
+  ) +
 
 # add bars
-t2 <- t1 +
   geom_fruit(
     data = diamondHits,
     geom = geom_bar,
     mapping = aes(
-      y = Species,
+      y = species,
       x = hits,
-      fill = Suborder,
+      fill = Order,
     ),
     stat = 'identity',
     orientation = 'y',
@@ -90,7 +123,7 @@ t2 <- t1 +
   )
 
 # plot
-t2 %>% print
+φ %>% print
 
 # close plotting device
 dev.off()
