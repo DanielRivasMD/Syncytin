@@ -25,13 +25,6 @@ syncytinTree <- read.tree(trfile)
 ################################################################################
 
 # patch collapsed species at phylogenetic newick
-
-# # mescricetus
-# mesocricetusIx <- 295
-# mesocricetusTree <- BalancedTree(2)
-# mesocricetusTree$tip.label <- c('Mesocricetus auratus__MesAur1.0', 'Mesocricetus_auratus__golden_hamster_wtdbg2.shortReadsPolished')
-# syncytinTree <- bind.tree(syncytinTree, mesocricetusTree, mesocricetusIx) %>% DropTip(., 'Mesocricetus_auratus')
-
 # canis
 canisIx <- 192
 canisTree <- bind.tree(BalancedTree(2), BalancedTree(2)) %>% bind.tree(., BalancedTree(2))
@@ -41,7 +34,6 @@ syncytinTree <- bind.tree(syncytinTree, canisTree, canisIx) %>% DropTip(., 'Cani
 ################################################################################
 
 # patch assembly ids
-
 # retag without underscores
 syncytinTree$tip.label %<>% str_replace(., '_', ' ')
 
@@ -59,13 +51,6 @@ syncytinTree$tip.label[syncytinTree$tip.label == 'Mustela putorius'] <- 'Mustela
 syncytinTree$tip.label[syncytinTree$tip.label == 'Perognathus longimembris'] <- 'Perognathus longimembris pacificus'
 syncytinTree$tip.label[syncytinTree$tip.label == 'Stenella longirostris'] <- 'Stenella longirostris orientalis'
 syncytinTree$tip.label[syncytinTree$tip.label == 'Tragelaphus eurycerus'] <- 'Tragelaphus eurycerus isaaci'
-
-
-
-# diamondHits$species %in% (syncytinTree %>% TipLabels %>% str_replace(., '_', ' '))
-
-# # parse species names
-# syncytinTree$tip.label %<>% str_replace(., '_', ' ')
 
 # TODO: repatch names to fit with newick file
 
@@ -92,63 +77,180 @@ diamondHits %<>% mutate(hits = na_if(hits, 0))
 ################################################################################
 
 # assign taxonomic names
-
 # empty list
 gr <- list()
 
-# collect taxomonic names
-tb <- diamondHits %$% table(Order)
+# targeted suborders
+suborders <- c('Carnivora', 'Primates')
 
-# iteratate over groups
-for ( ι in seq_along(tb) ) {
-  gr[[ι]] <- diamondHits$treeLink[diamondHits$Order == names(tb)[ι]]
+# targeted families
+families <- c('Ruminantia')
+
+# add group color
+diamondHits$treeGroup <- diamondHits$Order
+diamondHits$treeGroup[diamondHits$Order %in% suborders] <- diamondHits$Suborder[diamondHits$Order %in% suborders]
+diamondHits$treeGroup[diamondHits$Suborder %in% families] <- diamondHits$Family[diamondHits$Suborder %in% families]
+
+# collect taxomonic names
+tbOrder <- diamondHits %>% filter(!(Order %in% suborders)) %>% filter(!(Suborder %in% families)) %$% table(Order)
+tbSuborder <- diamondHits %>% filter(Order %in% suborders) %$% table(Suborder)
+tbFamily <- diamondHits %>% filter(Suborder %in% families) %$% table(Family)
+
+# iteratate over order
+for ( ι in seq_along(tbOrder) ) {
+  gr[[ι]] <- diamondHits$treeLink[diamondHits$Order == names(tbOrder)[ι] & !(diamondHits$Suborder %in% families)]
+  names(gr)[ι] <- names(tbOrder)[ι]
 }
 
-# set names
-names(gr) <- names(tb)
+# iterate over suborders
+for ( ι in seq_along(tbSuborder) ) {
+  gr[[ι + length(tbOrder)]] <- diamondHits$treeLink[diamondHits$Suborder == names(tbSuborder)[ι] & !is.na(diamondHits$Suborder)]
+  names(gr)[ι + length(tbOrder)] <- names(tbSuborder)[ι]
+}
+
+# iterate over families
+for ( ι in seq_along(tbFamily) ) {
+  gr[[ι + length(tbOrder) + length(tbSuborder)]] <- diamondHits$treeLink[diamondHits$Family == names(tbFamily)[ι]]
+  names(gr)[ι + length(tbOrder) + length(tbSuborder)] <- names(tbFamily)[ι]
+}
 
 # group by taxonomic unit
 syncytinTree <- groupOTU(syncytinTree, gr)
 
 ################################################################################
 
+# taxon coloring
+taxonColors <- c(
+  'Artiodactyla' = 'skyblue4',
+  'Chiroptera' = 'yellow3',
+  'Dasyuromorphia' = 'green4',
+  'Didelphimorphia' = 'sandybrown',
+  'Diprotodontia' = 'gold1',
+  'Hyracoidea' = 'dodgerblue2',
+  'Lagomorpha' = 'purple1',
+  'Perissodactyla' = 'palegreen2',
+  'Pholidota' = 'red4',
+  'Pilosa' = 'gray70',
+  'Proboscidea' = 'yellow3',
+  'Rodentia' = 'navy',
+  'Sirenia' = 'maroon',
+  'Struthioniformes' = 'orchid1',
+  'Tubulidentata' = 'deeppink1',
+  'Caniformia' = 'darkorange4',
+  'Feliformia' = 'seagreen4',
+  'Haplorrhini' = 'darkturquoise',
+  'Strepsirrhini' = 'violetred4',
+  'Bovidae' = 'yellow4',
+  'Cervidae' = 'steelblue3',
+  'Giraffidae' = 'blue1',
+  'Moschidae' = 'brown'
+)
+
+################################################################################
+
+# image path & taxonomi positions
 img <- data.frame(
-  species = c('pangolin', 'wolf', 'lion', 'bear', 'horse', 'camel', 'dolphin', 'ruminantia', 'giraffe', 'rabbit', 'rodentia', 'primates'),
-  node = c(226, 195, 183, 222, 228, 236, 240, 262, 270, 285, 286, 305),
+  node = c(275, 222, 264, 236, 271, 240, 319, 270, 309, 228, 167, 306, 183, 203, 286, 226, 285, 196),
   file = c(
-    paste0( projDir, '/arch/assets/Pangolin.png' ),
-    paste0( projDir, '/arch/assets/Wolf.png' ),
-    paste0( projDir, '/arch/assets/Lion.png' ),
+    paste0( projDir, '/arch/assets/Bat.png' ),
     paste0( projDir, '/arch/assets/Bear.png' ),
-    paste0( projDir, '/arch/assets/Horse.png' ),
-    paste0( projDir, '/arch/assets/Camel.png' ),
-    paste0( projDir, '/arch/assets/Dolphin.png' ),
     paste0( projDir, '/arch/assets/Bison.png' ),
+    paste0( projDir, '/arch/assets/Camel.png' ),
+    paste0( projDir, '/arch/assets/Deer.png' ),
+    paste0( projDir, '/arch/assets/Dolphin.png' ),
+    paste0( projDir, '/arch/assets/Elephant.png' ),
     paste0( projDir, '/arch/assets/Giraffe.png' ),
+    paste0( projDir, '/arch/assets/Gorilla.png' ),
+    paste0( projDir, '/arch/assets/Horse.png' ),
+    paste0( projDir, '/arch/assets/Koala.png' ),
+    paste0( projDir, '/arch/assets/Lemur.png' ),
+    paste0( projDir, '/arch/assets/Lion.png' ),
+    paste0( projDir, '/arch/assets/Mink.png' ),
+    paste0( projDir, '/arch/assets/Mouse.png' ),
+    paste0( projDir, '/arch/assets/Pangolin.png' ),
     paste0( projDir, '/arch/assets/Rabbit.png' ),
-    paste0( projDir, '/arch/assets/Placenta.png' ),
-    paste0( projDir, '/arch/assets/Placenta.png' )
+    paste0( projDir, '/arch/assets/Wolf.png' )
   )
 )
 
 ################################################################################
 
-# open io
-tiff( paste0( projDir, '/arch/plots/plotTreeFan.tiff' ), width = 4, height = 4, units = 'in', res = 300 )
+# # open io
+# tiff( paste0( projDir, '/arch/plots/plotTreeFan.tiff' ), width = 4, height = 4, units = 'in', res = 300 )
 
 # TODO: calibrate final colors
 # TODO: patch taxonomic groups
 
-# create tree plot
-φ <- ggtree(
-    syncytinTree,
-    aes(
-      color = group
-    ),
+# create graph
+φ <- syncytinTree %>%
+
+  # plot tree
+  ggtree(
     layout = 'fan',
+    alpha = 0.5
   ) +
 
-  scale_color_discrete() +
+  # colors
+  scale_color_manual(
+    values = taxonColors
+  ) +
+
+  # add tip labels
+  geom_tiplab(
+    mapping = aes(
+      label = label,
+      color = group
+    ),
+    align = TRUE,
+    linetype = 'dotted',
+    linesize = .1,
+    offset = 1,
+    size = 3.5,
+  ) +
+
+  # colors
+  scale_fill_manual(
+    values = taxonColors
+  ) +
+
+  # add bars
+  geom_fruit(
+    data = diamondHits,
+    geom = geom_bar,
+    mapping = aes(
+      y = treeLink,
+      x = hits,
+      fill = treeGroup,
+    ),
+    stat = 'identity',
+    orientation = 'y',
+    offset = 1.0,
+  ) +
+
+  # add numbers
+  geom_fruit(
+    data = diamondHits,
+    geom = geom_text,
+    mapping = aes(
+      y = treeLink,
+      label = hits
+    )
+  )
+
+
+
+
+
+
+# φ <- ggtree(
+#     syncytinTree,
+#     # aes(
+#     #   color = group
+#     # ),
+#     layout = 'fan',
+#   ) +
+
+#   scale_color_discrete() +
   # scale_color_brewer(
   #   'location',
   #   palette = 'Spectral'
@@ -161,17 +263,18 @@ tiff( paste0( projDir, '/arch/plots/plotTreeFan.tiff' ), width = 4, height = 4, 
 
   # , length(tb)), labels = names(tb))
 
-  # add tip labels
-  geom_tiplab(
-    align = TRUE,
-    linetype = 'dotted',
-    linesize = .1,
-    offset = 1,
-    aes(
-      label = label
-    ),
-    size = 3.5,
-  ) +
+  # # add tip labels
+  # geom_tiplab(
+  #   align = TRUE,
+  #   linetype = 'dotted',
+  #   linesize = .1,
+  #   offset = 1,
+  #   aes(
+  #     label = label,
+  #     color = group
+  #   ),
+  #   size = 3.5,
+  # ) +
 
   # geom_tiplab(
   #   data = diamondHits,
@@ -187,37 +290,25 @@ tiff( paste0( projDir, '/arch/plots/plotTreeFan.tiff' ), width = 4, height = 4, 
   #   )
   # ) +
 
-  # add bars
-  geom_fruit(
-    data = diamondHits,
-    geom = geom_bar,
-    mapping = aes(
-      y = treeLink,
-      x = hits,
-      fill = Order,
-    ),
-    stat = 'identity',
-    orientation = 'y',
-    offset = 1.0,
-  )
-
 # add images
 φ %<+% img +
   geom_nodelab(
     aes(
-      image = file
+      image = file,
     ),
+    size = .05,
     geom = 'image',
-    col = 'black',
-    alpha = 1
+    alpha = 0.1
   )
 
 
 # plot
 φ %>% print
 
-# close plotting device
-dev.off()
+# # close plotting device
+# dev.off()
+
+ggsave( paste0( projDir, '/arch/plots/plotTreeFan.tiff' ) )
 
 ################################################################################
 
