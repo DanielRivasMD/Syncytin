@@ -14,6 +14,7 @@ require(ggtreeExtra)
 require(ggstar)
 require(treeio)
 require(ggnewscale)
+require(tidytree)
 require(TreeTools)
 
 ################################################################################
@@ -76,6 +77,12 @@ diamondHits %<>% mutate(hits = na_if(hits, 0))
 
 ################################################################################
 
+# add placental type label
+placentalTypes <- c('epitheliochorial', 'synepitheliochorial', 'endotheliochorial', 'haemochorial')
+diamondHits$placentalType <- sample(placentalTypes, dim(diamondHits)[1], replace = TRUE)
+
+################################################################################
+
 # assign taxonomic names
 # empty list
 gr <- list()
@@ -116,6 +123,18 @@ for ( ι in seq_along(tbFamily) ) {
 
 # group by taxonomic unit
 syncytinTree <- groupOTU(syncytinTree, gr)
+
+
+################################################################################
+
+# prepare diamond hits for concatenation
+dtb <- tibble(
+  label = diamondHits$treeLink,
+  hits = diamondHits$hits,
+  placenta = diamondHits %$% as_factor(placentalType),
+  taxon = diamondHits %$% as_factor(treeGroup),
+)
+
 
 ################################################################################
 
@@ -187,13 +206,53 @@ img <- data.frame(
   # plot tree
   ggtree(
     layout = 'fan',
-    alpha = 0.5
+    alpha = 0.5,
   ) +
 
-  # colors
-  scale_color_manual(
-    values = taxonColors
+  # add placental type tips
+  geom_fruit(
+    data = diamondHits,
+    geom = geom_star,
+    mapping = aes(
+      y = treeLink,
+      starshape = placentalType,
+      fill = 'salmon',
+      size = 2.5,
+    ),
+    position = 'identity',
+    # show.legend = FALSE,
   ) +
+
+  scale_starshape_manual(
+    values = 5:8,
+    guide = guide_legend(
+      keywidth = 0.5,
+      keyheight = 0.5,
+      order = 1
+    )
+  ) +
+
+  # scale_fill_discrete(
+  #   guide = guide_legend(
+  #     keywidth = 0.5,
+  #     keyheight = 0.5,
+  #     override.aes = list(starshape = 15),
+  #     order = 2
+  #   )
+  # ) +
+
+  guides(
+    size = 'none',
+  ) +
+
+  # # add placental type tips
+  # geom_tippoint(
+  #   data = diamondHits,
+  #   mapping = aes(
+  #     y = treeLink,
+  #     color = treeGroup,
+  #   ),
+  # )
 
   # add tip labels
   geom_tiplab(
@@ -206,11 +265,12 @@ img <- data.frame(
     linesize = .1,
     offset = 1,
     size = 3.5,
+    show.legend = FALSE,
   ) +
 
   # colors
-  scale_fill_manual(
-    values = taxonColors
+  scale_color_manual(
+    values = taxonColors,
   ) +
 
   # add bars
@@ -227,6 +287,11 @@ img <- data.frame(
     offset = 1.0,
   ) +
 
+  # colors
+  scale_fill_manual(
+    values = taxonColors,
+  ) +
+
   # add numbers
   geom_fruit(
     data = diamondHits,
@@ -236,6 +301,20 @@ img <- data.frame(
       label = hits
     )
   )
+
+φ <- φ %<+%
+
+  # add images
+  img +
+  geom_nodelab(
+    aes(
+      image = file,
+    ),
+    size = .05,
+    geom = 'image',
+    alpha = 0.1
+  )
+
 
 
 
@@ -289,18 +368,6 @@ img <- data.frame(
   #     label = hits
   #   )
   # ) +
-
-# add images
-φ %<+% img +
-  geom_nodelab(
-    aes(
-      image = file,
-    ),
-    size = .05,
-    geom = 'image',
-    alpha = 0.1
-  )
-
 
 # plot
 φ %>% print
