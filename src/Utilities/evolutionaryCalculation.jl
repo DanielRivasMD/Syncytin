@@ -165,31 +165,31 @@ end
 ################################################################################
 
 "extract subset of assemblies for a taxon & match against list"
-function extractTaxon(taxon::String, taxDf::DataFrame, list::DataFrame, level::Symbol = :Order)
+function extractTaxon(taxon::String, taxDf::DataFrame, list::DataFrame; level::Symbol = :Order, speciesList::Symbol = :assemblySpp)
+  ξ = Vector{Int64}(undef, 0)
   @chain taxDf begin
     filter(level => χ -> χ == taxon, _)
-    map(χ -> findall(χ .== list.assemblySpp), _.Species)
-    sum.(_)
-    list[_, :]
+    map(χ -> findall(χ .== list[:, speciesList]), _.Species)
+    map(_) do μ append!(ξ, μ) end
   end
+  return list[ξ, :]
 end
 
 ################################################################################
 
 "extract subset of assemblies given sort & match against list"
-function extractTaxon(sort::Vector{String}, taxDf::DataFrame, list::DataFrame)
+function extractTaxon(sort::Vector{String}, taxDf::DataFrame, list::DataFrame; speciesList::Symbol = :assemblySpp)
   @chain taxDf begin
     map(χ -> findall(χ .== _.Species), sort)
     sum.(_)
     filter(χ -> χ > 0, _)
     taxDf[_, :]
-    map(χ -> findall(χ .== list.assemblySpp), _.Species)
+    map(χ -> findall(χ .== list[:, speciesList]), _.Species)
     sum.(_)
     filter(χ -> χ > 0, _)
     list[_, :]
   end
 end
-
 
 ################################################################################
 
