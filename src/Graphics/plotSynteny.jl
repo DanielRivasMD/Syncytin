@@ -19,7 +19,6 @@ end
 begin
   using CSV
   using DataFrames
-  using RCall
 end;
 
 ################################################################################
@@ -33,40 +32,62 @@ end;
 
 ################################################################################
 
-# declare extract rows
-norow = 3
-
-# iterate on extracted annotations
-for υ ∈ filter(χ -> contains(χ, "gene"), readdir(syntenyDir))
-  @info υ
-
-  annot = CSV.read( string( syntenyDir, "/", υ ), DataFrame )
-
-
-
-  upstream = @chain annot begin
-    filter(:distance => χ -> χ < 0, _)
-    sort(:distance, rev = true)
-    if size(_, 1) >= norow _[1:norow, :] else _[:, :] end
+# load data
+begin
+  # load taxonomy
+  taxonomyDf = @chain begin
+    CSV.read( string( phylogenyDir, "/taxonomyDf.csv" ), DataFrame )
+    coalesce.("")
   end
 
-  rdna = upstream[:, [:att_note, :start, :end, :strand]]
-  rename!(rdna, :att_note => :name)
+  # load list
+  assemblyDf = @chain begin
+    CSV.read( DNAzooList, DataFrame, header = false )
+    rename!(["assemblySpp", "assemblyID", "annotationID", "readmeLink", "assemblyLink", "annotationLink"])
+  end
+end;
 
+################################################################################
 
+# carnivora taxon
+carnivoraDf = extractTaxon("Carnivora", taxonomyDf, assemblyDf)
 
+################################################################################
 
+# declare data frame
+syntenyCladeDf = DataFrame(spp = String[], scaffold = String[], start = Int64[], tmp = Int64[], orientation = String[], gene = String[])
+rename!(syntenyCladeDf, :tmp => :end) # patch not available column name
 
+################################################################################
 
+# iterate on annotations
+for υ ∈ eachrow(carnivoraDf)
 
-  # downstream = @chain annot begin
-  #   filter(:distance => χ -> χ > 0, _)
-  #   sort(:distance)
-  # end
+  # collect loci
+  annotationAr = @chain begin
+    readdir(syntenyDir)
+    filter(χ -> occursin(replace(υ.annotationID, ".fasta_v2.functional.gff3.gz" => ""), χ), _)
+    filter(χ -> occursin("gene.csv", χ), _)
+  end
 
-
-
+  # iterate over loci
+  for α ∈ annotationAr
+    csvDf = @chain begin
+      CSV.read(string(syntenyDir, "/", α), DataFrame)
+      coalesce.("")
+      rename!(:seqid => :scaffold, :strand => :orientation, :att_note => :gene)
+    end
+    csvDf.spp = repeat([υ.assemblySpp], size(csvDf, 1))
+    for ρ ∈ eachrow(csvDf[:, [:spp, :scaffold, :start, :end, :orientation, :gene]])
+      push!(syntenyCladeDf, ρ)
+    end
+  end
 
 end
+
+################################################################################
+
+# write csv
+writedf( string( phylogenyDir, "/syntenyCladeDf.csv" ), syntenyCladeDf, ',' )
 
 ################################################################################
