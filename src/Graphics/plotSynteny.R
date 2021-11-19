@@ -57,43 +57,48 @@ zynteny <- syntenyClade %>% filter(spp %in% Subtree(syncytinTree, nodeID)$tip.la
 
 facet_widths(φ, widths = c(1,2))
 
+# save plot
+ggsave( paste0( projDir, '/arch/plots/plotSynteny.tiff' ) )
+
+################################################################################
+
 # ggplot2::ggplot(zynteny, ggplot2::aes(xmin = start, xmax = end, y = spp, fill = gene)) +
 # geom_gene_arrow() +
 # ggplot2::facet_wrap(~ spp, scales = "free")
 
 ################################################################################
 
-get_genes <- function(data, genome) {
-    filter(data, molecule == genome) %>% pull(gene)
-}
+# get_genes <- function(data, genome) {
+#     filter(data, molecule == genome) %>% pull(gene)
+# }
 
-g <- unique(example_genes[,1])
-n <- length(g)
-d <- matrix(nrow = n, ncol = n)
-rownames(d) <- colnames(d) <- g
-genes <- lapply(g, get_genes, data = example_genes)
+# g <- unique(example_genes[,1])
+# n <- length(g)
+# d <- matrix(nrow = n, ncol = n)
+# rownames(d) <- colnames(d) <- g
+# genes <- lapply(g, get_genes, data = example_genes)
 
-for (i in 1:n) {
-    for (j in 1:i) {
-        jaccard_sim <- length(intersect(genes[[i]], genes[[j]])) /
-                       length(union(genes[[i]], genes[[j]]))
-        d[j, i] <- d[i, j] <- 1 - jaccard_sim
-    }
-}
+# for (i in 1:n) {
+#     for (j in 1:i) {
+#         jaccard_sim <- length(intersect(genes[[i]], genes[[j]])) /
+#                        length(union(genes[[i]], genes[[j]]))
+#         d[j, i] <- d[i, j] <- 1 - jaccard_sim
+#     }
+# }
 
-tree <- ape::bionj(d)
+# tree <- ape::bionj(d)
 
-p <- ggtree(tree, branch.length='none') +
-geom_tiplab() + xlim_tree(5.5) +
-geom_facet(mapping = aes(xmin = start, xmax = end, fill = gene),
-               data = example_genes, geom = geom_motif, panel = 'Alignment',
-               forward = example_genes$orientation, arrowhead_height = grid::unit(3, 'mm'), arrowhead_width = grid::unit(1, 'mm'),
-               on = 'genE', label = 'gene', align = 'left') +
-    scale_fill_brewer(palette = "Set3") +
-    scale_x_continuous(expand=c(0,0)) +
-    theme(strip.text=element_blank(),
-        panel.spacing=unit(0, 'cm'))
+# p <- ggtree(tree, branch.length='none') +
+# geom_tiplab() + xlim_tree(5.5) +
+# geom_facet(mapping = aes(xmin = start, xmax = end, fill = gene),
+#                data = example_genes, geom = geom_motif, panel = 'Alignment',
+#                forward = example_genes$orientation, arrowhead_height = grid::unit(3, 'mm'), arrowhead_width = grid::unit(1, 'mm'),
+#                on = 'genE', label = 'gene', align = 'left') +
+#     scale_fill_brewer(palette = "Set3") +
+#     scale_x_continuous(expand=c(0,0)) +
+#     theme(strip.text=element_blank(),
+#         panel.spacing=unit(0, 'cm'))
 
-facet_widths(p, widths=c(1,2))
+# facet_widths(p, widths=c(1,2))
 
 ################################################################################

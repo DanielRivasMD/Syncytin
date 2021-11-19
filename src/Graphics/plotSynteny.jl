@@ -58,6 +58,9 @@ carnivoraDf = extractTaxon("Carnivora", taxonomyDf, assemblyDf)
 syntenyCladeDf = DataFrame(spp = String[], scaffold = String[], start = Int64[], tmp = Int64[], orientation = String[], gene = String[])
 rename!(syntenyCladeDf, :tmp => :end) # patch not available column name
 
+# declare columns to select
+parseCols = [:spp, :scaffold, :start, :end, :orientation, :gene]
+
 ################################################################################
 
 # iterate on annotations
@@ -78,11 +81,29 @@ for υ ∈ eachrow(carnivoraDf)
       rename!(:seqid => :scaffold, :strand => :orientation, :att_note => :gene)
     end
     csvDf.spp = repeat([υ.assemblySpp], size(csvDf, 1))
-    for ρ ∈ eachrow(csvDf[:, [:spp, :scaffold, :start, :end, :orientation, :gene]])
-      push!(syntenyCladeDf, ρ)
+
+    # syncytin
+    @chain csvDf begin
+      filter(:distance => χ -> χ == 0, _)
+      _[1, parseCols]
+      push!(syntenyCladeDf, _)
+    end
+
+    # upstream
+    @chain csvDf begin
+      filter(:distance => χ -> χ < 0, _)
+      if size(_, 1) > 0 _[argmax(_.distance), parseCols] end
+      if !isnothing(_) push!(syntenyCladeDf, _)
+      end
+    end
+
+    # downstream
+    @chain csvDf begin
+      filter(:distance => χ -> χ > 0, _)
+      if size(_, 1) > 0 _[argmin(_.distance), parseCols] end
+      if !isnothing(_) push!(syntenyCladeDf, _) end
     end
   end
-
 end
 
 ################################################################################
