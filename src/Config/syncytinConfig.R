@@ -7,6 +7,7 @@ projDir <- '/Users/drivas/Factorem/Syncytin'
 
 # source
 utilDir <- paste0( projDir, '/src/Utilities' )
+graphDir <- paste0( projDir, '/src/Graphics' )
 
 ################################################################################
 
