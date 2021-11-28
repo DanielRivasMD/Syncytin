@@ -13,11 +13,16 @@ cat "${insertionDir}/"* > "${syntenyDir}/insertionSequences.fasta"
 
 ################################################################################
 
+# # clean satsuma directory
+# rm "${satsumaDir}/"*
+
+################################################################################
+
 # run Satsuma
-Satsuma \
--q "${syntenyDir}/insertionSequences.fasta" \
--t "${syntenyDir}/insertionSequences.fasta" \
--o "${syntenyDir}/" \
--self 1
+/scratch/pawsey0263/drivas/software/satsuma-code/Satsuma \
+  -q "${syntenyDir}/insertionSequences.fasta" \
+  -t "${syntenyDir}/insertionSequences.fasta" \
+  -o "${satsumaDir}/" \
+  -self 1
 
 ################################################################################

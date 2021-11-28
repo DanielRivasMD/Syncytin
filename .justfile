@@ -73,6 +73,7 @@ Paths:
   if [[ ! -d "${predictionDir/${projDir}/${projRemote}}" ]]; then mkdir "${predictionDir/${projDir}/${projRemote}}"; fi
   if [[ ! -d "${predictionDir/${projDir}/${projRemote}}/training" ]]; then mkdir "${predictionDir/${projDir}/${projRemote}}/training"; fi
   if [[ ! -d "${profileDir/${projDir}/${projRemote}}" ]]; then mkdir "${profileDir/${projDir}/${projRemote}}"; fi
+  if [[ ! -d "${satsumaDir/${projDir}/${projRemote}}" ]]; then mkdir "${satsumaDir/${projDir}/${projRemote}}"; fi
   if [[ ! -d "${databaseDir/${projDir}/${projRemote}}" ]]; then mkdir "${databaseDir/${projDir}/${projRemote}}"; fi
   if [[ ! -d "${syntenyDir/${projDir}/${projRemote}}" ]]; then mkdir "${syntenyDir/${projDir}/${projRemote}}"; fi
   if [[ ! -d "${taxonomistDir/${projDir}/${projRemote}}" ]]; then mkdir "${taxonomistDir/${projDir}/${projRemote}}"; fi
