@@ -24,6 +24,17 @@ source( paste0( graphDir, '/parseHits.R' ) )
 
 ################################################################################
 
+# TODO: set the annotations properly
+PlacentalShape <- c('Discoidal', 'Diffuse', 'Zonary', 'Cotyledonary')
+Interdigitation <- c('Folded', 'Labyrinthine', 'Trabecular', 'Villous', 'Lamellar')
+PlacentalInterfase <- c('Epitheliochorial', 'Endotheliochorial', 'Hemochorial')
+
+diamondHits$PlacentalShape <- sample(PlacentalShape, dim(diamondHits)[1], replace = TRUE)
+diamondHits$Interdigitation <- sample(Interdigitation, dim(diamondHits)[1], replace = TRUE)
+diamondHits$PlacentalInterfase <- sample(PlacentalInterfase, dim(diamondHits)[1], replace = TRUE)
+
+################################################################################
+
 # create canvas
 φ <- syncytinTree %>%
 
@@ -38,42 +49,78 @@ source( paste0( graphDir, '/parseHits.R' ) )
   # new color scale
   new_scale_fill() +
 
-  # add placental type tips
+  # add placental shape
   geom_fruit(
     data = diamondHits,
-    geom = geom_star,
+    geom = geom_tile,
     mapping = aes(
       y = treeLink,
-      fill = placentalType,
-      # starshape = placentalType,
+      x = 0,
+      fill = PlacentalShape,
     ),
-    size = 3,
-    starshape = 25,
-    starstroke = 0,
-    position = 'identity',
+    offset = 0.03,
+    pwidth = 0.25,
   ) +
 
+    # taxon colors
   scale_fill_discrete(
-    name = 'Placental type',
+    name = 'Placental Shape',
     guide = guide_legend(
-      keywidth = 0.5,
-      keyheight = 1,
       order = 1,
-    ),
+    )
   )
 
-  # scale_starshape_manual(
-  #   values = 5:8,
-  #   guide = guide_legend(
-  #     keywidth = 0.5,
-  #     keyheight = 0.5,
-  #     order = 2,
-  #   )
-  # ) +
+φ <- φ +
 
-  # guides(
-  #   size = 'none',
-  # ) +
+  # new color scale
+  new_scale_fill() +
+
+  # add placental interdigitation
+  geom_fruit(
+    data = diamondHits,
+    geom = geom_tile,
+    mapping = aes(
+      y = treeLink,
+      x = 0,
+      fill = Interdigitation,
+    ),
+    offset = 0.05,
+    pwidth = 0.25,
+  ) +
+
+  # taxon colors
+  scale_fill_discrete(
+    name = 'Materno-Fetal Interdigitation',
+    guide = guide_legend(
+      order = 2,
+    )
+  )
+
+φ <- φ +
+
+  # new color scale
+  new_scale_fill() +
+
+  # add placental interfase
+  geom_fruit(
+    data = diamondHits,
+    geom = geom_tile,
+    mapping = aes(
+      y = treeLink,
+      x = 0,
+      fill = PlacentalInterfase,
+    ),
+    offset = 0.05,
+    pwidth = 0.25,
+  ) +
+
+    # taxon colors
+  scale_fill_discrete(
+    name = 'Placental Interfase',
+    guide = guide_legend(
+      order = 3,
+    )
+  )
 
 φ <- φ +
 
@@ -84,7 +131,7 @@ source( paste0( graphDir, '/parseHits.R' ) )
       color = group
     ),
     align = FALSE,
-    offset = 1,
+    offset = 3.25,
     size = 3.5,
     show.legend = FALSE,
   ) +
@@ -110,13 +157,16 @@ source( paste0( graphDir, '/parseHits.R' ) )
     ),
     stat = 'identity',
     orientation = 'y',
-    offset = 1.0,
+    offset = 1.5,
   ) +
 
   # taxon colors
   scale_fill_manual(
     name = 'Taxonomical group',
     values = taxonColors,
+    guide = guide_legend(
+      order = 4,
+    )
   )
 
 φ <- φ +
@@ -128,7 +178,7 @@ source( paste0( graphDir, '/parseHits.R' ) )
     mapping = aes(
       y = treeLink,
       label = hits
-    )
+    ),
   )
 
 φ <- φ %<+%
@@ -149,6 +199,6 @@ source( paste0( graphDir, '/parseHits.R' ) )
 ################################################################################
 
 # save plot
-ggsave( paste0( projDir, '/arch/plots/plotTreeFan.tiff' ) )
+ggsave( paste0( projDir, '/arch/plots/plotTreeFan.png' ), width = 50, height = 50, units = 'cm')
 
 ################################################################################
