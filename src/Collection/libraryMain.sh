@@ -29,7 +29,7 @@ fi
 # extract protein accessions
 echo 'Writting protein accessions...'
 
-for art in $( $(which exa) "${accNDir}" );
+for art in $( command ls "${accNDir}" );
 do
   if [[ -f "${accPDir}/${art}" ]]
   then

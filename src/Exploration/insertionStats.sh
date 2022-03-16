@@ -15,16 +15,16 @@ echo 'Alignment,Count' > "${statsDir}/diamond.csv"
 
 # total
 cd "${diamondDir}/raw"
-total=$( $(which fd) --type=file | wc | awk '{print $1}' )
+total=$( command find -type f | command wc | awk '{print $1}' )
 cd - > /dev/null
 
 # filtered
 cd "${diamondDir}/filter"
-filtered=$( $(which fd) --type=file | wc | awk '{print $1}' )
+filtered=$( command find -type f | command wc | awk '{print $1}' )
 cd - > /dev/null
 
 # no hits
-noHits=$( $(which fd) --size=0B tsv | wc | awk '{print $1}' )
+noHits=$( command find . -type f -empty -name '*tsv' | command wc | awk '{print $1}' )
 
 # print
 echo "${filtered}" | awk '{print "Filtered," $0}' >> "${statsDir}/diamond.csv"

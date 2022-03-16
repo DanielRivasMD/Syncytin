@@ -15,7 +15,7 @@ then
 fi
 
 # filter
-for assembly in $( $(which exa) "${wasabiDir}/raw" )
+for assembly in $( command ls "${wasabiDir}/raw" )
 do
 
   if [[ "${assembly}" != "Mesocricetus_auratus__golden_hamster_wtdbg2.shortReadsPolished.csv" ]]
