@@ -26,6 +26,8 @@ Computational study of _syncitin_ gene in vertebrates.
 
 #### `profile` => hydrophobicity profiles.
 
+#### `satsuma` => contain output from _satsuma_ syntenic alignment.
+
 #### `stats` => collection of different statistics.
 
 #### `synteny` => output from collecting candidate loci. organized by assembly.

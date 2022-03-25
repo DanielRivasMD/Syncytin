@@ -28,6 +28,7 @@ begin
   phylogenyDir = string( dataDir, "/phylogenyTimeTree" )
   predictionDir = string( dataDir, "/predictionAlphaFold" )
   profileDir = string( dataDir, "/profileProtein" )
+  satsumaDir = string(dataDir, "/satsumaAlignment" )
   statsDir = string( dataDir, "/statsMiscellaneous" )
   syntenyDir = string( dataDir, "/syntenyAnnotationExtraction" )
   taxonomistDir = string( dataDir, "/taxonomistIDExtraction" )
