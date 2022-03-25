@@ -64,8 +64,9 @@ carnivoraSort <- carnivoraTree$tip.label
 ################################################################################
 
 # TODO: rewrite as metaprogramming
+
 # select `Carnivora`
-carnivoraAr = @chain carnivoraSort begin
+carnivoraArN = @chain carnivoraSort begin
   extractTaxon(taxonomyDf, assemblyDf)
   selectIxs(candidateDir)
   candidateCollect(candidateDir)
@@ -74,12 +75,88 @@ end
 ################################################################################
 
 # translate fasta array
-carnivoraAr = translateRecord(carnivoraAr)
+carnivoraArP = translateRecord(carnivoraArN)
 
 ################################################################################
 
+# write fasta records
+fastaWriter( string( alignmentDir, "/nucleotide/carnivora.fna" ), carnivoraArN )
+fastaWriter( string( alignmentDir, "/protein/carnivora.faa" ), carnivoraArP )
+
+################################################################################
+
+################################################################################
+
+# collect carnivora tree
+R"
+require(treeio)
+ursidaeTree <- read.tree( paste0( $phylogenyDir, '/UrsidaeBinominal.nwk' ) )
+ursidaeSort <- ursidaeTree$tip.label
+"
+
+@rget ursidaeSort
+
+################################################################################
+
+# TODO: rewrite as metaprogramming
+# select `Ursidae`
+ursidaeArN = @chain ursidaeSort begin
+  extractTaxon(taxonomyDf, assemblyDf)
+  selectIxs(candidateDir)
+  candidateCollect(candidateDir)
+end
+
+################################################################################
+
+# translate fasta array
+ursidaeArP = translateRecord(ursidaeArN)
+
+################################################################################
+
+# write fasta records
+fastaWriter( string( alignmentDir, "/nucleotide/ursidae.fna" ), ursidaeArN )
+fastaWriter( string( alignmentDir, "/protein/ursidae.faa" ), ursidaeArP )
+
+################################################################################
+
+# ################################################################################
+
+# TODO: pangolins do not present hits
+# TODO: phataginus tricuspis is renamed to manis tricuspis
+# # collect carnivora tree
+# R"
+# require(treeio)
+# pholidotaTree <- read.tree( paste0( $phylogenyDir, '/PholidotaBinominal.nwk' ) )
+# pholidotaSort <- pholidotaTree$tip.label
+# "
+
+# @rget pholidotaSort
+
+# ################################################################################
+
+# # TODO: rewrite as metaprogramming
+# # select `Carnivora`
+# pholidotaN = @chain pholidotaSort begin
+#   extractTaxon(taxonomyDf, assemblyDf)
+#   selectIxs(candidateDir)
+#   candidateCollect(candidateDir)
+# end
+
+# ################################################################################
+
+# # translate fasta array
+# pholidotaP = translateRecord(pholidotaN)
+
+# ################################################################################
+
+# # write fasta records
+# fastaWriter( string( alignmentDir, "/nucleotide/pholidota.fna" ), pholidotaN )
+# fastaWriter( string( alignmentDir, "/protein/pholidota.faa" ), pholidotaP )
+
+# ################################################################################
+
 # calculate levenshtein distance
-carnivoraMt = levenshteinDist(carnivoraAr)
+carnivoraMt = levenshteinDist(carnivoraArP)
 
 ################################################################################
 
