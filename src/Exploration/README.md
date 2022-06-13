@@ -10,7 +10,7 @@ Search for _syncitin_ sequences in assemblies.
 
 `retrieveAssemblies.sh` => collect **DNAzoo** assemblies from _wasabisys_ to _Pawsey_.
 
-`insertionStats.sh` => collect general statistics on sequene similarity searches.
+`insertionStats.sh` => collect general statistics on sequence similarity searches.
 
 `insertionStats.R` => plot general statistics on sequence similarity searches results.
 

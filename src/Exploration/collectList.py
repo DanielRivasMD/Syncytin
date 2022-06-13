@@ -1,3 +1,5 @@
+####################################################################################################
+
 import os
 import re
 import time
@@ -5,6 +7,8 @@ from csv import writer
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+
+####################################################################################################
 
 # ignore warnings
 import warnings
@@ -29,6 +33,8 @@ time.sleep(3)
 # collect html data
 dnaHome = BeautifulSoup(browser.page_source, 'html.parser')
 dnaItems = dnaHome.findAll('a')
+
+####################################################################################################
 
 # iterate on DNAzoo species
 for _, υ in enumerate(dnaItems):
@@ -64,13 +70,15 @@ for _, υ in enumerate(dnaItems):
       # write headers
       csvWriter.writerow(['File', 'Link'])
 
-      for _, ι in enumerate(sppItems):
+      for _, ν in enumerate(sppItems):
 
         # match on linked files
-        if re.match(collectRx, ι.attrs['href']):
+        if re.match(collectRx, ν.attrs['href']):
 
           # write rows
-          csvWriter.writerow([ι.text, ι.attrs['href']])
+          csvWriter.writerow([ν.text, ν.attrs['href']])
 
     # return to home page
     browser.back()
+
+####################################################################################################
