@@ -81,6 +81,7 @@ Paths:
   echo 'Forging data directories at Pawsey...'
   # create directories
   if [[ ! -d "${listDir/${projDir}/${projRemote}}" ]]; then mkdir "${listDir/${projDir}/${projRemote}}"; fi
+  if [[ ! -d "${dataDir/${projDir}/${projRemote}}" ]]; then mkdir "${dataDir/${projDir}/${projRemote}}"; fi
   if [[ ! -d "${alignmentDir/${projDir}/${projRemote}}" ]]; then mkdir "${alignmentDir/${projDir}/${projRemote}}"; fi
   if [[ ! -d "${annotationDir/${projDir}/${projRemote}}" ]]; then mkdir "${annotationDir/${projDir}/${projRemote}}"; fi
   if [[ ! -d "${assemblyReadmeDir/${projDir}/${projRemote}}" ]]; then mkdir "${assemblyReadmeDir/${projDir}/${projRemote}}"; fi
