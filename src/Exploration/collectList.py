@@ -16,12 +16,12 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 # declarations
 projDir = '/Users/drivas/Factorem/Syncytin'
-outDir = projDir + '/' + 'data/wasabi'
+outDir = projDir + '/' + 'data/wasabiScrappedSource/raw'
 wasabi = 'https://dnazoo.s3.wasabisys.com/'
 dnaAddress = wasabi + 'index.html'
 
 # regex
-ixRx = re.compile('.*index.*')
+я = re.compile('.*index.*')
 
 # navigate
 browser = webdriver.Chrome()
@@ -46,7 +46,7 @@ for _, υ in enumerate(dnaItems):
   time.sleep(10)
 
   # match on indexed spp
-  if re.match(ixRx, υ.get_attribute_list('href')[0]):
+  if re.match(я, υ.get_attribute_list('href')[0]):
 
     # regex
     collectRx = re.compile(wasabi + υ.text + '[a-zA-Z0-9]+')
