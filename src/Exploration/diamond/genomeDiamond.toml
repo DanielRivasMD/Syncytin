@@ -2,6 +2,6 @@
 
 library     = "CURATEDsyncytinLibrary.fasta"
 libraryDir  = "/scratch/pawsey0263/drivas/Factorem/Syncytin/data/syncytinDataBase/protein"
-outDir      = "/scratch/pawsey0263/drivas/Factorem/Syncytin/data/diamondOutput"
+outDir      = "/scratch/pawsey0263/drivas/Factorem/Syncytin/data/diamondOutput/raw"
 
 ####################################################################################################
