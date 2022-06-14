@@ -144,7 +144,7 @@ Report:
 ####################################################################################################
 
 # collect species descriptions
-@ assemblyStats:
+@assemblyStats:
   source src/Collection/assemblyStats.sh
 
 ####################################################################################################
@@ -152,19 +152,19 @@ Report:
 ####################################################################################################
 
 # collect list from wasabi
-@ collectList:
+@collectList:
   source src/Exploration/collectList.sh
 
 ####################################################################################################
 
 # filter assemblies
-@ filterAssemblies:
+@filterAssemblies:
   source src/Exploration/filterAssemblies.sh
 
 ####################################################################################################
 
 # insertion stats
-@ insertionStats:
+@insertionStats:
   source src/Exploration/insertionStats.sh
   R --slave --vanilla < src/Exploration/insertionStats.R
 
@@ -173,7 +173,7 @@ Report:
 ####################################################################################################
 
 # extract genomic loci coordinates
-@ genomicLoci:
+@genomicLoci:
   # filter loci on each similarity alignment result
   echo 'Filtering genomic loci...'
   source src/Orthology/genomicLoci.sh
@@ -187,7 +187,7 @@ Report:
 ####################################################################################################
 
 # parse binominal files for time tree
-@ binominalParse:
+@binominalParse:
   #
   echo 'Parsing files...'
   source src/Taxonomy/binominalParse.sh
@@ -195,7 +195,7 @@ Report:
 ####################################################################################################
 
 # collect taxonomy data
-@ taxonomist:
+@taxonomist:
   # collect taxonomy
   echo 'Gathering taxonomic information...'
   -source src/Taxonomy/taxonomist.sh
