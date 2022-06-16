@@ -1,6 +1,6 @@
 #!/bin/bash
 
-################################################################################
+####################################################################################################
 
 # project
 projectId="pawsey0263"
@@ -15,4 +15,4 @@ ncbiList="${sourceFolder}/list/ncbiList.csv"
 DNAzooDir="/scratch/pawsey0263/drivas/Factorem/Syncytin/data/DNAzooSource"
 ncbiDir="/scratch/pawsey0263/drivas/Factorem/Syncytin/data/ncbiAssemblyAnnotationSource"
 
-################################################################################
+####################################################################################################

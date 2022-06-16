@@ -6,20 +6,18 @@ Search for _syncitin_ sequences in assemblies.
 
 `collectList.sh` => control `collectList.py`.
 
+`diamondDatabase.sh` => build database for **diamond**.
+
+`diamondSearch.sh` => search assemblies using **diamond**.
+
 `filterAssemblies.sh` => filter scrapped assembly data.
-
-`retrieveAssemblies.sh` => collect **DNAzoo** assemblies from _wasabisys_ to _Pawsey_.
-
-`insertionStats.sh` => collect general statistics on sequence similarity searches.
 
 `insertionStats.R` => plot general statistics on sequence similarity searches results.
 
-#### `blast`
+`insertionStats.sh` => collect general statistics on sequence similarity searches.
 
-- `genomeBlast.toml` => **`bender`** configuration for **`Assembly Search blast`**.
+`retrieveAssemblies.sh` => collect **DNAzoo** assemblies from _wasabisys_ to _Pawsey_.
 
-- `ncbi-blast.sh` => retrieve **`blast`** command line application.
+#### `config`
 
-#### `diamond`
-
-- `genomeDiamond.toml` => **`bender`** configuration for **`Assembly Search diamond`**.
+- `diamond.toml` => **`bender`** configuration for **`Assembly Search diamond`**.

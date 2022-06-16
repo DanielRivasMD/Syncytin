@@ -2,14 +2,18 @@ Control _SLURM_-managed cluster jobs.
 
 ### Workflow
 
-`retrieveAssemblies.sh` => collect **DNAzoo** assemblies from _wasabisys_ to _Pawsey_.
+`diamondDatabase.sh` => build database for _syncytin_ sequences through **diamond** using **`bender`**.
 
-`genomeBlast.sh` => search for _syncytin_ sequences in assemblies through **BLAST** using **`bender`**.
-
-`genomeDiamond.sh` => search for _syncytin_ sequences in assemblies through **diamond** using **`bender`**.
-
-`alphafoldDownload.sh` => download training set for _AlphaFold_.
+`diamondSearch.sh` => search for _syncytin_ sequences in assemblies through **diamond** using **`bender`**.
 
 `jobTemplateSLURM.sh` => template for _SLURM_ jobs.
 
+`retrieveAssemblies.sh` => collect **DNAzoo** assemblies from _wasabisys_ to _Pawsey_.
+
+`sequenceRetrieve.sh` => procure assemblies from _wasabisys_.
+
 `syncytinConfigSLURM.sh` => _SLURM_ configuration at _Pawsey_, i.e., project ID, source & report forlders, assembly list.
+
+`syntenyAlignment.sh` => perform syntenic alignment.
+
+`syntenySatsuma.sh` => use **satsuma**.
