@@ -22,7 +22,7 @@ sbatch \
   --export sourceFolder="${sourceFolder}",assemblyDir="${DNAzooDir}",assemblyList="${DNAzooList}" \
   --array 68,90,92,106,120,126,132,133,142,144,145,156 \
   --array 1-$( awk 'END{print NR}' "${DNAzooList}" ) \
-  "${sourceFolder}/src/Exploration/genomeDiamond.sh"
+  "${sourceFolder}/src/Exploration/diamondSearch.sh"
 # patch. run only failed assemblies
 
 ################################################################################
@@ -41,7 +41,7 @@ sbatch \
   --nodes 1 \
   --export sourceFolder="${sourceFolder}",assemblyDir="${ncbiDir}",assemblyList="${ncbiList}" \
   --array 1-$( awk 'END{print NR}' "${ncbiList}" ) \
-  "${sourceFolder}/src/Exploration/genomeDiamond.sh"
+  "${sourceFolder}/src/Exploration/diamondSearch.sh"
 
 ################################################################################
 

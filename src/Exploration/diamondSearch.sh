@@ -19,8 +19,8 @@ gzip --decompress --stdout "${assemblyDir}/${assembly}" > "${dataDir}/tmp/${asse
 
 # similarity search
 bender assembly search diamond \
-  --configPath "${sourceFolder}/src/Exploration/diamond/" \
-  --configFile "genomeDiamond.toml" \
+  --configPath "${sourceFolder}/src/Exploration/config/" \
+  --configFile "diamond.toml" \
   --inDir "${dataDir}/tmp" \
   --species "${species}" \
   --assembly "${assembly/.gz/}"
