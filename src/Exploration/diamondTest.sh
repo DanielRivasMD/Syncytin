@@ -24,8 +24,8 @@ awk \
 
 # similarity search
 bender assembly search diamond \
-  --configPath "${sourceFolder}/src/Exploration/diamond/" \
-  --configFile "genomeDiamond.toml" \
+  --configPath "${sourceFolder}/src/Exploration/config/" \
+  --configFile "diamond.toml" \
   --inDir "${dataDir}" \
   --species "${species}" \
   --assembly "MonDom5_chr1.fasta"
