@@ -116,6 +116,7 @@ Diamond:
   source "src/Config/syncytinConfig.sh"
 
   echo 'Retriving data...'
+  rsync -azvhP "${pawseyID}:${databaseDir/${projDir}/${projRemote}}/" "${databaseDir}/"   # diamond database
   rsync -azvhP "${pawseyID}:${diamondDir/${projDir}/${projRemote}}/" "${diamondDir}/"     # diamond output
   rsync -azvhP "${pawseyID}:${candidateDir/${projDir}/${projRemote}}/" "${candidateDir}/" # syncytin hit sequence
   rsync -azvhP "${pawseyID}:${insertionDir/${projDir}/${projRemote}}/" "${insertionDir}/" # potential insertion sequence
