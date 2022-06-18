@@ -7,7 +7,7 @@ require(tidyverse)
 ################################################################################
 
 # load alignment hits
-dmfile <- paste0( statsDir, '/diamondHits.csv' )
+dmfile <- paste0(statsDir, '/diamondHits.csv')
 diamondHits <- read_csv(dmfile)
 
 ################################################################################
@@ -54,19 +54,19 @@ tbSuborder <- diamondHits %>% filter(Order %in% suborders) %$% table(Suborder)
 tbFamily <- diamondHits %>% filter(Suborder %in% families) %$% table(Family)
 
 # iteratate over order
-for ( ι in seq_along(tbOrder) ) {
+for (ι in seq_along(tbOrder)) {
   gr[[ι]] <- diamondHits$treeLink[diamondHits$Order == names(tbOrder)[ι] & !(diamondHits$Suborder %in% families)]
   names(gr)[ι] <- names(tbOrder)[ι]
 }
 
 # iterate over suborders
-for ( ι in seq_along(tbSuborder) ) {
+for (ι in seq_along(tbSuborder)) {
   gr[[ι + length(tbOrder)]] <- diamondHits$treeLink[diamondHits$Suborder == names(tbSuborder)[ι] & !is.na(diamondHits$Suborder)]
   names(gr)[ι + length(tbOrder)] <- names(tbSuborder)[ι]
 }
 
 # iterate over families
-for ( ι in seq_along(tbFamily) ) {
+for (ι in seq_along(tbFamily)) {
   gr[[ι + length(tbOrder) + length(tbSuborder)]] <- diamondHits$treeLink[diamondHits$Family == names(tbFamily)[ι]]
   names(gr)[ι + length(tbOrder) + length(tbSuborder)] <- names(tbFamily)[ι]
 }
@@ -110,25 +110,25 @@ taxonColors <- c(
 img <- data.frame(
   node = c(275, 222, 264, 236, 271, 240, 319, 270, 309, 228, 167, 306, 183, 203, 286, 226, 285, 196),
   file = c(
-    paste0( projDir, '/arch/assets/Bat.png' ),
-    paste0( projDir, '/arch/assets/Bear.png' ),
-    paste0( projDir, '/arch/assets/Bison.png' ),
-    paste0( projDir, '/arch/assets/Camel.png' ),
-    paste0( projDir, '/arch/assets/Deer.png' ),
-    paste0( projDir, '/arch/assets/Dolphin.png' ),
-    paste0( projDir, '/arch/assets/Elephant.png' ),
-    paste0( projDir, '/arch/assets/Giraffe.png' ),
-    paste0( projDir, '/arch/assets/Gorilla.png' ),
-    paste0( projDir, '/arch/assets/Horse.png' ),
-    paste0( projDir, '/arch/assets/Koala.png' ),
-    paste0( projDir, '/arch/assets/Lemur.png' ),
-    paste0( projDir, '/arch/assets/Lion.png' ),
-    paste0( projDir, '/arch/assets/Mink.png' ),
-    paste0( projDir, '/arch/assets/Mouse.png' ),
-    paste0( projDir, '/arch/assets/Pangolin.png' ),
-    paste0( projDir, '/arch/assets/Rabbit.png' ),
-    paste0( projDir, '/arch/assets/Wolf.png' )
-  )
+    paste0(projDir, '/arch/assets/Bat.png'),
+    paste0(projDir, '/arch/assets/Bear.png'),
+    paste0(projDir, '/arch/assets/Bison.png'),
+    paste0(projDir, '/arch/assets/Camel.png'),
+    paste0(projDir, '/arch/assets/Deer.png'),
+    paste0(projDir, '/arch/assets/Dolphin.png'),
+    paste0(projDir, '/arch/assets/Elephant.png'),
+    paste0(projDir, '/arch/assets/Giraffe.png'),
+    paste0(projDir, '/arch/assets/Gorilla.png'),
+    paste0(projDir, '/arch/assets/Horse.png'),
+    paste0(projDir, '/arch/assets/Koala.png'),
+    paste0(projDir, '/arch/assets/Lemur.png'),
+    paste0(projDir, '/arch/assets/Lion.png'),
+    paste0(projDir, '/arch/assets/Mink.png'),
+    paste0(projDir, '/arch/assets/Mouse.png'),
+    paste0(projDir, '/arch/assets/Pangolin.png'),
+    paste0(projDir, '/arch/assets/Rabbit.png'),
+    paste0(projDir, '/arch/assets/Wolf.png')
+ )
 )
 
 ################################################################################

@@ -9,8 +9,8 @@ source "${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh"
 ####################################################################################################
 
 # define annotation
-species=$( sed -n "$SLURM_ARRAY_TASK_ID"p "${DNAzooList}" | cut -d "," -f 1 )
-annotation=$( sed -n "$SLURM_ARRAY_TASK_ID"p "${DNAzooList}" | cut -d "," -f 3 )
+species=$(sed -n "$SLURM_ARRAY_TASK_ID"p "${DNAzooList}" | cut -d "," -f 1)
+annotation=$(sed -n "$SLURM_ARRAY_TASK_ID"p "${DNAzooList}" | cut -d "," -f 3)
 
 ####################################################################################################
 

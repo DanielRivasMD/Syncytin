@@ -2,14 +2,14 @@
 
 # declarations
 begin
-  include( "/Users/drivas/Factorem/Syncytin/src/Config/syncytinConfig.jl" )
+  include("/Users/drivas/Factorem/Syncytin/src/Config/syncytinConfig.jl")
 end;
 
 ################################################################################
 
 # load project enviroment
 using Pkg
-if Pkg.project().path != string( projDir, "/Project.toml" )
+if Pkg.project().path != string(projDir, "/Project.toml")
   Pkg.activate(projDir)
 end
 
@@ -30,7 +30,7 @@ end;
 
 # load modules
 begin
-  include( string( utilDir, "/ioDataFrame.jl" ) )
+  include(string(utilDir, "/ioDataFrame.jl"))
 end;
 
 ################################################################################
@@ -39,12 +39,12 @@ end;
 begin
   # load taxonomy
   taxonomyDf = @chain begin
-    CSV.read( string( phylogenyDir, "/taxonomyDf.csv" ), DataFrame )
+    CSV.read(string(phylogenyDir, "/taxonomyDf.csv"), DataFrame)
     coalesce.("")
   end
 
   # load coordinates
-  lociDf = CSV.read( string( phylogenyDir, "/lociDf.csv" ), DataFrame )
+  lociDf = CSV.read(string(phylogenyDir, "/lociDf.csv"), DataFrame)
 end;
 
 ################################################################################
@@ -69,12 +69,12 @@ end
 ################################################################################
 
 # write csv
-writedf( string( statsDir, "/diamondHits.csv" ), diamondHits, ',' )
+writedf(string(statsDir, "/diamondHits.csv"), diamondHits, ',')
 
 ################################################################################
 
 @rput diamondHits
 
-R"source( paste0( $projDir, '/src/Phylogeny/plotTree.R' ) )"
+R"source(paste0($projDir, '/src/Phylogeny/plotTree.R'))"
 
 ################################################################################

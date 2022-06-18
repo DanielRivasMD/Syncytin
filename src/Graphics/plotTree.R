@@ -19,8 +19,8 @@ require(tidytree)
 ################################################################################
 
 # load files
-source( paste0( graphDir, '/parseTree.R' ) )
-source( paste0( graphDir, '/parseHits.R' ) )
+source(paste0(graphDir, '/parseTree.R'))
+source(paste0(graphDir, '/parseHits.R'))
 
 ################################################################################
 
@@ -199,6 +199,6 @@ diamondHits$PlacentalInterfase <- sample(PlacentalInterfase, dim(diamondHits)[1]
 ################################################################################
 
 # save plot
-ggsave( paste0( projDir, '/arch/plots/plotTreeFan.png' ), width = 50, height = 50, units = 'cm')
+ggsave(paste0(projDir, '/arch/plots/plotTreeFan.png'), width = 50, height = 50, units = 'cm')
 
 ################################################################################

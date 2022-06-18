@@ -18,7 +18,7 @@ sbatch \
   --time 4:0:0 \
   --nodes 1 \
   --export sourceFolder="${sourceFolder}",DNAzooList="${DNAzooList}" \
-  --array 1-$( awk 'END{print NR}' "${DNAzooList}" ) \
+  --array 1-$(awk 'END{print NR}' "${DNAzooList}") \
   "${sourceFolder}/src/Orthology/sequenceRetrieve.sh"
 
 ####################################################################################################

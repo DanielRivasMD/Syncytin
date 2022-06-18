@@ -24,7 +24,7 @@ require(ggmsa)
 # 'ATY46611.1 envelope protein syncytin Mab1 (endogenous virus) [Mabuya sp. NRPS-2014]'
 
 # load sequences
-syncytinSample <- readAAStringSet( paste0( databaseDir, '/protein/syncytinSample.fasta' ) )
+syncytinSample <- readAAStringSet(paste0(databaseDir, '/protein/syncytinSample.fasta'))
 
 syncytinSample %>% msa %>% msaPrettyPrint(askForOverwrite = FALSE, showLogo = 'none', showLegend = FALSE, shadingColors = 'gray', consensusThreshold = 100, consensusColors = 'Gray')
 

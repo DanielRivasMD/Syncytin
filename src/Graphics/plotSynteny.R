@@ -15,7 +15,7 @@ require(ggtree)
 ################################################################################
 
 # load files
-source( paste0( graphDir, '/parseTree.R' ) )
+source(paste0(graphDir, '/parseTree.R'))
 
 ################################################################################
 
@@ -58,7 +58,7 @@ zynteny <- syntenyClade %>% filter(spp %in% Subtree(syncytinTree, nodeID)$tip.la
 facet_widths(φ, widths = c(1,2))
 
 # save plot
-ggsave( paste0( projDir, '/arch/plots/plotSynteny.tiff' ) )
+ggsave(paste0(projDir, '/arch/plots/plotSynteny.tiff'))
 
 ################################################################################
 

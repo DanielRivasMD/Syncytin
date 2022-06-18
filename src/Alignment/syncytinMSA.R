@@ -15,7 +15,7 @@ require(bios2mds)
 ################################################################################
 
 # declare syncytin library
-synFile <- paste0( projDir, '/data/syncytinDB/protein/CURATEDsyncytinLibrary.fasta' )
+synFile <- paste0(projDir, '/data/syncytinDB/protein/CURATEDsyncytinLibrary.fasta')
 
 ################################################################################
 
@@ -38,6 +38,6 @@ msaPrettyPrint(syncytinMSA, output = 'pdf', showLogo = 'none', askForOverwrite =
 synMSA_as_align <- msaConvert(syncytinMSA, 'bios2mds::align')
 
 # write multiple sequence alignment
-export.fasta(synMSA_as_align, outfile = paste0( projDir, '/data/syncytinDB/msa/syncytin.fasta' ) )
+export.fasta(synMSA_as_align, outfile = paste0(projDir, '/data/syncytinDB/msa/syncytin.fasta'))
 
 ################################################################################

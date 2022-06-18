@@ -2,14 +2,14 @@
 
 # declarations
 begin
-  include( "/Users/drivas/Factorem/Syncytin/src/Config/syncytinConfig.jl" )
+  include("/Users/drivas/Factorem/Syncytin/src/Config/syncytinConfig.jl")
 end;
 
 ################################################################################
 
 # load project enviroment
 using Pkg
-if Pkg.project().path != string( projDir, "/Project.toml" )
+if Pkg.project().path != string(projDir, "/Project.toml")
   Pkg.activate(projDir)
 end
 
@@ -28,9 +28,9 @@ end;
 
 # load modules
 begin
-  include( string( utilDir, "/evolutionaryCalculation.jl" ) )
-  include( string( utilDir, "/fastaOperations.jl" ) )
-  include( string( utilDir, "/ioDataFrame.jl" ) )
+  include(string(utilDir, "/evolutionaryCalculation.jl"))
+  include(string(utilDir, "/fastaOperations.jl"))
+  include(string(utilDir, "/ioDataFrame.jl"))
 end;
 
 ################################################################################
@@ -39,13 +39,13 @@ end;
 begin
   # load taxonomy
   taxonomyDf = @chain begin
-    CSV.read( string( phylogenyDir, "/taxonomyDf.csv" ), DataFrame )
+    CSV.read(string(phylogenyDir, "/taxonomyDf.csv"), DataFrame)
     coalesce.("")
   end
 
   # load list
   assemblyDf = @chain begin
-    CSV.read( DNAzooList, DataFrame, header = false )
+    CSV.read(DNAzooList, DataFrame, header = false)
     rename!(["assemblySpp", "assemblyID", "annotationID", "readmeLink", "assemblyLink", "annotationLink"])
   end
 end;
@@ -55,7 +55,7 @@ end;
 # collect carnivora tree
 R"
 require(treeio)
-carnivoraTree <- read.tree( paste0( $phylogenyDir, '/CarnivoraBinominal.nwk' ) )
+carnivoraTree <- read.tree(paste0($phylogenyDir, '/CarnivoraBinominal.nwk'))
 carnivoraSort <- carnivoraTree$tip.label
 "
 
@@ -80,8 +80,8 @@ carnivoraArP = translateRecord(carnivoraArN)
 ################################################################################
 
 # write fasta records
-fastaWriter( string( alignmentDir, "/nucleotide/carnivora.fna" ), carnivoraArN )
-fastaWriter( string( alignmentDir, "/protein/carnivora.faa" ), carnivoraArP )
+fastaWriter(string(alignmentDir, "/nucleotide/carnivora.fna"), carnivoraArN)
+fastaWriter(string(alignmentDir, "/protein/carnivora.faa"), carnivoraArP)
 
 ################################################################################
 
@@ -90,7 +90,7 @@ fastaWriter( string( alignmentDir, "/protein/carnivora.faa" ), carnivoraArP )
 # collect carnivora tree
 R"
 require(treeio)
-ursidaeTree <- read.tree( paste0( $phylogenyDir, '/UrsidaeBinominal.nwk' ) )
+ursidaeTree <- read.tree(paste0($phylogenyDir, '/UrsidaeBinominal.nwk'))
 ursidaeSort <- ursidaeTree$tip.label
 "
 
@@ -114,8 +114,8 @@ ursidaeArP = translateRecord(ursidaeArN)
 ################################################################################
 
 # write fasta records
-fastaWriter( string( alignmentDir, "/nucleotide/ursidae.fna" ), ursidaeArN )
-fastaWriter( string( alignmentDir, "/protein/ursidae.faa" ), ursidaeArP )
+fastaWriter(string(alignmentDir, "/nucleotide/ursidae.fna"), ursidaeArN)
+fastaWriter(string(alignmentDir, "/protein/ursidae.faa"), ursidaeArP)
 
 ################################################################################
 
@@ -126,7 +126,7 @@ fastaWriter( string( alignmentDir, "/protein/ursidae.faa" ), ursidaeArP )
 # # collect carnivora tree
 # R"
 # require(treeio)
-# pholidotaTree <- read.tree( paste0( $phylogenyDir, '/PholidotaBinominal.nwk' ) )
+# pholidotaTree <- read.tree(paste0($phylogenyDir, '/PholidotaBinominal.nwk'))
 # pholidotaSort <- pholidotaTree$tip.label
 # "
 
@@ -150,8 +150,8 @@ fastaWriter( string( alignmentDir, "/protein/ursidae.faa" ), ursidaeArP )
 # ################################################################################
 
 # # write fasta records
-# fastaWriter( string( alignmentDir, "/nucleotide/pholidota.fna" ), pholidotaN )
-# fastaWriter( string( alignmentDir, "/protein/pholidota.faa" ), pholidotaP )
+# fastaWriter(string(alignmentDir, "/nucleotide/pholidota.fna"), pholidotaN)
+# fastaWriter(string(alignmentDir, "/protein/pholidota.faa"), pholidotaP)
 
 # ################################################################################
 

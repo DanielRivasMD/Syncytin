@@ -9,7 +9,7 @@ end;
 
 # load project enviroment
 using Pkg
-if Pkg.project().path != string( projDir, "/Project.toml" )
+if Pkg.project().path != string(projDir, "/Project.toml")
   Pkg.activate(projDir)
 end
 
@@ -39,7 +39,7 @@ end;
 taxonomyDf = DataFrame()
 
 # # load assembly results
-# dDir = string( diamondDir, "/raw" )
+# dDir = string(diamondDir, "/raw")
 # spp = readdir(dDir) .|> π -> replace(π, ".tsv" => "")
 
 ł = readdir("data/taxonomistIDExtraction/")
@@ -96,7 +96,7 @@ end
 ####################################################################################################
 
 # write csv complete dataframe
-writedf( string( phylogenyDir, "/taxonomyDf.csv" ), taxonomyDf, ',')
+writedf(string(phylogenyDir, "/taxonomyDf.csv"), taxonomyDf, ',')
 
 ####################################################################################################
 
@@ -106,7 +106,7 @@ binominalCols = [:species, :Species]
 ####################################################################################################
 
 # trim subspecies but keep full nomenclature
-writedf( string( phylogenyDir, "/taxonomyBinominal.csv" ), taxonomyDf[:, binominalCols], ',' )
+writedf(string(phylogenyDir, "/taxonomyBinominal.csv"), taxonomyDf[:, binominalCols], ',')
 
 ####################################################################################################
 
@@ -122,7 +122,7 @@ taxons = Dict(
 
 for (κ, υ) ∈ taxons
   for τ ∈ υ
-    writedf( string( phylogenyDir, "/", τ, "Binominal.csv" ), filter(κ => χ -> χ == τ, taxonomyDf) |> π -> select(π, binominalCols), ',' )
+    writedf(string(phylogenyDir, "/", τ, "Binominal.csv"), filter(κ => χ -> χ == τ, taxonomyDf) |> π -> select(π, binominalCols), ',')
   end
 end
 

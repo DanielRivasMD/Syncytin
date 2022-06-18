@@ -9,7 +9,7 @@ require(TreeTools)
 ################################################################################
 
 # load tree file
-trfile <- paste0( phylogenyDir, '/taxonomyBinominal.nwk' )
+trfile <- paste0(phylogenyDir, '/taxonomyBinominal.nwk')
 syncytinTree <- read.tree(trfile)
 
 ################################################################################

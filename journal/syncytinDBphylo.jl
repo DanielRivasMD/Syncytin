@@ -5,7 +5,7 @@ projDir = "/Users/drivas/Factorem/Syncytin"
 
 # load project enviroment
 using Pkg
-if Pkg.project().path != string( projDir, "/Project.toml" )
+if Pkg.project().path != string(projDir, "/Project.toml")
   Pkg.activate(projDir)
 end
 
@@ -20,7 +20,7 @@ end
 ################################################################################
 
 # load modules
-include( string( projDir, "/src/Utilities/syncytinDB.jl" ) );
+include(string(projDir, "/src/Utilities/syncytinDB.jl"));
 
 ################################################################################
 
@@ -35,11 +35,11 @@ for d in [:N, :P]
 
   # read sequences from file
   syncytinAr = Symbol("syncytinAr", d)
-  @eval $syncytinAr = fastaReader( syncytinDB = string( projDir, "/data/syncytinDB/", db[ad], "/", "syncytinLibrary.fasta") )
+  @eval $syncytinAr = fastaReader(syncytinDB = string(projDir, "/data/syncytinDB/", db[ad], "/", "syncytinLibrary.fasta"))
 
   # group syncytin sequences
   syngDf = Symbol("syngDf", d)
-  @eval $syngDf = CSV.read( synG = string( projDir, "/data/syncytinDB/", db[ad], "/", "syncytinGroups.csv"), DataFrame, header = false )
+  @eval $syngDf = CSV.read(synG = string(projDir, "/data/syncytinDB/", db[ad], "/", "syncytinGroups.csv"), DataFrame, header = false)
 
   # plot sequence length
   lenPlot = Symbol("lenPlot", d)
@@ -47,7 +47,7 @@ for d in [:N, :P]
 
   # calculate distance & hierarchical clustering
   levAr = Symbol("levAr", d)
-  levFile =  string( projDir, "/data/syncytinDB/", db[ad], "/", "levenshteinDistance.tsv")
+  levFile =  string(projDir, "/data/syncytinDB/", db[ad], "/", "levenshteinDistance.tsv")
   @eval if isfile($levFile)
     $levAr = DelimitedFiles.readdlm($levFile)
   else

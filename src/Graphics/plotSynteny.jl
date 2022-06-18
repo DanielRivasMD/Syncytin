@@ -2,14 +2,14 @@
 
 # declarations
 begin
-  include( "/Users/drivas/Factorem/Syncytin/src/Config/syncytinConfig.jl" )
+  include("/Users/drivas/Factorem/Syncytin/src/Config/syncytinConfig.jl")
 end;
 
 ################################################################################
 
 # load project enviroment
 using Pkg
-if Pkg.project().path != string( projDir, "/Project.toml" )
+if Pkg.project().path != string(projDir, "/Project.toml")
   Pkg.activate(projDir)
 end
 
@@ -25,9 +25,9 @@ end;
 
 # load modules
 begin
-  include( string( utilDir, "/evolutionaryCalculation.jl" ) )
-  include( string( utilDir, "/fastaOperations.jl" ) )
-  include( string( utilDir, "/ioDataFrame.jl" ) )
+  include(string(utilDir, "/evolutionaryCalculation.jl"))
+  include(string(utilDir, "/fastaOperations.jl"))
+  include(string(utilDir, "/ioDataFrame.jl"))
 end;
 
 ################################################################################
@@ -36,13 +36,13 @@ end;
 begin
   # load taxonomy
   taxonomyDf = @chain begin
-    CSV.read( string( phylogenyDir, "/taxonomyDf.csv" ), DataFrame )
+    CSV.read(string(phylogenyDir, "/taxonomyDf.csv"), DataFrame)
     coalesce.("")
   end
 
   # load list
   assemblyDf = @chain begin
-    CSV.read( DNAzooList, DataFrame, header = false )
+    CSV.read(DNAzooList, DataFrame, header = false)
     rename!(["assemblySpp", "assemblyID", "annotationID", "readmeLink", "assemblyLink", "annotationLink"])
   end
 end;
@@ -109,6 +109,6 @@ end
 ################################################################################
 
 # write csv
-writedf( string( phylogenyDir, "/syntenyCladeDf.csv" ), syntenyCladeDf, ',' )
+writedf(string(phylogenyDir, "/syntenyCladeDf.csv"), syntenyCladeDf, ',')
 
 ################################################################################

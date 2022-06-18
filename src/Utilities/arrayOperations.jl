@@ -2,14 +2,14 @@
 
 # declarations
 begin
-  include( "/Users/drivas/Factorem/Syncytin/src/Config/syncytinConfig.jl" )
+  include("/Users/drivas/Factorem/Syncytin/src/Config/syncytinConfig.jl")
 end;
 
 ################################################################################
 
 # load project enviroment
 using Pkg
-if Pkg.project().path != string( projDir, "/Project.toml" )
+if Pkg.project().path != string(projDir, "/Project.toml")
   Pkg.activate(projDir)
 end
 

@@ -2,14 +2,14 @@
 
 # declarations
 begin
-  include( "/Users/drivas/Factorem/Syncytin/src/Config/syncytinConfig.jl" )
+  include("/Users/drivas/Factorem/Syncytin/src/Config/syncytinConfig.jl")
 end;
 
 ####################################################################################################
 
 # load project enviroment
 using Pkg
-if Pkg.project().path != string( projDir, "/Project.toml" )
+if Pkg.project().path != string(projDir, "/Project.toml")
   Pkg.activate(projDir)
 end
 
@@ -36,17 +36,17 @@ end;
 function taxonomist(ϛ::String; taxGroups::Vector{String} = ["Kingdom", "Phylum", "Class", "Superorder", "Order", "Suborder", "Family", "genus", "species", "subspecies"])
 
   # create data frame
-  Ω = DataFrame( :Species => ϛ )
+  Ω = DataFrame(:Species => ϛ)
 
   # iterate on taxonomic groups
   for τ ∈ taxGroups
     @debug τ
 
     # parse XML files
-    xfile = string( taxonomistDir, "/", ϛ, "_", τ, ".xml" )
+    xfile = string(taxonomistDir, "/", ϛ, "_", τ, ".xml")
     try
-      @eval txFile = parse_file( $xfile )
-      for γ ∈ child_elements( LightXML.root(txFile) )
+      @eval txFile = parse_file($xfile)
+      for γ ∈ child_elements(LightXML.root(txFile))
         if name(γ) == "name"
           insertcols!(Ω, Symbol(τ) => content(γ))
         end
@@ -72,7 +72,7 @@ function levenshteinDist(ɒ::Vector{FASTX.FASTA.Record})
     seq1 = FASTX.sequence(ɒ[ι])
     for ο ∈ 1:fastaLen
       # omit diagonal
-      if ( ι == ο ) continue end
+      if (ι == ο) continue end
 
       # use memoization
       if Ω[ο, ι] != 0
@@ -104,13 +104,13 @@ function fuseMatrix(ɒ1, ɒ2)
   Ω = Matrix{Int64}(undef, size(ɒ1))
   for ι ∈ 1:size(ɒ1, 1), ο ∈ 1:size(ɒ1, 2)
     # omit diagonal
-    if ( ι == ο ) Ω[ι, ο] = 0 end
+    if (ι == ο) Ω[ι, ο] = 0 end
 
     # upper triangle
-    if ( ι < ο ) Ω[ι, ο] = ɒ1[ι, ο] end
+    if (ι < ο) Ω[ι, ο] = ɒ1[ι, ο] end
 
     # lower triangle
-    if ( ι > ο ) Ω[ι, ο] = ɒ2[ι, ο] end
+    if (ι > ο) Ω[ι, ο] = ɒ2[ι, ο] end
   end
   return Ω
 end

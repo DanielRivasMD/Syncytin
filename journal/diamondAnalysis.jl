@@ -20,7 +20,7 @@ end
 # load diamond output file
 begin
   headers = ["qseqid", "sseqid", "pident", "length", "mismatch", "gapopen", "qstart", "qend", "sstart", "send", "evalue", "bitscore"] # default diamond headers
-  crocro = DataFrame(readdlm( string( projDir, "/data/diamond/croCro.tsv" ) ), headers)
+  crocro = DataFrame(readdlm(string(projDir, "/data/diamond/croCro.tsv")), headers)
 end;
 
 ################################################################################

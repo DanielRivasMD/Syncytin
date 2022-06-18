@@ -17,7 +17,7 @@ require(ggtree)
 ################################################################################
 
 # hyena candidate insertions
-crocuta <- readDNAStringSet( paste0( projDir, '/data/alignment/Crocuta_crocuta.fasta' ) )
+crocuta <- readDNAStringSet(paste0(projDir, '/data/alignment/Crocuta_crocuta.fasta'))
 
 ################################################################################
 
@@ -33,7 +33,7 @@ croMSA <- tidy_msa(crocuta, 100, 150)
 ################################################################################
 
 # open io
-pdf( paste0( projDir, '/arch/plots/crocutaMSA.pdf' ) )
+pdf(paste0(projDir, '/arch/plots/crocutaMSA.pdf'))
 
 # plot tree
 t0 <- ggtree(

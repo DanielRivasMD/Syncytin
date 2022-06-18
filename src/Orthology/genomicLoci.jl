@@ -2,14 +2,14 @@
 
 # declarations
 begin
-  include( "/Users/drivas/Factorem/Syncytin/src/Config/syncytinConfig.jl" )
+  include("/Users/drivas/Factorem/Syncytin/src/Config/syncytinConfig.jl")
 end;
 
 ################################################################################
 
 # load project enviroment
 using Pkg
-if Pkg.project().path != string( projDir, "/Project.toml" )
+if Pkg.project().path != string(projDir, "/Project.toml")
   Pkg.activate(projDir)
 end
 
@@ -28,16 +28,16 @@ end;
 
 # load modules
 begin
-  include( string( utilDir, "/arrayOperations.jl" ) )
-  include( string( utilDir, "/ioDataFrame.jl" ) )
-  include( string( utilDir, "/evolutionaryCalculation.jl" ) )
+  include(string(utilDir, "/arrayOperations.jl"))
+  include(string(utilDir, "/ioDataFrame.jl"))
+  include(string(utilDir, "/evolutionaryCalculation.jl"))
 end;
 
 ################################################################################
 
 # load syncytin groups
 syncytinGroups = @chain begin
-  CSV.read( string( databaseDir, "/protein/CURATEDsyncytinGroups.csv" ), DataFrame, header = false )
+  CSV.read(string(databaseDir, "/protein/CURATEDsyncytinGroups.csv"), DataFrame, header = false)
   rename!(["Id", "Description", "Group"])
 end
 
@@ -47,14 +47,14 @@ end
 lociDf = DataFrame(QueryAccession = String[], TargetAccession = String[], SequenceIdentity = Float64[], Length = Int64[], Mismatches = Int64[], GapOpenings = Int64[], QueryStart = Int64[], QueryEnd = Int64[], TargetStart = Int64[], TargetEnd = Int64[], EValue = Float64[], BitScore = Float64[], Group = String[], Species = String[])
 
 # load assembly results
-dDir = string( diamondDir, "/filter" )
+dDir = string(diamondDir, "/filter")
 spp = readdir(dDir)
 
 # iterate on diamond output items
 for υ ∈ spp
   # load assembly data
   assemblyAlign = @chain begin
-    readdlm( string( dDir, "/", υ ) )
+    readdlm(string(dDir, "/", υ))
     DataFrame(:auto)
     rename!(["QueryAccession", "TargetAccession", "SequenceIdentity", "Length", "Mismatches", "GapOpenings", "QueryStart", "QueryEnd", "TargetStart", "TargetEnd", "EValue", "BitScore"])
   end
@@ -84,6 +84,6 @@ end
 ################################################################################
 
 # write csv
-writedf( string( phylogenyDir, "/lociDf.csv" ), lociDf, ',' )
+writedf(string(phylogenyDir, "/lociDf.csv"), lociDf, ',')
 
 ################################################################################

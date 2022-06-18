@@ -12,19 +12,19 @@ require(tidyverse)
 ####################################################################################################
 
 # load diamond stats
-ctfile <- paste0( projDir, '/data/stats/diamond.csv' )
+ctfile <- paste0(projDir, '/data/stats/diamond.csv')
 counts <- read_csv(ctfile)
 
 ####################################################################################################
 
 # proportion
 total <- sum(counts$Count)
-counts$Proportion <- paste( round((counts$Count / total) * 100), '%' )
+counts$Proportion <- paste(round((counts$Count / total) * 100), '%')
 
 ####################################################################################################
 
 # open io
-pdf( paste0( projDir, '/arch/plots/count.pdf' ) )
+pdf(paste0(projDir, '/arch/plots/count.pdf'))
 
 # plot
 p <- {
@@ -48,8 +48,8 @@ p <- {
   theme_classic() +
   ggtitle(
     'Number of assemblies explored',
-    subtitle = paste( 'Number of assemblies: ', total )
   ) +
+    subtitle = paste('Number of assemblies: ', total)
   theme(
     plot.title = element_text(hjust = 0.5),
     plot.subtitle = element_text(hjust = 0.5),

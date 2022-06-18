@@ -2,14 +2,14 @@
 
 # declarations
 begin
-  include( "/Users/drivas/Factorem/Syncytin/src/Config/syncytinConfig.jl" )
+  include("/Users/drivas/Factorem/Syncytin/src/Config/syncytinConfig.jl")
 end;
 
 ################################################################################
 
 # load project enviroment
 using Pkg
-if Pkg.project().path != string( projDir, "/Project.toml" )
+if Pkg.project().path != string(projDir, "/Project.toml")
   Pkg.activate(projDir)
 end
 
@@ -24,9 +24,9 @@ end;
 
 # load modules
 begin
-  include( string( utilDir, "/arrayOperations.jl" ))
-  include( string( utilDir, "/ioDataFrame.jl" ))
-  include( string( utilDir, "/fastaOperations.jl" ))
+  include(string(utilDir, "/arrayOperations.jl"))
+  include(string(utilDir, "/ioDataFrame.jl"))
+  include(string(utilDir, "/fastaOperations.jl"))
 end;
 
 ################################################################################
@@ -181,7 +181,7 @@ groupAnnoation = String[
 ################################################################################
 
 # load protein database
-syncytinAr = fastaReader( string( syncytinDBDir, "/protein/syncytinLibrary.fasta" ) )
+syncytinAr = fastaReader(string(syncytinDBDir, "/protein/syncytinLibrary.fasta"))
 
 ################################################################################
 
@@ -217,7 +217,7 @@ selectRecords = selectRecords |> purgeSequences
 ################################################################################
 
 # write curated indexes
-writedlm( string( syncytinDBDir, "/protein/CURATEDindexes.csv" ), selectIxs[selectIx] )
+writedlm(string(syncytinDBDir, "/protein/CURATEDindexes.csv"), selectIxs[selectIx])
 
 ################################################################################
 
@@ -225,11 +225,11 @@ writedlm( string( syncytinDBDir, "/protein/CURATEDindexes.csv" ), selectIxs[sele
 syncytinGroups = [sequenceId sequenceDs groupAnnoation][selectIx, :]
 
 # write curated group annoation
-writedlm( string( syncytinDBDir, "/protein/CURATEDsyncytinGroups.csv" ), syncytinGroups, ',' )
+writedlm(string(syncytinDBDir, "/protein/CURATEDsyncytinGroups.csv"), syncytinGroups, ',')
 
 ################################################################################
 
 # write curated fasta library
-fastaWriter( string( syncytinDBDir, "/protein/CURATEDsyncytinLibrary.fasta" ), selectRecords )
+fastaWriter(string(syncytinDBDir, "/protein/CURATEDsyncytinLibrary.fasta"), selectRecords)
 
 ################################################################################

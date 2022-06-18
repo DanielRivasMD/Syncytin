@@ -83,7 +83,7 @@ image(cbind(1L:nc), col = syncytinColors[rtagAr[hcc$order]], axes = FALSE)
 
 # heatmap
 par(mar = c(margins[1L], 0, 0, margins[2L]))
-image(1L:nc, 1L:nr, rlevAr[hcr$order, hcc$order], xlim = 0.5 + c(0, nc), ylim = 0.5 + c(0, nr), axes = FALSE, xlab = '', ylab = '', )
+image(1L:nc, 1L:nr, rlevAr[hcr$order, hcc$order], xlim = 0.5 + c(0, nc), ylim = 0.5 + c(0, nr), axes = FALSE, xlab = '', ylab = '',)
 
 # row dendrogram
 par(mar = c(margins[1L], 0, 0, 0))
@@ -99,7 +99,7 @@ annotScale <- 1 / length(syncytinColors)
 
 par(xpd = NA)
 
-for ( colix in seq_along(syncytinColors) ) {
+for (colix in seq_along(syncytinColors)) {
   rect(
     xleft = (par('usr')[2] * 1.04),                         #: a vector (or scalar) of left x positions.
     ybottom = (par('usr')[4] * (colix - 0.9) * annotScale), #: a vector (or scalar) of bottom y positions.

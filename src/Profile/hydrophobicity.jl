@@ -18,7 +18,7 @@ end;
 ################################################################################
 
 # load modules
-include( string( projDir, "/src/Utilities/syncytinDB.jl" ) );
+include(string(projDir, "/src/Utilities/syncytinDB.jl"));
 
 ################################################################################
 
@@ -70,7 +70,7 @@ end
 
 # load hydrophobicity values
 hydro = @chain begin
-  readdlm( string( projDir, "/data/profile/hydrophobicity.tsv" ) )
+  readdlm(string(projDir, "/data/profile/hydrophobicity.tsv"))
   DataFrame(:auto)
   rename!(["AminoAcid", "OneLetterCode", "HydropathyScore"])
 end;
@@ -85,12 +85,12 @@ end;
 ################################################################################
 
 # load protein database
-syncytinAr = fastaReader( string( projDir, "/data/syncytinDB/protein/CURATEDsyncytinLibrary.fasta" ) )
+syncytinAr = fastaReader(string(projDir, "/data/syncytinDB/protein/CURATEDsyncytinLibrary.fasta"))
 
 ################################################################################
 
 # construct plot
-R"pdf( paste0( $projDir, '/arch/plots/hydrophobicity.pdf' ) )"
+R"pdf(paste0($projDir, '/arch/plots/hydrophobicity.pdf'))"
 
 for ι in 1:length(syncytinAr)
 
@@ -99,7 +99,7 @@ for ι in 1:length(syncytinAr)
   toPlot = windowSlide(score)
 
   # plot
-  plotHydropathyR(toPlot, string( (syncytinAr[ι] |> FASTX.identifier), " - ", (syncytinAr[ι] |> FASTX.description) ))
+  plotHydropathyR(toPlot, string((syncytinAr[ι] |> FASTX.identifier), " - ", (syncytinAr[ι] |> FASTX.description)))
 
 end
 
