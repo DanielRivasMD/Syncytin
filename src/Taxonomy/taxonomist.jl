@@ -1,11 +1,11 @@
-################################################################################
+####################################################################################################
 
 # declarations
 begin
-  include( "/Users/drivas/Factorem/Syncytin/src/Config/syncytinConfig.jl" )
+  include("/Users/drivas/Factorem/Syncytin/src/Config/syncytinConfig.jl")
 end;
 
-################################################################################
+####################################################################################################
 
 # load project enviroment
 using Pkg
@@ -13,7 +13,7 @@ if Pkg.project().path != string( projDir, "/Project.toml" )
   Pkg.activate(projDir)
 end
 
-################################################################################
+####################################################################################################
 
 # load packages
 begin
@@ -23,22 +23,27 @@ begin
   using LightXML
 end;
 
-################################################################################
+####################################################################################################
 
 # load modules
 begin
-  include( string( utilDir, "/evolutionaryCalculation.jl" ) )
-  include( string( utilDir, "/ioDataFrame.jl" ) )
+  include(string(utilDir, "/evolutionaryCalculation.jl"))
+  include(string(utilDir, "/ioDataFrame.jl"))
 end;
 
-################################################################################
+####################################################################################################
+
+# TODO: add infraclass
 
 # declare data frame
 taxonomyDf = DataFrame()
 
-# load assembly results
-dDir = string( diamondDir, "/raw" )
-spp = readdir(dDir) .|> π -> replace(π, ".tsv" => "")
+# # load assembly results
+# dDir = string( diamondDir, "/raw" )
+# spp = readdir(dDir) .|> π -> replace(π, ".tsv" => "")
+
+ł = readdir("data/taxonomistIDExtraction/")
+spp = @pipe contains.(ł, "_species") |> ł[_] |> replace.(_, "_species.xml" => "")
 
 # iterate on diamond output items
 for (ι, υ) ∈ enumerate(spp)
@@ -53,9 +58,9 @@ for (ι, υ) ∈ enumerate(spp)
   end
 end
 
-################################################################################
+####################################################################################################
 # patch binominal nomenclature
-################################################################################
+####################################################################################################
 
 # homotypic synonim
 taxonomyDf[(taxonomyDf.Species .== "Aonyx_cinereus"), :species] .= "Amblonyx cinereus"
@@ -88,22 +93,22 @@ for ι ∈ eachindex(patchAr)
   taxonomyDf[(taxonomyDf.Species .== defectiveAr[ι]), Not(:Species)] .= taxDf[(taxDf.Species .== patchAr[ι]), Not(:Species)]
 end
 
-################################################################################
+####################################################################################################
 
 # write csv complete dataframe
 writedf( string( phylogenyDir, "/taxonomyDf.csv" ), taxonomyDf, ',')
 
-################################################################################
+####################################################################################################
 
 # declare binominal columns
 binominalCols = [:species, :Species]
 
-################################################################################
+####################################################################################################
 
 # trim subspecies but keep full nomenclature
 writedf( string( phylogenyDir, "/taxonomyBinominal.csv" ), taxonomyDf[:, binominalCols], ',' )
 
-################################################################################
+####################################################################################################
 
 # declare taxons to extract
 taxons = Dict(
@@ -113,7 +118,7 @@ taxons = Dict(
   :Family => ["Ursidae"],
 )
 
-################################################################################
+####################################################################################################
 
 for (κ, υ) ∈ taxons
   for τ ∈ υ
@@ -121,4 +126,4 @@ for (κ, υ) ∈ taxons
   end
 end
 
-################################################################################
+####################################################################################################
