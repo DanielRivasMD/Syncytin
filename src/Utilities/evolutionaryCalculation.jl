@@ -1,11 +1,11 @@
-################################################################################
+####################################################################################################
 
 # declarations
 begin
   include( "/Users/drivas/Factorem/Syncytin/src/Config/syncytinConfig.jl" )
 end;
 
-################################################################################
+####################################################################################################
 
 # load project enviroment
 using Pkg
@@ -13,7 +13,7 @@ if Pkg.project().path != string( projDir, "/Project.toml" )
   Pkg.activate(projDir)
 end
 
-################################################################################
+####################################################################################################
 
 # load packages
 begin
@@ -24,26 +24,26 @@ begin
   using FASTX
 end;
 
-################################################################################
+####################################################################################################
 
 # load modules
 begin
 end;
 
-################################################################################
+####################################################################################################
 
 "construct taxonomy dataframe"
-function taxonomist(ζ::String; taxGroups::Vector{String} = ["Kingdom", "Phylum", "Class", "Superorder", "Order", "Suborder", "Family", "genus", "species", "subspecies"])
+function taxonomist(ϛ::String; taxGroups::Vector{String} = ["Kingdom", "Phylum", "Class", "Superorder", "Order", "Suborder", "Family", "genus", "species", "subspecies"])
 
   # create data frame
-  Ω = DataFrame( :Species => ζ )
+  Ω = DataFrame( :Species => ϛ )
 
   # iterate on taxonomic groups
   for τ ∈ taxGroups
     @debug τ
 
     # parse XML files
-    xfile = string( taxonomistDir, "/", ζ, "_", τ, ".xml" )
+    xfile = string( taxonomistDir, "/", ϛ, "_", τ, ".xml" )
     try
       @eval txFile = parse_file( $xfile )
       for γ ∈ child_elements( LightXML.root(txFile) )
@@ -59,17 +59,17 @@ function taxonomist(ζ::String; taxGroups::Vector{String} = ["Kingdom", "Phylum"
   return Ω
 end
 
-################################################################################
+####################################################################################################
 
 "calculate levenshtein distances"
-function levenshteinDist(fastaAr::Vector{FASTX.FASTA.Record})
+function levenshteinDist(ɒ::Vector{FASTX.FASTA.Record})
 
   # construct array
-  fastaLen = length(fastaAr)
+  fastaLen = length(ɒ)
   Ω = zeros(Float64, fastaLen, fastaLen)
 
   for ι ∈ 1:fastaLen
-    seq1 = FASTX.sequence(fastaAr[ι])
+    seq1 = FASTX.sequence(ɒ[ι])
     for ο ∈ 1:fastaLen
       # omit diagonal
       if ( ι == ο ) continue end
@@ -78,7 +78,7 @@ function levenshteinDist(fastaAr::Vector{FASTX.FASTA.Record})
       if Ω[ο, ι] != 0
         Ω[ι, ο] = Ω[ο, ι]
       else
-        seq2 = FASTX.sequence(fastaAr[ο])
+        seq2 = FASTX.sequence(ɒ[ο])
         Ω[ι, ο] = BioSequences.sequencelevenshtein_distance(seq1, seq2) / maximum([length(seq1), length(seq2)]) * 100
      end
 
@@ -89,45 +89,45 @@ function levenshteinDist(fastaAr::Vector{FASTX.FASTA.Record})
 end
 
 "build hierarchical clustering"
-function levHClust(levAr::Matrix{Float64})
-  return Clustering.hclust(levAr, linkage = :average, branchorder = :optimal)
+function levHClust(ɒ::Matrix{Float64})
+  return Clustering.hclust(ɒ, linkage = :average, branchorder = :optimal)
 end
 
-################################################################################
+####################################################################################################
 
 "construct compossed matrix"
-function fuseMatrix(α, β)
+function fuseMatrix(ɒ1, ɒ2)
   # check arrays
-  if size(α, 1) != size(α, 2) @error "Matrix is not square" end
-  if size(α) != size(β) @error "Input arrays are not the same size and cannot be combined" end
+  if size(ɒ1, 1) != size(ɒ1, 2) @error "Matrix is not square" end
+  if size(ɒ1) != size(ɒ2) @error "Input arrays are not the same size and cannot be combined" end
 
-  Ω = Matrix{Int64}(undef, size(α))
-  for ι ∈ 1:size(α, 1), ο ∈ 1:size(α, 2)
+  Ω = Matrix{Int64}(undef, size(ɒ1))
+  for ι ∈ 1:size(ɒ1, 1), ο ∈ 1:size(ɒ1, 2)
     # omit diagonal
     if ( ι == ο ) Ω[ι, ο] = 0 end
 
     # upper triangle
-    if ( ι < ο ) Ω[ι, ο] = α[ι, ο] end
+    if ( ι < ο ) Ω[ι, ο] = ɒ1[ι, ο] end
 
     # lower triangle
-    if ( ι > ο ) Ω[ι, ο] = β[ι, ο] end
+    if ( ι > ο ) Ω[ι, ο] = ɒ2[ι, ο] end
   end
   return Ω
 end
 
-################################################################################
+####################################################################################################
 
 "return best position (highest identity percentage) on alignment"
-function bestPosition(Δ::DataFrame)
-  return combine(groupby(Δ, [:QueryAccession])) do δ
+function bestPosition(ϙ::DataFrame)
+  return combine(groupby(ϙ, [:QueryAccession])) do δ
     purgeClose(DataFrame(δ))
   end
 end
 
-################################################################################
+####################################################################################################
 
 "purge close positions"
-function purgeClose(Δ::DataFrame)
+function purgeClose(ϙ::DataFrame)
   # declare output
   Ω = DataFrame(QueryAccession = String[], TargetAccession = String[], SequenceIdentity = Float64[], Length = Int64[], Mismatches = Int64[], GapOpenings = Int64[], QueryStart = Int64[], QueryEnd = Int64[], TargetStart = Int64[], TargetEnd = Int64[], EValue = Float64[], BitScore = Float64[], Group = String[], Species = String[])
 
@@ -135,71 +135,71 @@ function purgeClose(Δ::DataFrame)
   edges = [:Start, :End]
 
   # round coordinates
-  for ß ∈ edges
-    Δ[:, Symbol(:Round, ß)] = map(Δ[:, Symbol(:Query, ß)]) do μ slide(μ, 100, [0, 50]) end
+  for з ∈ edges
+    ϙ[:, Symbol(:Round, з)] = map(ϙ[:, Symbol(:Query, з)]) do μ slide(μ, 100, [0, 50]) end
   end
 
   # exhaust data
-  while size(Δ, 1) != 0
+  while size(ϙ, 1) != 0
 
-    for ß ∈ edges
-      Δ[:, Symbol(:Eq, ß)] .= 1
+    for з ∈ edges
+      ϙ[:, Symbol(:Eq, з)] .= 1
 
-      Δ[Not(argmax(Δ.SequenceIdentity)), Symbol(:Eq, ß)] .= sum.(map(Δ[Not(argmax(Δ.SequenceIdentity)), Symbol(:Round, ß)]) do μ
-        μ .== Δ[(argmax(Δ.SequenceIdentity)), Symbol(:Round, ß)]
+      ϙ[Not(argmax(ϙ.SequenceIdentity)), Symbol(:Eq, з)] .= sum.(map(ϙ[Not(argmax(ϙ.SequenceIdentity)), Symbol(:Round, з)]) do μ
+        μ .== ϙ[(argmax(ϙ.SequenceIdentity)), Symbol(:Round, з)]
       end)
 
-      Δ[Δ[:, Symbol(:Eq, ß)] .> 0, Symbol(:Eq, ß)] .= 1
+      ϙ[ϙ[:, Symbol(:Eq, з)] .> 0, Symbol(:Eq, з)] .= 1
     end
 
-    Δ[:, :Eq] .= Δ[:, Symbol(:Eq, edges[1])] .+ Δ[:, Symbol(:Eq, edges[2])]
+    ϙ[:, :Eq] .= ϙ[:, Symbol(:Eq, edges[1])] .+ ϙ[:, Symbol(:Eq, edges[2])]
 
-    push!(Ω, Δ[Δ[:, :Eq] .== 2, :] |> π -> π[argmax(π.SequenceIdentity), Cols(Not(r"Round|Eq"))])
+    push!(Ω, ϙ[ϙ[:, :Eq] .== 2, :] |> π -> π[argmax(π.SequenceIdentity), Cols(Not(r"Round|Eq"))])
 
-    Δ = Δ[Δ[:, :Eq] .< 2, :]
+    ϙ = ϙ[ϙ[:, :Eq] .< 2, :]
   end
 
   return Ω
 end
 
-################################################################################
+####################################################################################################
 
 "extract subset of assemblies for a taxon & match against list"
-function extractTaxon(taxon::String, taxDf::DataFrame, list::DataFrame; level::Symbol = :Order, speciesList::Symbol = :assemblySpp)
+function extractTaxon(τ::String, ϙ::DataFrame, ł::DataFrame; level::Symbol = :Order, speciesList::Symbol = :assemblySpp)
   ξ = Vector{Int64}(undef, 0)
-  @chain taxDf begin
-    filter(level => χ -> χ == taxon, _)
-    map(χ -> findall(χ .== list[:, speciesList]), _.Species)
+  @chain ϙ begin
+    filter(level => χ -> χ == τ, _)
+    map(χ -> findall(χ .== ł[:, speciesList]), _.Species)
     map(_) do μ append!(ξ, μ) end
   end
-  return list[ξ, :]
+  return ł[ξ, :]
 end
 
-################################################################################
+####################################################################################################
 
 "extract subset of assemblies given sort & match against list"
-function extractTaxon(sort::Vector{String}, taxDf::DataFrame, list::DataFrame; speciesList::Symbol = :assemblySpp)
-  @chain taxDf begin
-    map(χ -> findall(χ .== _.Species), sort)
+function extractTaxon(ζ::Vector{String}, ϙ::DataFrame, ł::DataFrame; speciesList::Symbol = :assemblySpp)
+  @chain ϙ begin
+    map(χ -> findall(χ .== _.Species), ζ)
     sum.(_)
     filter(χ -> χ > 0, _)
-    taxDf[_, :]
-    map(χ -> findall(χ .== list[:, speciesList]), _.Species)
+    ϙ[_, :]
+    map(χ -> findall(χ .== ł[:, speciesList]), _.Species)
     sum.(_)
     filter(χ -> χ > 0, _)
-    list[_, :]
+    ł[_, :]
   end
 end
 
-################################################################################
+####################################################################################################
 
 "select file indexes from directory"
-function selectIxs(list, dir)
+function selectIxs(ł, dir)
   @chain begin
-    replace.(list.assemblyID, ".fasta.gz" => "")
+    replace.(ł.assemblyID, ".fasta.gz" => "")
     map(χ -> match.(Regex(χ), readdir(dir)), _)
     findall.(χ -> !isnothing(χ), _)
   end
 end
 
-################################################################################
+####################################################################################################
