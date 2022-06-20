@@ -56,6 +56,8 @@ for (ι, υ) ∈ enumerate(spp)
   end
 end
 
+# TODO: add: [Monotremata], [Paucituberculata, Microbiotheria, Peramelemorphia], [Afrosoricida, Macroscelidea, Cingulata]
+
 ####################################################################################################
 # patch binominal nomenclature
 ####################################################################################################
