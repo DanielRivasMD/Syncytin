@@ -9,7 +9,7 @@ source "${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh"
 ####################################################################################################
 
 # taxonomy
-taxGroups=(kingdom phylum class superorder order suborder family genus species subspecies)
+taxGroups=(phylum class clade superorder order suborder infraorder family genus species subspecies)
 
 while IFS=, read -r assemblySpp assemblyID annotationID readmeLink assemblyLink annotationLink
 do

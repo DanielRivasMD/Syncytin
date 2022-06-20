@@ -33,8 +33,6 @@ end;
 
 ####################################################################################################
 
-# TODO: add infraclass
-
 # declare data frame
 taxonomyDf = DataFrame()
 
