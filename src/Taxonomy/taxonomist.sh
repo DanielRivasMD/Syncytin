@@ -17,9 +17,9 @@ patchAr=("Equus_asinus" "Lycaon_pictus" "Mesocricetus_auratus" "Nanger_dama" "Pr
 # taxonomy
 taxGroups=(class clade superorder order suborder infraorder family genus species subspecies)
 
-while IFS=, read -r assemblySpp assemblyID annotationID readmeLink assemblyLink annotationLink
-do
-  echo ${assemblySpp}
+####################################################################################################
+
+function taxonomist() {
 
   if [[ ! "${ignoreAssembly[*]}" =~ "${assemblySpp}" ]]
   then
@@ -41,6 +41,14 @@ do
 
   fi
 
+}
+
+####################################################################################################
+
+while IFS=, read -r assemblySpp assemblyID annotationID readmeLink assemblyLink annotationLink
+do
+  echo "${assemblySpp}"
+  taxonomist
 done < "${DNAzooList}"
 
 ####################################################################################################
@@ -49,15 +57,8 @@ done < "${DNAzooList}"
 
 for assemblySpp in "${patchAr[@]}"
 do
-  echo ${assemblySpp}
-  # collect taxonomy
-  ncbi-taxonomist collect --names "${assemblySpp//_/ }" --xml > "${taxonomistDir}/${assemblySpp}.xml"
-
-  # decompose taxonomy
-  for tx in "${taxGroups[@]}"
-  do
-    grep -w "${tx}" "${taxonomistDir}/${assemblySpp}.xml" >> "${taxonomistDir}/${assemblySpp}_${tx}.xml"
-  done
+  echo "${assemblySpp}"
+  taxonomist
 done
 
 ####################################################################################################
