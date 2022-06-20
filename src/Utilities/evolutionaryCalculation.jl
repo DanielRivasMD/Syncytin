@@ -33,7 +33,20 @@ end;
 ####################################################################################################
 
 "construct taxonomy dataframe"
-function taxonomist(ϛ::String; taxGroups::Vector{String} = ["Phylum", "Subphylum", "Class", "Superorder", "Order", "Suborder", "Infraorder", "Family", "genus", "species", "subspecies"])
+function taxonomist(
+  ϛ::String;
+  taxGroups::Vector{String} = [
+    "Class",
+    "Infraclass",
+    "Superorder",
+    "Order",
+    "Suborder",
+    "Infraorder",
+    "Family",
+    "genus",
+    "species",
+    "subspecies",
+  ])
 
   # create data frame
   Ω = DataFrame(:Species => ϛ)

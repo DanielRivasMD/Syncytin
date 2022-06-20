@@ -15,7 +15,7 @@ ignoreAssembly=("Canis_lupus_dingo_alpine_ecotype" "Canis_lupus_dingo_desert_eco
 patchAr=("Equus_asinus" "Lycaon_pictus" "Mesocricetus_auratus" "Nanger_dama" "Procavia_capensis")
 
 # taxonomy
-taxGroups=(phylum class clade superorder order suborder infraorder family genus species subspecies)
+taxGroups=(class clade superorder order suborder infraorder family genus species subspecies)
 
 while IFS=, read -r assemblySpp assemblyID annotationID readmeLink assemblyLink annotationLink
 do
@@ -30,7 +30,13 @@ do
     # decompose taxonomy
     for tx in "${taxGroups[@]}"
     do
-      grep -w "${tx}" "${taxonomistDir}/${assemblySpp}.xml" >> "${taxonomistDir}/${assemblySpp}_${tx}.xml"
+      if [[ "${tx}" == "clade" ]]
+      then
+        # TODO: include monothremes
+        grep -w 'Eutheria\|Metatheria' "${taxonomistDir}/${assemblySpp}.xml" >> "${taxonomistDir}/${assemblySpp}_infraclass.xml"
+      else
+        grep -w "${tx}" "${taxonomistDir}/${assemblySpp}.xml" >> "${taxonomistDir}/${assemblySpp}_${tx}.xml"
+      fi
     done
 
   fi
