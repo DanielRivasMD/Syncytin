@@ -10,9 +10,9 @@ source "${HOME}/Factorem/Syncytin/src/SlurmController/syncytinConfigSLURM.sh"
 ####################################################################################################
 
 # parameters to test
-blockSize=(0.5 1.0 1.5 2.0 2.5 3.0)
-indexChunksMin=1
-indexChunksMax=8
+blockSize=( 0.2 0.3 0.4 0.5 1.0 1.5 2.0 )
+indexChunksMin=5
+indexChunksMax=10
 
 # zeus
 for bk in "${blockSize[@]}"
