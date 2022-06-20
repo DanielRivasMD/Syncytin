@@ -9,10 +9,15 @@ source "${HOME}/Factorem/Syncytin/src/SlurmController/syncytinConfigSLURM.sh"
 # DNAzoo
 ####################################################################################################
 
+# parameters to test
+blockSize=(0.5 1.0 1.5 2.0 2.5 3.0)
+indexChunksMin=1
+indexChunksMax=8
+
 # zeus
-for bk in {0.5,1.0,1.5,2.0,2.5,3.0}
+for bk in "${blockSize[@]}"
 do
-  for ix in {1..8}
+  for ix in {${indexChunksMin}..${indexChunksMax}}
   do
 
     sbatch \
@@ -36,9 +41,9 @@ done
 ####################################################################################################
 
 # zeus
-for bk in {0.5,1.0,1.5,2.0,2.5,3.0}
+for bk in "${blockSize[@]}"
 do
-  for ix in {1..8}
+  for ix in {${indexChunksMin}..${indexChunksMax}}
   do
 
     sbatch \
