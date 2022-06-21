@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+# set -euo pipefail
 
 ####################################################################################################
 
@@ -15,9 +15,9 @@ do
   m=$(grep -w "slurmstepd: error: Detected 1" ${e})
 
   # test
-  if [[ ! -n "$m" ]]
+  if [[ ! -n "${m}" ]]
   then
-    echo $e
+    echo "Succesful run: ${e}"
   fi
 done
 
