@@ -10,14 +10,16 @@ source "${HOME}/Factorem/Syncytin/src/SlurmController/syncytinConfigSLURM.sh"
 ####################################################################################################
 
 # parameters to test
-blockSize=( 0.2 0.3 0.4 0.5 1.0 1.5 2.0 )
-indexChunksMin=5
-indexChunksMax=10
+# blockSize=( 0.2 0.3 0.4 0.5 1.0 1.5 2.0 )
+blockSize=( 0.4 )
+indexChunksMin=10
+indexChunksMax=100
+indexChunksStep=10
 
 # zeus
 for bk in "${blockSize[@]}"
 do
-  for ix in {${indexChunksMin}..${indexChunksMax}}
+  for ix in {${indexChunksMin}..${indexChunksMax}..${indexChunksStep}}
   do
 
     sbatch \
@@ -43,7 +45,7 @@ done
 # zeus
 for bk in "${blockSize[@]}"
 do
-  for ix in {${indexChunksMin}..${indexChunksMax}}
+  for ix in {${indexChunksMin}..${indexChunksMax}..${indexChunksStep}}
   do
 
     sbatch \
