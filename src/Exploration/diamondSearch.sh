@@ -18,7 +18,7 @@ assembly=$(sed -n "$SLURM_ARRAY_TASK_ID"p "${assemblyList}" | cut -d "," -f 2)
 gzip --decompress --stdout "${assemblyDir}/${assembly}" > "${dataDir}/tmp/${assembly/.gz/}"
 
 # create directory to hold scaffolds
-mkdir "${dataDir}/tmp/${assembly/.fasta.gz/}"
+mkdir "${dataDir}/tmp/${species}"
 
 # segregate scaffolds
 bender fasta segregate \
@@ -42,7 +42,7 @@ done
 
 # remove decompressed assembly & segregated files
 rm "${dataDir}/tmp/${assembly/.gz/}"
-rm "${dataDir}/tmp/${assembly/.fasta.gz/}/"*
-rmdir "${dataDir}/tmp/${assembly/.fasta.gz/}"
+rm "${dataDir}/tmp/${species}/"*
+rmdir "${dataDir}/tmp/${species}"
 
 ####################################################################################################
