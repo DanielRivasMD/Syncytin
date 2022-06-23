@@ -1,12 +1,12 @@
 #!/bin/bash
 set -euo pipefail
 
-################################################################################
+####################################################################################################
 
 # config
 source "${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh"
 
-################################################################################
+####################################################################################################
 
 # create aminoacid alignment
 clustalo --in protein/ursidae.faa --out ursidae.aln.faa
@@ -21,4 +21,38 @@ pal2nal.pl ursidae.aln.faa protein/ursidae.faa -output paml -nogap > ursidae.pal
 # run paml
 codeml
 
-################################################################################
+####################################################################################################
+
+# segregate scaffolds
+bender fasta segregate --fasta ursidae.faa --inDir protein --outDir protein/scaffold
+
+# declare counter
+ct=0
+
+# iterate on files
+for s in $(command ls "protein/scaffold")
+do
+
+  # log
+  echo "${s}"
+
+  ((ct=ct+1))
+
+  # identify first sequence
+  if [[ "${ct}" == 2 ]]
+  then
+    cc="${s}"
+  fi
+
+  # concatenate sequences
+  cat "protein/scaffold/${cc}" "protein/scaffold/${s}" > "protein/compose/${s}"
+
+  # create aminoacid alignment
+  clustalo --force --in "protein/compose/${s}" --out "protein/compose/${s/.fasta/.aln.fasta}"
+
+  # convert aminoacid to nucleotide alignment
+  pal2nal.pl "protein/compose/${s/.fasta/.aln.fasta}" "protein/compose/${s}" -output paml -nogap > "protein/compose/${s/.fasta/.pal2nal}"
+
+done
+
+####################################################################################################
