@@ -23,20 +23,21 @@ mkdir "${dataDir}/tmp/${species}"
 # segregate scaffolds
 bender fasta segregate \
   --inDir "${dataDir}/tmp" \
-  --outDir "${dataDir}/tmp/${assembly/.fasta.gz/}" \
-  --fasta "${assembly/.gz/}"
+  --outDir "${dataDir}/tmp/${species}" \
+  --fasta "${assembly}"
 
 # iterate on scaffolds
-for scaffold in $(command ls "${dataDir}/tmp/${assembly/.fasta.gz/}")
+for scaffold in $(command ls "${dataDir}/tmp/${species}")
 do
 
   # similarity search
   bender assembly search diamond \
     --configPath "${sourceFolder}/src/Exploration/config/" \
     --configFile "diamond.toml" \
-    --inDir "${dataDir}/tmp/${assembly/.fasta.gz/}" \
+    --inDir "${dataDir}/tmp/${species}" \
     --species "${species}" \
-    --assembly "${scaffold}"
+    --assembly "${assembly}" \
+    --scaffold "${scaffold}"
 
 done
 
