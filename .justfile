@@ -137,6 +137,20 @@ Report:
   rsync -azvhP --delete "${pawseyID}:${reportRemote}/" "${projDir}/report/"
 
 ####################################################################################################
+
+# retrieve assembly readme from remote
+AssemblyREADME:
+  #!/bin/bash
+  set -euo pipefail
+
+  # declarations
+  source ".just.sh"
+  source "src/Config/syncytinConfig.sh"
+
+  echo 'Retriving reports...'
+  rsync -azvhP "${pawseyID}:${assemblyReadmeDir/${projDir}/${projRemote}}/" "${assemblyReadmeDir}/"
+
+####################################################################################################
 # local analysis protocols
 ####################################################################################################
 
