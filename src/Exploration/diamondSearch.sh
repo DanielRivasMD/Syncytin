@@ -51,6 +51,9 @@ do
 
 done
 
+# concatenate output
+cat "${diamondDir}/raw/${species}"/* > "${diamondDir}/raw/${species}.tsv"
+
 # remove decompressed assembly & segregated files
 rm "${dataDir}/tmp/${assembly/.gz/}"
 rm "${dataDir}/tmp/${species}/"*
