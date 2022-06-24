@@ -41,9 +41,10 @@ do
 
   # similarity search
   bender assembly search diamond \
-    --configPath "${sourceFolder}/src/Exploration/config/" \
+    --configPath "${explorationDir}/config/" \
     --configFile "diamond.toml" \
     --inDir "${dataDir}/tmp/${species}" \
+    --outDir "${diamondDir}/raw/${species}" \
     --species "${species}" \
     --assembly "${assembly}" \
     --scaffold "${scaffold}"
