@@ -36,16 +36,16 @@ do
   # log
   echo "${s}"
 
-  ((ct=ct+1))
+  # ((ct=ct+1))
 
-  # identify first sequence
-  if [[ "${ct}" == 2 ]]
-  then
-    cc="${s}"
-  fi
+  # # identify first sequence
+  # if [[ "${ct}" == 2 ]]
+  # then
+  #   cc="${s}"
+  # fi
 
   # concatenate sequences
-  cat "protein/scaffold/${cc}" "protein/scaffold/${s}" > "protein/compose/${s}"
+  cat "protein/scaffold/${s}" "protein/scaffold/${s}" > "protein/compose/${s}"
 
   # create aminoacid alignment
   clustalo --force --in "protein/compose/${s}" --out "protein/compose/${s/.fasta/.aln.fasta}"
