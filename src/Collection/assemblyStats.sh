@@ -10,9 +10,9 @@ source "${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh"
 
 # declarations
 # inFile="Vulpes_vulpes.json"
-inDir="/Users/drivas/Factorem/Syncytin/data/assembly"
+inDir="${assemblyReadmeDir}"
+outDir="${statsDir}"
 outFile="assembly.csv"
-outDir="data/stats"
 
 ################################################################################
 
@@ -33,11 +33,17 @@ echo "Species,Vernacular,Karyotype,ScaffoldN50,NumberScaffolds" > "${outDir}/${o
 # iterate over species
 for spp in $(command ls "${inDir}")
 do
-  bender Assembly Description \
+
+  # log
+  echo "${spp}"
+
+  # collect data
+  bender assembly description \
     --species "${spp}" \
     --inDir "${inDir}" \
     --outfile "${outFile}" \
     --outDir "${outDir}"
+
 done
 
 ################################################################################
