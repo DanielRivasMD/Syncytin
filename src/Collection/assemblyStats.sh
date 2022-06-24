@@ -34,10 +34,10 @@ echo "Species,Vernacular,Karyotype,ScaffoldN50,NumberScaffolds" > "${outDir}/${o
 for spp in $(command ls "${inDir}")
 do
   bender Assembly Description \
-    -s "${spp}" \
-    -I "${inDir}" \
-    -o "${outFile}" \
-    -O "${outDir}"
+    --species "${spp}" \
+    --inDir "${inDir}" \
+    --outfile "${outFile}" \
+    --outDir "${outDir}"
 done
 
 ################################################################################
