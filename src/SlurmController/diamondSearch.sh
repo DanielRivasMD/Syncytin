@@ -37,11 +37,13 @@ sbatch \
   --job-name SyncytinDiamond \
   --output "${reportFolder}/%x_%j_%a.out" \
   --error "${reportFolder}/%x_%j_%a.err" \
-  --time 12:0:0 \
+  --time 24:0:0 \
   --nodes 1 \
   --export sourceFolder="${sourceFolder}",assemblyDir="${ncbiDir}",assemblyList="${ncbiList}" \
-  --array 1-$(awk 'END{print NR}' "${ncbiList}") \
+  --array 1 \
   "${sourceFolder}/src/Exploration/diamondSearch.sh"
+
+  # --array 1-$( awk 'END{print NR}' "${ncbiList}" ) \
 
 ####################################################################################################
 
