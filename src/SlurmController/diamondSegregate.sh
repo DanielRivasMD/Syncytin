@@ -9,11 +9,11 @@ source "${HOME}/Factorem/Syncytin/src/SlurmController/syncytinConfigSLURM.sh"
 # DNAzoo
 ####################################################################################################
 
-# zeus
+# magnus
 sbatch \
   --account "${projectId}" \
-  --clusters zeus \
-  --partition highmemq \
+  --clusters magnus \
+  --partition workq \
   --job-name SyncytinDiamond \
   --output "${reportFolder}/%x_%j_%a.out" \
   --error "${reportFolder}/%x_%j_%a.err" \
@@ -23,11 +23,11 @@ sbatch \
   --array 1-100 \
   "${sourceFolder}/src/Exploration/diamondSegregate.sh"
 
-# zeus
+# magnus
 sbatch \
   --account "${projectId}" \
-  --clusters zeus \
-  --partition highmemq \
+  --clusters magnus \
+  --partition workq \
   --job-name SyncytinDiamond \
   --output "${reportFolder}/%x_%j_%a.out" \
   --error "${reportFolder}/%x_%j_%a.err" \
@@ -41,11 +41,11 @@ sbatch \
 # NCBI
 ####################################################################################################
 
-# zeus
+# magnus
 sbatch \
   --account "${projectId}" \
-  --clusters zeus \
-  --partition highmemq \
+  --clusters magnus \
+  --partition workq \
   --job-name SyncytinDiamond \
   --output "${reportFolder}/%x_%j_%a.out" \
   --error "${reportFolder}/%x_%j_%a.err" \
