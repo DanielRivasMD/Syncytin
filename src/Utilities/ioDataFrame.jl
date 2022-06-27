@@ -38,6 +38,20 @@ function readdf(path, sep = '\t')
   DataFrame(f, h |> vec)
 end
 
+"read diamond output"
+function readdmnd(path; header = ["qseqid", "sseqid", "pident", "length", "mismatch", "gapopen", "qstart", "qend", "sstart", "send", "evalue", "bitscore",])
+  try
+    @chain begin
+      readdlm(path)
+      DataFrame(:auto)
+      rename!(header)
+    end
+  catch ε
+    @warn "File was not parsed. Returning empty DataFrame" exception = (ε, catch_backtrace())
+    DataFrame([ɣ => Any[] for ɣ ∈ header])
+  end
+end
+
 ################################################################################
 
 "write dataframe"

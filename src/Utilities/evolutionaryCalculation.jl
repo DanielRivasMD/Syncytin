@@ -65,7 +65,7 @@ function taxonomist(
         end
       end
     catch ε
-      @warn "File was not parsed. Rerturning empty DataFrame" exception = (ε, catch_backtrace())
+      @warn "File was not parsed. Returning empty DataFrame" exception = (ε, catch_backtrace())
       insertcols!(Ω, Symbol(τ) => "")
     end
   end
