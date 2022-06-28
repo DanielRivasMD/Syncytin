@@ -29,7 +29,6 @@ echo "Species,Vernacular,Karyotype,ScaffoldN50,NumberScaffolds" > "${outDir}/${o
 
 ################################################################################
 
-# TODO: update function call
 # iterate over species
 for spp in $(command ls "${inDir}")
 do

@@ -8,7 +8,11 @@ Search for _syncitin_ sequences in assemblies.
 
 `diamondDatabase.sh` => build database for **diamond**.
 
+`diamondPerformance.sh` => performance test for **diamond** parameters.
+
 `diamondSearch.sh` => search assemblies using **diamond**.
+
+`diamondSegregate.sh` => segregate assembly scaffolds.
 
 `filterAssemblies.sh` => filter scrapped assembly data.
 
@@ -20,4 +24,4 @@ Search for _syncitin_ sequences in assemblies.
 
 #### `config`
 
-- `diamond.toml` => **`bender`** configuration for **`Assembly Search diamond`**.
+- `diamond.toml` => **`bender`** configuration for **`assembly search diamond`**.
