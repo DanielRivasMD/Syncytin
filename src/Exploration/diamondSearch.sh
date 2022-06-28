@@ -39,7 +39,4 @@ done
 # concatenate output
 cat "${diamondDir}/raw/${species}"/* > "${diamondDir}/raw/${species}.tsv"
 
-# remove decompressed assembly
-rm "${dataDir}/tmp/${assembly/.gz/}"
-
 ####################################################################################################
