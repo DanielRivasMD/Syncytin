@@ -23,6 +23,11 @@ fi
 
 ####################################################################################################
 
+# expoert satsuma
+export SATSUMA2_PATH="/home/drivas/bin/satsuma2"
+
+####################################################################################################
+
 # run Satsuma
 /home/drivas/bin/satsuma2/SatsumaSynteny2 \
   -q "${dataDir}/tmp/${species}/ASM200746v1_HiC_HiC_scaffold_1.fasta" \
