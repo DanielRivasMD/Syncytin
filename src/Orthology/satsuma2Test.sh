@@ -8,6 +8,11 @@ source "${HOME}/Factorem/Syncytin/src/Config/syncytinConfig.sh"
 
 ####################################################################################################
 
+# define slurm variables
+species="Ailurus_fulgens"
+
+####################################################################################################
+
 # log binary
 which SatsumaSynteny2
 
