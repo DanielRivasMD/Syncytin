@@ -17,7 +17,7 @@ end
 
 # load packages
 begin
-  import Chain: @chain
+  using Chain: @chain
 
   # plots
   using UnicodePlots
