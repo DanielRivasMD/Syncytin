@@ -36,7 +36,7 @@ _default:
 ####################################################################################################
 
 # deliver repository to remote cluster
-Source:
+D-source:
   #!/bin/bash
   set -euo pipefail
 
@@ -52,7 +52,7 @@ Source:
 ####################################################################################################
 
 # deliver data to remote cluster
-Database:
+D-database:
   #!/bin/bash
   set -euo pipefail
 
@@ -70,7 +70,7 @@ Database:
 ####################################################################################################
 
 # create data folders on remote cluster
-Paths:
+D-paths:
   #!/bin/bash
   set -euo pipefail
 
@@ -109,7 +109,7 @@ Paths:
 ####################################################################################################
 
 # retrieve data from remote
-Diamond:
+D-diamond:
   #!/bin/bash
   set -euo pipefail
 
@@ -127,7 +127,7 @@ Diamond:
 ####################################################################################################
 
 # retrieve reports from remote
-Report:
+D-report:
   #!/bin/bash
   set -euo pipefail
 
@@ -141,7 +141,7 @@ Report:
 ####################################################################################################
 
 # retrieve assembly readme from remote
-AssemblyREADME:
+D-assemblyREADME:
   #!/bin/bash
   set -euo pipefail
 
@@ -161,7 +161,7 @@ AssemblyREADME:
 ####################################################################################################
 
 # collect species descriptions
-@assemblyStats:
+@L-assemblyStats:
   source src/Collection/assemblyStats.sh
 
 ####################################################################################################
@@ -169,19 +169,19 @@ AssemblyREADME:
 ####################################################################################################
 
 # collect list from wasabi
-@collectList:
+@L-collectList:
   source src/Exploration/collectList.sh
 
 ####################################################################################################
 
 # filter assemblies
-@filterAssemblies:
+@L-filterAssemblies:
   source src/Exploration/filterAssemblies.sh
 
 ####################################################################################################
 
 # insertion stats
-@insertionStats:
+@L-insertionStats:
   source src/Exploration/insertionStats.sh
   R --slave --vanilla < src/Exploration/insertionStats.R
 
@@ -190,7 +190,7 @@ AssemblyREADME:
 ####################################################################################################
 
 # extract genomic loci coordinates
-@genomicLoci:
+@L-genomicLoci:
   # filter loci on each similarity alignment result
   echo 'Filtering genomic loci...'
   source src/Orthology/genomicLoci.sh
@@ -204,7 +204,7 @@ AssemblyREADME:
 ####################################################################################################
 
 # parse binominal files for time tree
-@binominalParse:
+@L-binominalParse:
   #
   echo 'Parsing files...'
   source src/Taxonomy/binominalParse.sh
@@ -212,7 +212,7 @@ AssemblyREADME:
 ####################################################################################################
 
 # collect taxonomy data
-@taxonomist:
+@L-taxonomist:
   # collect taxonomy
   echo 'Gathering taxonomic information...'
   -source src/Taxonomy/taxonomist.sh
