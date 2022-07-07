@@ -1,11 +1,11 @@
-################################################################################
+####################################################################################################
 
 # declarations
 begin
   include("/Users/drivas/Factorem/Syncytin/src/Config/syncytinConfig.jl")
 end;
 
-################################################################################
+####################################################################################################
 
 # load packages
 begin
@@ -13,33 +13,33 @@ begin
   using FASTX
 end;
 
-################################################################################
+####################################################################################################
 
 # load modules
 begin
   include(string(utilDir, "/arrayOperations.jl"))
 end;
 
-################################################################################
+####################################################################################################
 
 "build sequence length array"
-function buildLen(fastaAr::Vector{FASTX.FASTA.Record})
+function buildLen(fastaAr::V{FsR}) where V <: Vector where FsR <: FASTX.FASTA.Record
   return FASTA.seqlen.(fastaAr)
 end
 
-################################################################################
+####################################################################################################
 
 "purge records by duplicated sequence"
-function purgeSequences(fastaAr::Vector{FASTX.FASTA.Record})
+function purgeSequences(fastaAr::V{FsR}) where V <: Vector where FsR <: FASTX.FASTA.Record
   registerVc = FASTX.sequence.(fastaAr)
   registerIx = uniqueix(registerVc)
   return fastaAr[registerIx]
 end
 
-################################################################################
+####################################################################################################
 
 "create tag group vector"
-function tagGroup(fastaAr::Vector{FASTX.FASTA.Record}, groupDf::DataFrame)
+function tagGroup(fastaAr::V{FsR}, gdf::Df) where V <: Vector where FsR <: FASTX.FASTA.Record where Df <: DataFrame
 
   # contruct array
   syncytinLen = length(fastaAr)
@@ -48,20 +48,20 @@ function tagGroup(fastaAr::Vector{FASTX.FASTA.Record}, groupDf::DataFrame)
   tagAr = zeros(Int64, syncytinLen)
 
   # tag groups
-  for ι ∈ 1:size(groupDf, 1)
-    tagAr[contains.(description.(fastaAr), groupDf[ι, 1]), 1] .= ι
+  for ι ∈ 1:size(gdf, 1)
+    tagAr[contains.(description.(fastaAr), gdf[ι, 1]), 1] .= ι
   end
 
   # retag non-syncytin grouped
-  tagAr[tagAr .== 0] .= size(groupDf, 1) + 1
+  tagAr[tagAr .== 0] .= size(gdf, 1) + 1
 
   return tagAr
 end
 
-################################################################################
+####################################################################################################
 
 "translate array safely"
-function translateRecord(fastaAr::Vector{FASTX.FASTA.Record})
+function translateRecord(fastaAr::V{FsR}) where V <: Vector where FsR <: FASTX.FASTA.Record
   Ω = Vector{FASTX.FASTA.Record}(undef, 0)
   for υ ∈ fastaAr
     δ = split(FASTX.description(υ), " ")
@@ -81,4 +81,4 @@ function translateRecord(fastaAr::Vector{FASTX.FASTA.Record})
   return Ω
 end
 
-################################################################################
+####################################################################################################

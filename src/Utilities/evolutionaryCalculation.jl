@@ -25,9 +25,8 @@ end;
 ####################################################################################################
 
 "construct taxonomy dataframe"
-function taxonomist(
-  ϛ::String;
-  taxGroups::Vector{String} = [
+function taxonomist(ϛ::S;
+  taxGroups::V{S} = [
     "Class",
     "Infraclass",
     "Superorder",
@@ -38,7 +37,7 @@ function taxonomist(
     "genus",
     "species",
     "subspecies",
-  ])
+  ]) where S <: String where V <: Vector
 
   # create data frame
   Ω = DataFrame(:Species => ϛ)
@@ -67,7 +66,7 @@ end
 ####################################################################################################
 
 "calculate levenshtein distances"
-function levenshteinDist(ɒ::Vector{FASTX.FASTA.Record})
+function levenshteinDist(ɒ::V{FsR}) where V <: Vector FsR <: FASTX.FASTA.Record
 
   # construct array
   fastaLen = length(ɒ)
@@ -94,7 +93,7 @@ function levenshteinDist(ɒ::Vector{FASTX.FASTA.Record})
 end
 
 "build hierarchical clustering"
-function levHClust(ɒ::Matrix{Float64})
+function levHClust(ɒ::M{F}) where M <: Matrix where F <: Float64
   return Clustering.hclust(ɒ, linkage = :average, branchorder = :optimal)
 end
 
@@ -123,7 +122,7 @@ end
 ####################################################################################################
 
 "return best position (highest identity percentage) on alignment"
-function bestPosition(ϙ::DataFrame)
+function bestPosition(ϙ::Df) where Df <: DataFrame
   return combine(groupby(ϙ, [:QueryAccession])) do δ
     purgeClose(DataFrame(δ))
   end
@@ -132,7 +131,7 @@ end
 ####################################################################################################
 
 "purge close positions"
-function purgeClose(ϙ::DataFrame)
+function purgeClose(ϙ::Df) where Df <: DataFrame
   # declare output
   Ω = DataFrame(QueryAccession = String[], TargetAccession = String[], SequenceIdentity = Float64[], Length = Int64[], Mismatches = Int64[], GapOpenings = Int64[], QueryStart = Int64[], QueryEnd = Int64[], TargetStart = Int64[], TargetEnd = Int64[], EValue = Float64[], BitScore = Float64[], Group = String[], Species = String[])
 
@@ -170,7 +169,7 @@ end
 ####################################################################################################
 
 "extract subset of assemblies for a taxon & match against list"
-function extractTaxon(τ::String, ϙ::DataFrame, ł::DataFrame; level::Symbol = :Order, speciesList::Symbol = :assemblySpp)
+function extractTaxon(τ::S, ϙ::Df, ł::Df; level::Y = :Order, speciesList::Y = :assemblySpp) S <: String where Df <: DataFrame Y <: Symbol
   ξ = Vector{Int64}(undef, 0)
   @chain ϙ begin
     filter(level => χ -> χ == τ, _)
@@ -183,7 +182,7 @@ end
 ####################################################################################################
 
 "extract subset of assemblies given sort & match against list"
-function extractTaxon(ζ::Vector{String}, ϙ::DataFrame, ł::DataFrame; speciesList::Symbol = :assemblySpp)
+function extractTaxon(ζ::V{S}, ϙ::Df, ł::Df; speciesList::Y = :assemblySpp) where V <: Vector where S <: String where Df <: DataFrame Y <: Symbol
   @chain ϙ begin
     map(χ -> findall(χ .== _.Species), ζ)
     sum.(_)

@@ -1,11 +1,11 @@
-################################################################################
+####################################################################################################
 
 # declarations
 begin
   include("/Users/drivas/Factorem/Syncytin/src/Config/syncytinConfig.jl")
 end;
 
-################################################################################
+####################################################################################################
 
 # load packages
 begin
@@ -16,13 +16,13 @@ begin
   using FASTX
 end;
 
-################################################################################
+####################################################################################################
 
 # load modules
 begin
 end;
 
-################################################################################
+####################################################################################################
 
 "read dataframe"
 function readdf(path, sep = '\t')
@@ -31,7 +31,22 @@ function readdf(path, sep = '\t')
 end
 
 "read diamond output"
-function readdmnd(path; header = ["qseqid", "sseqid", "pident", "length", "mismatch", "gapopen", "qstart", "qend", "sstart", "send", "evalue", "bitscore",])
+function readdmnd(path;
+  header = [
+    "qseqid",
+    "sseqid",
+    "pident",
+    "length",
+    "mismatch",
+    "gapopen",
+    "qstart",
+    "qend",
+    "sstart",
+    "send",
+    "evalue",
+    "bitscore",
+  ])
+
   try
     @chain begin
       readdlm(path)
@@ -44,18 +59,18 @@ function readdmnd(path; header = ["qseqid", "sseqid", "pident", "length", "misma
   end
 end
 
-################################################################################
+####################################################################################################
 
 "write dataframe"
-function writedf(path, df::DataFrame, sep = '\t')
+function writedf(path, df::Df, sep = '\t') where Df <: DataFrame
   toWrite = [(df |> names |> permutedims); (df |> Array)]
   writedlm(path, toWrite, sep)
 end
 
-################################################################################
+####################################################################################################
 
 "read `fasta` file to array"
-function fastaReader(ζ::String)
+function fastaReader(ζ::S) where S <: String
 
   # declare empty array
   Ω = Vector{FASTX.FASTA.Record}(undef, 0)
@@ -74,10 +89,10 @@ function fastaReader(ζ::String)
   return Ω
 end
 
-################################################################################
+####################################################################################################
 
 "write `fasta` file from array"
-function fastaWriter(ζ::String, fastaAr::Vector{FASTX.FASTA.Record})
+function fastaWriter(ζ::S, fastaAr::V{FsR}) where S <: String where V <: Vector where FsR <: FASTX.FASTA.Record
 
   # loop over array
   open(FASTA.Writer, ζ) do ω
@@ -87,7 +102,7 @@ function fastaWriter(ζ::String, fastaAr::Vector{FASTX.FASTA.Record})
   end
 end
 
-################################################################################
+####################################################################################################
 
 "collect `fasta` sequences from directory"
 function candidateCollect(ix, candidateDir)
@@ -115,4 +130,4 @@ function candidateCollect(ix, candidateDir)
   return Ω
 end
 
-################################################################################
+####################################################################################################
