@@ -21,7 +21,11 @@ do
   if [[ "${assembly}" != "Mesocricetus_auratus__golden_hamster_wtdbg2.shortReadsPolished.csv" ]]
   then
 
-    bender assembly filter --inDir "${wasabiDir}/raw/" --species "${assembly}" >> "${listDir}/DNAzooList.csv"
+    bender assembly filter \
+      --species "${assembly}" \
+      --inDir "${wasabiDir}/raw/" \
+      --outfile "DNAzooList.csv" \
+      --outDir "${listDir}"
 
   fi
 
