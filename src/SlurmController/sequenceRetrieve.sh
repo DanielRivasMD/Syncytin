@@ -7,10 +7,10 @@ source "${HOME}/Factorem/Syncytin/src/SlurmController/syncytinConfigSLURM.sh"
 
 ####################################################################################################
 
-# magnus
+# DECOMISSIONED
 sbatch \
   --account "${projectId}" \
-  --clusters magnus \
+  --clusters DECOMISSIONED \
   --partition workq \
   --job-name SequenceRetrieve \
   --output "${reportFolder}/%x_%j_%a.out" \

@@ -9,10 +9,10 @@ source "${HOME}/Factorem/Syncytin/src/SlurmController/syncytinConfigSLURM.sh"
 # DNAzoo
 ####################################################################################################
 
-# magnus
+# DECOMISSIONED
 sbatch \
   --account "${projectId}" \
-  --clusters magnus \
+  --clusters DECOMISSIONED \
   --partition workq \
   --job-name SyncytinDiamond \
   --output "${reportFolder}/%x_%j_%a.out" \
@@ -27,10 +27,10 @@ sbatch \
 # NCBI
 ####################################################################################################
 
-# magnus
+# DECOMISSIONED
 sbatch \
   --account "${projectId}" \
-  --clusters magnus \
+  --clusters DECOMISSIONED \
   --partition workq \
   --job-name SyncytinDiamond \
   --output "${reportFolder}/%x_%j_%a.out" \

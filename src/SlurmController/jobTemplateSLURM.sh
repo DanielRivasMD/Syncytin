@@ -31,7 +31,7 @@ sbatch \
 # %a = arrayid
 
 # pawsey => cluster |> partition
-#   magnus |> workq
+#   DECOMISSIONED |> workq
 #   topaz |> gpuq
 
 # script
